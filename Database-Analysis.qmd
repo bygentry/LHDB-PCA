@@ -1,0 +1,22 @@
+---
+title: "Database Analysis"
+author: "Gentry Miller"
+format: html
+editor: visual
+---
+
+# Preliminaries
+
+## Data Import & Exploration
+
+```{r}
+#| label: packages
+repos <-  "http://cran.us.r-project.org"
+pacman::p_load(dplyr, psych, tidyverse, curl, ggplot2, mice, rlang, yaml, gridExtra, lme4, XML, lubridate, gratia)
+```
+
+```{r}
+#| label: data
+
+amniote <- read.csv("https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/AmnioteDB2015/Amniote_Database_Aug_2015.csv")
+```
