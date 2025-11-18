@@ -19,4 +19,17 @@ pacman::p_load(dplyr, psych, tidyverse, curl, ggplot2, mice, rlang, yaml, gridEx
 #| label: data
 
 amniote <- read.csv("https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/AmnioteDB2015/Amniote_Database_Aug_2015.csv")
+
+amniote_m <- subset(amniote, class == "Mammalia")
+
+amniote_m <- amniote_m %>% 
+  select(-egg_mass_g, -incubation_d, -fledging_age_d, -egg_width_mm, -egg_length_mm, -fledging_mass_g)
+
+amniote_p <- subset(amniote_m, order == "Primates")
+
+AmAge <- read_tsv()
+```
+
+```{r}
+vars <- colnames(amniote_p)
 ```
