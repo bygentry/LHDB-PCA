@@ -27,9 +27,26 @@ amniote_m <- amniote_m %>%
 
 amniote_p <- subset(amniote_m, order == "Primates")
 
-AmAge <- read_tsv()
+AnAge <- read_tsv(file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/AmAge/anage_data.txt", col_names = TRUE)
+
+AnAge <- AnAge %>% 
+  mutate(
+    Kingdom = as.factor(Kingdom),
+    Class = as.factor(Class),
+    Order = as.factor(Order),
+    Genus = as.factor(Genus),
+    Species = as.factor(Species)
+  )
 ```
 
 ```{r}
 vars <- colnames(amniote_p)
+count = 0
+
+for(i in 1:4645){
+  if(AmAge[i, 5] == "Primates"){
+    count = count + 1
+  }
+}
+
 ```
