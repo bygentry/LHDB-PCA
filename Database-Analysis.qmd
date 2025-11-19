@@ -41,11 +41,21 @@ AnAge <- AnAge %>%
 AnAge_m <- subset(AnAge, Class == "Mammalia")
 AnAge_p <- subset(AnAge, Order == "Primates")
 
-ernest <- read_delim(file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/Ernest/Mammal_lifehistories_v2.txt", col_names = FALSE, show_col_types = TRUE)
+ernest <- read_delim(file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/Ernest/Mammal_lifehistories_v2.txt", col_names = TRUE, show_col_types = FALSE)
+
+ernest <- ernest %>% 
+  mutate(
+    order = as.factor(order),
+    family = as.factor(family),
+    Genus = as.factor(Genus),
+    species = as.factor(species)
+  )
+
+ernest_p <- subset(ernest, order == "Primates")
 ```
 
 ```{r}
-vars <- colnames(amniote_p)
+vars <- colnames(ernest)
 count = 0
 
 for(i in 1:4645){
