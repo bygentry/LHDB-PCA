@@ -40,6 +40,8 @@ AnAge <- AnAge %>%
 
 AnAge_m <- subset(AnAge, Class == "Mammalia")
 AnAge_p <- subset(AnAge, Order == "Primates")
+
+ernest <- read_delim(file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/Ernest/Mammal_lifehistories_v2.txt", col_names = FALSE, show_col_types = TRUE)
 ```
 
 ```{r}
