@@ -18,17 +18,23 @@ pacman::p_load(dplyr, psych, tidyverse, curl, ggplot2, mice, rlang, yaml, gridEx
 ```{r}
 #| label: data
 
+# AMNIOTES 
 amniote <- read.csv("https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/AmnioteDB2015/Amniote_Database_Aug_2015.csv")
 
+## creates subset df for mammals
 amniote_m <- subset(amniote, class == "Mammalia")
 
+## removes reptile and avian variables
 amniote_m <- amniote_m %>% 
   select(-egg_mass_g, -incubation_d, -fledging_age_d, -egg_width_mm, -egg_length_mm, -fledging_mass_g)
 
+## creates subset df for primates
 amniote_p <- subset(amniote_m, order == "Primates")
 
+# ANAGE
 AnAge <- read_tsv(file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/AnAge/anage_data.txt", col_names = TRUE, show_col_types = FALSE)
 
+## converts taxonomic vars to factors to aid in grouping
 AnAge <- AnAge %>% 
   mutate(
     Kingdom = as.factor(Kingdom),
@@ -38,11 +44,16 @@ AnAge <- AnAge %>%
     Species = as.factor(Species)
   )
 
+## creates subset df for mammals
 AnAge_m <- subset(AnAge, Class == "Mammalia")
+
+## creates subset df for primates
 AnAge_p <- subset(AnAge, Order == "Primates")
 
+# ERNEST
 ernest <- read_delim(file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/Ernest/Mammal_lifehistories_v2.txt", col_names = TRUE, show_col_types = FALSE)
 
+## converts taxonomic vars to factors to aid in grouping
 ernest <- ernest %>% 
   mutate(
     order = as.factor(order),
@@ -51,10 +62,13 @@ ernest <- ernest %>%
     species = as.factor(species)
   )
 
+## creates subset df for fprimates
 ernest_p <- subset(ernest, order == "Primates")
 
+# PANTHERIA
 pan <- read_tsv(file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/PanTHERIA/PanTHERIA_1-0_WR05_Aug2008.txt", col_names = TRUE, show_col_types = FALSE)
 
+## renaming vars for easier indexing
 pan <- pan %>% 
   rename(
     order = MSW05_Order,
@@ -93,6 +107,8 @@ pan <- pan %>%
     weaningBodyMass_g = `5-4_WeaningBodyMass_g`,
     weaningHeadBodyLen_mm = `13-3_WeaningHeadBodyLen_mm`
   )
+
+## converts taxonmic vars to factors for easier grouping
 pan <- pan %>% 
   mutate(
     order = as.factor(order),
@@ -102,20 +118,18 @@ pan <- pan %>%
     binom = as.factor(binom)
   )
 
+## creates subset df for primates
 pan_p <- subset(pan, order == "Primates")
 ```
 
 ```{r}
+#| label: misc
 vars <- colnames(pan_p)
 count = 0
-
-
-for(i in 1:4645){
-  if(AmAge[i, 5] == "Primates"){
-    count = count + 1
-  }
-}
 i = 0
+
+# finding max value of numeric variables
+# for pantheria if max = -999, no data is available for any species
 for(i in 1:ncol(pan_p)){
   if(is.numeric(pan_p[[i]])){
     cat(names(pan_p)[i], ": ", max(pan_p[[i]]), "\n")
