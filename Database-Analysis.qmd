@@ -52,16 +52,73 @@ ernest <- ernest %>%
   )
 
 ernest_p <- subset(ernest, order == "Primates")
+
+pan <- read_tsv(file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/PanTHERIA/PanTHERIA_1-0_WR05_Aug2008.txt", col_names = TRUE, show_col_types = FALSE)
+
+pan <- pan %>% 
+  rename(
+    order = MSW05_Order,
+    family = MSW05_Family,
+    genus = MSW05_Genus,
+    species = MSW05_Species,
+    binom = MSW05_Binomial,
+    actvityCycle = `1-1_ActivityCycle`,
+    adultBodyMass_g = `5-1_AdultBodyMass_g`,
+    adultForearmLen_mm = `8-1_AdultForearmLen_mm`,
+    adultHeadBodyLen_mm = `13-1_AdultHeadBodyLen_mm`,
+    ageAtEyeOpening_d = `2-1_AgeatEyeOpening_d`,
+    ageAtFirstBirth_d = `3-1_AgeatFirstBirth_d`,
+    basalMetRate_mLO2hr = `18-1_BasalMetRate_mLO2hr`,
+    basalMetRateMass_g = `5-2_BasalMetRateMass_g`,
+    dietBreadth = `6-1_DietBreadth`,
+    dispersalAge_d = `7-1_DispersalAge_d`,
+    gestationLen_d = `9-1_GestationLen_d`,
+    habitatBreadth = `12-1_HabitatBreadth`,
+    homeRange_km2 = `22-1_HomeRange_km2`,
+    homeRangeIndiv_km2 = `22-2_HomeRange_Indiv_km2`,
+    interBirthInterval_d = `14-1_InterbirthInterval_d`,
+    litterSize = `15-1_LitterSize`,
+    littersPerYear = `16-1_LittersPerYear`,
+    maxLongevity_m = `17-1_MaxLongevity_m`,
+    neonateBodyMass_g = `5-3_NeonateBodyMass_g`,
+    neoNateHeadBodyLen_mm = `13-2_NeonateHeadBodyLen_mm`,
+    populationDensity = `21-1_PopulationDensity_n/km2`,
+    populationGrpSize = `10-1_PopulationGrpSize`,
+    sexualMaturityAge_d = `23-1_SexualMaturityAge_d`,
+    socialGrpSize = `10-2_SocialGrpSize`,
+    teatNumber = `24-1_TeatNumber`,
+    terrestriality = `12-2_Terrestriality`,
+    trophicLevel = `6-2_TrophicLevel`,
+    weaningAge_d = `25-1_WeaningAge_d`,
+    weaningBodyMass_g = `5-4_WeaningBodyMass_g`,
+    weaningHeadBodyLen_mm = `13-3_WeaningHeadBodyLen_mm`
+  )
+pan <- pan %>% 
+  mutate(
+    order = as.factor(order),
+    family = as.factor(family),
+    genus = as.factor(genus),
+    species = as.factor(species),
+    binom = as.factor(binom)
+  )
+
+pan_p <- subset(pan, order == "Primates")
 ```
 
 ```{r}
-vars <- colnames(ernest)
+vars <- colnames(pan_p)
 count = 0
+
 
 for(i in 1:4645){
   if(AmAge[i, 5] == "Primates"){
     count = count + 1
   }
 }
-
+i = 0
+for(i in 1:ncol(pan_p)){
+  if(is.numeric(pan_p[[i]])){
+    cat(names(pan_p)[i], ": ", max(pan_p[[i]]), "\n")
+  }
+  }
 ```
