@@ -53,7 +53,7 @@ kp <- read.csv(file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/
 
 # AMNIOTES
 
-## filters out non primates
+## creates subset df for primates
 amniote_p <- amniote %>% filter(order == "Primates")
 
 # ANAGE
@@ -83,8 +83,14 @@ pan_p <- pan %>% filter(MSW05_Order == "Primates")
 amniote_p <- amniote_p %>% 
   select(-egg_mass_g, -incubation_d, -fledging_age_d, -egg_width_mm, -egg_length_mm, -fledging_mass_g)
 
-## extracting vars for cross-database comparison
-amniote_selected <- amniote_p %>% 
+## converts taxonomic vars to factors to aid in grouping
+amniote_p <- amniote_p %>% 
+  mutate(
+    across(c(class, order, family, genus, species, subspecies, common_name), as.factor)
+  )
+
+## selecting vars for cross-database comparison
+amniote_s <- amniote_p %>% 
   transmute(
     genus = genus,
     species = species,
@@ -105,8 +111,8 @@ AnAge_p <- AnAge_p %>%
     across(c(Kingdom, Class, Order, Genus, Species), as.factor)
   )
 
-## extracting vars for cross-database comparison
-AnAge_selected <- AnAge_p %>% 
+## selecting vars for cross-database comparison
+AnAge_s <- AnAge_p %>% 
   transmute(
     genus = Genus,
     species = Species,
@@ -127,19 +133,25 @@ ernest_p <- ernest_p %>%
     across(c(order, family, Genus, species), as.factor)
   )
 
-ernest_selected <- ernest_p %>% 
+## selecting vars for cross-database comparison
+ernest_s <- ernest_p %>% 
   transmute(
-    genus = genus,
+    genus = Genus,
     species = species,
     body_mass = `mass(g)`,
     AFR = `AFR(mo)`,
-    # convert AFR to days
+    # convert AFR to days 30.438 * AFR
     gest_len = `gestation(mo)`,
-    # convert gest_len to days
+    # convert gest_len to days 30.438 * gest_len
     IBI = `litters/year`,
     # convert to days by (365.25 * (1/'litters/year'))
-    
+    max_longevity = `max. life(mo)`,
+    # convert to years max_longevity/12
+    age_at_maturity = NA,
+    weaning_age = `weaning(mo)`
+    # convert to days 30.438 * weaning_age
   )
+
 # PANTHERIA
 
 ## converts taxonmic vars to factors for easier grouping
@@ -148,9 +160,9 @@ pan_p <- pan_p %>%
     across(c(MSW05_Order, MSW05_Family, MSW05_Genus, MSW05_Species), as.factor)
   )
 
-## extracting vars for cross-database comparison
-pan_p <- pan_p %>% 
-  rename(
+## selecting vars for cross-database comparison
+pan_s <- pan_p %>% 
+  transmute(
     genus = MSW05_Genus,
     species = MSW05_Species,
     body_mass = `5-1_AdultBodyMass_g`,
@@ -164,13 +176,13 @@ pan_p <- pan_p %>%
 
 # KAPPELER & PEREIRA
 
-# sets the value "803?" to "803" 
+## removes non-number characters 
 kp <- kp %>% 
   mutate(
     BM.F = readr::parse_number(as.character(BM.F))
   )
 
-# converts data types to appropriate class
+## converts data types to appropriate class
 kp <- kp %>% 
   mutate(
     Family = as.factor(Family),
@@ -178,6 +190,8 @@ kp <- kp %>%
     Species = as.factor(Species),
     BM.F = as.numeric(BM.F)
   )
+
+## 
 ```
 
 # Analysis
