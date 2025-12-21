@@ -1,0 +1,639 @@
+---
+title: "AN 335 UnEssay"
+author: "Sherry Xie"
+date: "2025-05-06"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Packages setup
+
+```{r}
+library(tidyverse)
+library(curl)
+library(data.table)
+library(dplyr)
+library(ggplot2)
+```
+
+# Read data
+
+```{r}
+#CONVERT TO NA INSTEAD OF -999 AT THE BEGINNING!!!
+
+#CHANGED READ TABLE F TO JONES
+jones <- curl("https://esapubs.org/archive/ecol/E090/184/PanTHERIA_1-0_WR05_Aug2008.txt")
+jones <- read.table(jones, header = TRUE, sep = "\t", stringsAsFactors = FALSE, fill = T)
+
+#CONVERT -999 INTO NA USING THE MANUAL METHOD
+jones[jones == -999] <- NA
+
+
+#CHANGED READ TABLE F TO ERNEST
+ernest <- curl("https://www.esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt")
+ernest <- read.table(ernest, header = TRUE, sep = "\t", stringsAsFactors = FALSE, fill = T)
+
+#CONVERT -999 INTO NA USING THE MANUAL METHOD
+ernest[ernest == -999] <- NA
+
+
+#change your file path accordingly for this one
+# DID AS DIRECTED ABOVE
+#-999 all converted to na
+amniote <- read.csv("/Users/sherryxie/CODE/Life History/Life History/Amniote_Database_Aug_2015.csv", header = TRUE, sep = ",", stringsAsFactors = FALSE, na.strings = c("NA", "", -999))
+```
+
+# Amniote
+
+## filter
+
+filter to primates order rows
+
+```{r}
+#kept only the primates within this huge data
+#kept the class for mammalia just in case. Can get rid of it if needed
+
+amniote <- amniote %>% filter(class == "Mammalia", order == "Primates")
+```
+
+## species name
+
+Should be in one column, but might be split into two e.g., Genus column *Pan* and species column *troglodytes*. Others might have them in one column. If multiple, concatenate into one and name it species
+
+```{r}
+amniote <- amniote %>%
+  mutate(species = if_else(!is.na(genus) & !is.na(species), 
+                           paste(genus, species, sep = " "), 
+                           species))
+```
+
+## select
+
+species name
+
+life history columns of interest
+
+-   lifespan
+
+-   age at sexual maturity (male and female)
+
+-   age at first reproduction
+
+-   interbirth interval
+
+-   gestation
+
+-   weaning
+
+-   adult mass (male and female if relevant)
+
+```{r}
+#asked r to show me column name so I dont have to flip back to table every single time
+colnames(amniote)
+```
+
+```{r}
+#ADD LIFESPAN IS IT LONGEVITY? DONE 
+#ADD AGE AT 1ST REPO: NO SEX MAT DAY DONE
+#(THIS IS AGE AT FIRST REPO.)
+selected_amniote <- select(amniote, species , longevity_y, female_maturity_d , male_maturity_d , no_sex_maturity_d, inter_litter_or_interbirth_interval_y , gestation_d , weaning_d , adult_body_mass_g, female_body_mass_g , male_body_mass_g )
+```
+
+## rename columns
+
+there should be agreement between all spreadsheets with column names, because it makes it easier to join them later. For age at sexual maturity and body mass, it may be reported by sex or it may not be, just what you need to depending on the source.
+
+lifespan.y
+
+sexual.mat.male.d
+
+sexual.mat.female.d
+
+sexual.mat.d
+
+age.first.repro.d (THIS IS AGE AT FIRST REPO.)
+
+interbirth.interval.d
+
+gestation.d
+
+weaning.age.d
+
+adult.mass.kg
+
+adult.mass.male.kg
+
+adult.mass.female.kg
+
+```{r}
+#ADD LIFESPAN IS IT LONGEVITY?
+#ADD AGE AT 1ST REPO: NO SEX MAT DAY
+#(THIS IS AGE AT FIRST REPO.)
+
+selected_amniote <- selected_amniote %>% 
+  rename(
+    lifespan.y = longevity_y,
+    sexual.mat.male.d = male_maturity_d,
+    sexual.mat.female.d = female_maturity_d,
+    age.first.repro.d = no_sex_maturity_d,
+    interbirth.interval.d = inter_litter_or_interbirth_interval_y,
+    gestation.d = gestation_d,
+    weaning.age.d = weaning_d,
+    adult.mass.kg =  adult_body_mass_g,
+    adult.mass.male.kg = male_body_mass_g,
+    adult.mass.female.kg =  female_body_mass_g
+  ) %>%
+  mutate(sexual.mat.d = NA)
+```
+
+## which units are being used?
+
+convert:
+
+lifespan to years
+
+the rest of the time ones to days
+
+mass to kg
+
+```{r}
+selected_amniote <- selected_amniote %>%
+  mutate(
+    interbirth.interval.d = interbirth.interval.d * 365.25,  # Convert years to days
+    adult.mass.kg = adult.mass.kg / 1000,  # Convert grams to kg
+    adult.mass.male.kg = adult.mass.male.kg / 1000,  # Convert grams to kg
+    adult.mass.female.kg = adult.mass.female.kg / 1000 # Convert grams to kg
+  )
+```
+
+## add source
+
+add column called source and fill all entries for this one with the citation info for the source.
+
+(Myhrvold et al., 2015) - amniote
+
+```{r}
+#keep format
+selected_amniote <- selected_amniote %>%  
+  mutate(source = "Myhrvold et al., 2015")
+```
+
+## write
+
+write the finished dataframe into a new csv and name it "BPxLH_LifeHistoryData\_[source].csv". Always use the argument row.names=FALSE
+
+```{r}
+#write.csv(row.names = FALSE)
+#substitube aminote for selected?
+#write.csv(selected_amniote, "BPxLH_LifeHistoryData_amniote.csv", row.names = FALSE)
+```
+
+# Jones
+
+## filter
+
+filter to primates order rows
+
+```{r}
+jones <- jones %>% filter(MSW05_Order == "Primates")
+```
+
+## species name
+
+Should be in one column, but might be split into two e.g., Genus column *Pan* and species column *troglodytes*. Others might have them in one column. If multiple, concatenate into one and name it species
+
+**did not need to filter species name because there was already a column that had their species name combined**
+
+## select
+
+species name
+
+life history columns of interest
+
+-   lifespan
+
+-   age at sexual maturity (male and female)
+
+-   age at first reproduction
+
+-   interbirth interval
+
+-   gestation
+
+-   weaning
+
+-   adult mass (male and female if relevant)
+
+    ```{r}
+    #asked r to show me column name so I dont have to flip back to table every single time
+    colnames(jones)
+    ```
+
+```{r}
+# MAX LONGEVITY = LIFESPAN? no
+selected_jones <- select(jones, MSW05_Binomial, X23.1_SexualMaturityAge_d, X3.1_AgeatFirstBirth_d, X14.1_InterbirthInterval_d , X9.1_GestationLen_d , X25.1_WeaningAge_d , X5.1_AdultBodyMass_g )
+```
+
+### rename columns
+
+there should be agreement between all spreadsheets with column names, because it makes it easier to join them later. For age at sexual maturity and body mass, it may be reported by sex or it may not be, just what you need to depending on the source.
+
+lifespan.y
+
+sexual.mat.male.d
+
+sexual.mat.female.d
+
+sexual.mat.d
+
+interbirth.interval.d
+
+gestation.d
+
+weaning.age.d
+
+adult.mass.kg
+
+adult.mass.male.kg
+
+adult.mass.female.kg
+
+```{r}
+#ADD LIFESPAN IS IT MA LONGEVITY?
+#(THIS IS AGE AT FIRST REPO.)
+selected_jones <- selected_jones %>% 
+  rename(
+    species = MSW05_Binomial,
+    age.first.repro.d = X3.1_AgeatFirstBirth_d,
+    sexual.mat.d = X23.1_SexualMaturityAge_d,
+    interbirth.interval.d = X14.1_InterbirthInterval_d,
+    gestation.d = X9.1_GestationLen_d,
+    weaning.age.d = X25.1_WeaningAge_d,
+    adult.mass.kg =  X5.1_AdultBodyMass_g
+    
+  ) %>%
+  mutate(lifespan.y = NA,
+         sexual.mat.male.d = NA,
+         sexual.mat.female.d = NA,
+         adult.mass.male.kg = NA,
+         adult.mass.female.kg = NA
+         )
+```
+
+### which units are being used?
+
+convert:
+
+lifespan to years
+
+the rest of the time ones to days
+
+mass to kg
+
+```{r}
+selected_jones <- selected_jones %>%
+  mutate(
+   # lifespan.y = lifespan.y / 12, # Convert months to years 30.4
+    adult.mass.kg = adult.mass.kg / 1000,  # Convert grams to kg
+  )
+```
+
+## add source
+
+add column called source and fill all entries for this one with the citation info for the source.
+
+(Jones et al., 2009) - Pantheria/jones
+
+```{r}
+selected_jones <- selected_jones %>%
+  mutate(source = "Jones et al., 2009")
+```
+
+## write
+
+write the finished dataframe into a new csv and name it "BPxLH_LifeHistoryData\_[source].csv". Always use the argument row.names=FALSE
+
+```{r}
+#write.csv(row.names = FALSE)
+#write.csv(selected_jones, "BPxLH_LifeHistoryData_jones.csv", row.names = FALSE)
+```
+
+# ernest
+
+## filter
+
+filter to primates order rows
+
+```{r}
+ernest <- ernest %>% filter(order == "Primates")
+```
+
+## species name
+
+Should be in one column, but might be split into two e.g., Genus column *Pan* and species column *troglodytes*. Others might have them in one column. If multiple, concatenate into one and name it species
+
+```{r}
+ernest <- ernest %>%
+  mutate(species = if_else(!is.na(Genus) & !is.na(species), 
+                           paste(Genus, species, sep = " "), 
+                           species))
+```
+
+## select
+
+species name
+
+life history columns of interest
+
+-   lifespan
+
+-   age at sexual maturity (male and female)
+
+-   age at first reproduction
+
+-   interbirth interval
+
+-   gestation
+
+-   weaning
+
+-   adult mass (male and female if relevant)
+
+```{r}
+colnames(ernest)
+```
+
+```{r}
+#ADD LIFESPAN IS IT LONGEVITY? max..life.mo.??? 
+#ADD AGE AT 1ST REPO: AFR
+
+selected_ernest <- select(ernest, species, gestation.mo., weaning.mo., mass.g., AFR.mo.)
+```
+
+### rename columns
+
+there should be agreement between all spreadsheets with column names, because it makes it easier to join them later. For age at sexual maturity and body mass, it may be reported by sex or it may not be, just what you need to depending on the source.
+
+lifespan.y
+
+sexual.mat.male.d
+
+sexual.mat.female.d
+
+sexual.mat.d
+
+interbirth.interval.d
+
+gestation.d
+
+weaning.age.d
+
+adult.mass.kg
+
+adult.mass.male.kg
+
+adult.mass.female.kg
+
+```{r}
+#ADD LIFESPAN IS IT LONGEVITY?
+#ADD AGE AT 1ST REPO: NO SEX MAT DAY
+selected_ernest <- selected_ernest %>% 
+  rename(
+    #lifespan.y = max..life.mo.,
+    #sexual.mat.male.d = male_maturity_d,
+    #sexual.mat.female.d = female_maturity_d,
+    #sexual.mat.d = no_sex_maturity_d,
+    #interbirth.interval.d = inter_litter_or_interbirth_interval_y,
+    age.first.repro.d = AFR.mo.,
+    gestation.d = gestation.mo.,
+    weaning.age.d = weaning.mo.,
+    adult.mass.kg =  mass.g.,
+   # adult.mass.male.kg = male_body_mass_g,
+    #adult.mass.female.kg =  female_body_mass_g
+    )%>%
+  mutate(lifespan.y = NA,
+         sexual.mat.male.d = NA,
+         sexual.mat.female.d = NA,
+         sexual.mat.d = NA,
+         interbirth.interval.d = NA,
+         adult.mass.male.kg = NA,
+         adult.mass.female.kg = NA
+         )
+
+```
+
+### which units are being used?
+
+convert:
+
+lifespan to years
+
+the rest of the time ones to days
+
+mass to kg
+
+```{r}
+selected_ernest <- selected_ernest %>%
+  mutate(
+   # lifespan.y = lifespan.y / 12, # Convert months to years
+    age.first.repro.d = age.first.repro.d * 30.4, # Convert months to days
+    gestation.d = gestation.d * 30.4, # Convert months to days
+    weaning.age.d = weaning.age.d * 30.4, # Convert months to days
+    adult.mass.kg = adult.mass.kg / 1000,  # Convert grams to kg
+  )
+```
+
+## add source
+
+add column called source and fill all entries for this one with the citation info for the source.
+
+(Jones et al., 2009) - Pantheria/jones
+
+(Myhrvold et al., 2015) - amniote
+
+(Ernest, 2003) - ernest
+
+```{r}
+selected_ernest <- selected_ernest %>%
+  mutate(source = "Ernest, 2003")
+```
+
+## write
+
+write the finished dataframe into a new csv and name it "BPxLH_LifeHistoryData\_[source].csv". Always use the argument row.names=FALSE
+
+```{r}
+#write.csv(row.names = FALSE)
+#write.csv(selected_ernest, "BPxLH_LifeHistoryData_ernest.csv", row.names = FALSE)
+```
+
+# **UnEssay Statement**
+
+(citing Woodburn 2012)
+
+For my AN 335 UnEssay, I chose to explore the quotidian challenges of biological data science—specifically the issue of missing data in primate life history datasets. While we often focus on what data can tell us, I became equally interested in what they don’t. Missing values in large datasets aren’t just gaps—they reflect the limitations of observation, funding, methodology, and even research interest. In essence, they tell a story about what questions are easier or harder to ask, especially in the context of field-based primate studies.
+
+Using R, I analyzed three widely cited datasets: PanTHERIA (Jones et al., 2009), Amniote (Myhrvold et al., 2015), and Ernest’s mammalian life history compilation (Ernest, 2003). I created a heatmap (Figure 1) showing the proportion of missing values for key traits like interbirth interval, sexual maturity, and adult mass across datasets, and a bar chart (Figure 2) of overall dataset completeness. In Figure 1, red tiles visually reflect the hidden cost of “big data”—more isn’t always better when fields are inconsistently reported. Figure 2 standardizes this issue by calculating the proportion of missing values relative to total possible entries, revealing that even datasets perceived as comprehensive like Jones et al., 2009 may still suffer from critical information gaps.
+
+This project deepened my understanding of what Borries et al. (2013) call the “severe problems with data quality” in life history research. Without standardization and metadata about how traits were collected (e.g., hormonal vs. behavioral estimates of gestation), even cross-species comparisons risk becoming unreliable. Patterson et al. (2014) reinforce this by showing how inconsistent definitions in primate group size reporting compromise comparative methods. My experience echoed their warning: missing data isn't just a technical inconvenience—it fundamentally shapes our conclusions.
+
+Beyond the technical skills I developed in R (data wrangling, visualization, and imputation), I gained a deeper appreciation for the quotidian labor behind scientific knowledge—annotating metadata, cleaning spreadsheets, and standardizing units among datasets. My UnEssay, therefore, elevates something often dismissed: the act of noticing what isn’t there.
+
+Working on this project made me think differently about objectivity in science. If I continue in research, I want to be a scientist who not only values results, but who respects the limits and realities of how those results are produced.
+
+## References
+
+Borries, C., Gordon, A. D., & Koenig, A. (2013). Beware of Primate Life History Data: A Plea for Data Standards and a Repository. PLOS ONE, 8(6), e67200. <https://doi.org/10.1371/journal.pone.0067200>
+
+Ernest, S. K. M. (2003). Life History Characteristics of Placental Nonvolant Mammals. Ecology, 84(12), 3402–3402. <https://doi.org/10.1890/02-9002>
+
+Jones, K. E., Bielby, J., Cardillo, M., Fritz, S. A., O’Dell, J., Orme, C. D. L., Safi, K., Sechrest, W., Boakes, E. H., Carbone, C., Connolly, C., Cutts, M. J., Foster, J. K., Grenyer, R., Habib, M., Plaster, C. A., Price, S. A., Rigby, E. A., Rist, J., … Purvis, A. (2009). PanTHERIA: A species-level database of life history, ecology, and geography of extant and recently extinct mammals. Ecology, 90(9), 2648–2648. <https://doi.org/10.1890/08-1494.1>
+
+Myhrvold, N. P., Baldridge, E., Chan, B., Sivam, D., Freeman, D. L., & Ernest, S. K. M. (2015). An amniote life-history database to perform comparative analyses with birds, mammals, and reptiles. Ecology, 96(11), 3109–3109. <https://doi.org/10.1890/15-0846R.1>
+
+Patterson, S. K., Sandel, A. A., Miller, J. A., & Mitani, J. C. (2014). Data Quality and the Comparative Method: The Case of Primate Group Size. International Journal of Primatology, 35(5), 990–1003. <https://doi.org/10.1007/s10764-014-9777-1>
+
+Wissler, A., Blevins, K. E., & Buikstra, J. E. (2022). Missing data in bioarchaeology II: A test of ordinal and continuous data imputation. American Journal of Biological Anthropology, 179(3), 349–364. <https://doi.org/10.1002/ajpa.24614>
+
+\*Woodburn 2012\*
+
+# **MICE (UnEssay Visualization)**
+
+```{r}
+library(mice)
+library(VIM)
+```
+
+## Visualization 1
+
+Combine 3 datasets
+
+```{r}
+combined <- bind_rows(selected_amniote, selected_jones, selected_ernest)
+
+```
+
+Piviot long + notify the missing values instead of N/A
+
+```{r}
+missing_logical <- combined %>%
+  mutate(row_id = row_number()) %>%
+  pivot_longer(cols = -c(species, source, row_id), names_to = "trait", values_to = "value") %>%
+  mutate(missing = is.na(value))
+```
+
+Group + count the missing values
+
+```{r}
+missing_summary <- missing_logical %>%
+  group_by(source, trait) %>%
+  summarize(prop_missing = mean(missing), .groups = "drop")
+```
+
+Rename Column/ y-axis to simple terms
+
+```{r}
+missing_summary <- missing_summary %>%
+  mutate(trait = case_when(
+    trait == "lifespan.y" ~ "Lifespan (Years)",
+    trait == "interbirth.interval.d" ~ "Interbirth Interval (Days)",
+    trait == "age.first.repro.d" ~ "Age at First Reproduction (Days)",
+    trait == "gestation.d" ~ "Gestation Age (Days)",
+    trait == "weaning.age.d" ~ "Weaning Age (Days)",
+    trait == "adult.mass.kg" ~ "Adult Mass (Kg)",
+    trait == "adult.mass.male.kg" ~ "Adult Male Mass (Kg)",
+    trait == "adult.mass.female.kg" ~ "Adult Female Mass (Kg)",
+    trait == "sexual.mat.d" ~ "Sexual Maturity (Unspecified, Days)",
+    trait == "sexual.mat.male.d" ~ "Sexual Maturity Male (Days)",
+    trait == "sexual.mat.female.d" ~ "Sexual Maturity Female (Days)",
+    TRUE ~ trait  # keep other traits unchanged
+  ))
+```
+
+Count the n values, total value within each database in preparation for figure 2
+
+```{r}
+dataset_n <- combined %>%
+  group_by(source) %>%
+  summarize(n = n_distinct(species)) %>%
+  mutate(label = paste0(source, "\n(n = ", n, ")"))
+
+dataset_labels <- setNames(dataset_n$label, dataset_n$source)
+```
+
+## **Figure 1: Missing Data Patterns Across Datasets**
+
+```{r}
+ggplot(missing_summary, aes(x = source, y = trait, fill = prop_missing)) +
+  geom_tile(color = "white") +
+  scale_fill_gradient(low = "white", high = "red", na.value = "grey90", name = "% Missing") +
+  scale_x_discrete(labels = dataset_labels) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "Missing Data Patterns Across Datasets", x = "Dataset", y = "Trait")
+
+```
+
+## Visualization 2: Histogram
+
+## **Figure 2: Proportion of Missing Values by Dataset**
+
+```{r}
+# Calculate total and proportion of missing values per dataset
+missing_df <- tibble(
+  Dataset = c("Amniote", "Jones", "Ernest"),
+  MissingValues = c(
+    sum(is.na(selected_amniote)),
+    sum(is.na(selected_jones)),
+    sum(is.na(selected_ernest))
+  ),
+  TotalValues = c(
+    prod(dim(selected_amniote)),
+    prod(dim(selected_jones)),
+    prod(dim(selected_ernest))
+  )
+) %>%
+  mutate(ProportionMissing = MissingValues / TotalValues)
+
+# Plot proportion of missing values
+ggplot(missing_df, aes(x = Dataset, y = ProportionMissing)) +
+  geom_bar(stat = "identity", fill = "red", color = "black") +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  theme_minimal() +
+  labs(title = "Proportion of Missing Values by Dataset",
+       x = "Dataset",
+       y = "% Missing Values") +
+  theme(legend.position = "none")
+```
+
+### Total Missing Values by Dataset
+
+```{r}
+library(tidyverse)
+
+# Create a named vector with total missing values per dataset
+missing_totals <- c(
+  Amniote = sum(is.na(selected_amniote)),
+  Jones   = sum(is.na(selected_jones)),
+  Ernest  = sum(is.na(selected_ernest))
+)
+
+# Convert to data frame
+missing_df <- enframe(missing_totals, name = "Dataset", value = "MissingValues")
+
+# Plot
+ggplot(missing_df, aes(x = Dataset, y = MissingValues, fill = Dataset)) +
+  geom_bar(stat = "identity", color = "black", fill = "red") +
+  theme_minimal() +
+  labs(title = "Total Missing Values by Dataset",
+       x = "Dataset",
+       y = "Total Missing Values") +
+  theme(legend.position = "none")
+
+```

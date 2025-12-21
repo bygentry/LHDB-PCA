@@ -21,15 +21,13 @@ pacman::p_load(dplyr, psych, tidyverse, curl, ggplot2, mice, rlang, yaml, gridEx
 # AMNIOTES 
 amniote <- read.csv("https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/AmnioteDB2015/Amniote_Database_Aug_2015.csv")
 
-## creates subset df for mammals
-amniote_m <- subset(amniote, class == "Mammalia")
+## filters out non primates
+amniote_p <- subset(amniote, order == "Primates")
 
 ## removes reptile and avian variables
-amniote_m <- amniote_m %>% 
+amniote_p <- amniote_p %>% 
   select(-egg_mass_g, -incubation_d, -fledging_age_d, -egg_width_mm, -egg_length_mm, -fledging_mass_g)
 
-## creates subset df for primates
-amniote_p <- subset(amniote_m, order == "Primates")
 
 # ANAGE
 AnAge <- read_tsv(file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/AnAge/anage_data.txt", col_names = TRUE, show_col_types = FALSE)
@@ -44,11 +42,9 @@ AnAge <- AnAge %>%
     Species = as.factor(Species)
   )
 
-## creates subset df for mammals
-AnAge_m <- subset(AnAge, Class == "Mammalia")
-
 ## creates subset df for primates
 AnAge_p <- subset(AnAge, Order == "Primates")
+
 
 # ERNEST
 ernest <- read_delim(file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/Ernest/Mammal_lifehistories_v2.txt", col_names = TRUE, show_col_types = FALSE)
@@ -121,15 +117,21 @@ pan <- pan %>%
 ## creates subset df for primates
 pan_p <- subset(pan, order == "Primates")
 
-AnAge_p <- AnAge_p %>% 
+# Kappeler & Pereira 
+kp <- read.csv(file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/Kappeler-Pereira/KP.csv")
+
+# sets the value "803?" to "803" 
+kp$BM.F[195] = 803
+
+# converts data types to appropriate class
+kp <- kp %>% 
   mutate(
-    weaningWeight_g = as.character(`Weaning weight (g)`)
+    Family = as.factor(Family),
+    Genus = as.factor(Genus),
+    Species = as.factor(Species),
+    BM.F = as.numeric(BM.F)
   )
 
-AnAge_p <- AnAge_p %>% 
-  mutate(
-    weaningWeight_g = replace_na(weaningWeight_g, "NA")
-  )
 ```
 
 ```{r}
