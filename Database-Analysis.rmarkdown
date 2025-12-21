@@ -11,83 +11,100 @@ editor: visual
 
 ```{r}
 #| label: packages
-repos <-  "http://cran.us.r-project.org"
-pacman::p_load(dplyr, psych, tidyverse, curl, ggplot2, mice, rlang, yaml, gridExtra, lme4, XML, lubridate, gratia, VIM)
+
+options(repos = "http://cran.us.r-project.org")
+
+pacman::p_load(psych, tidyverse, curl, mice, rlang, yaml, gridExtra, lme4, XML, lubridate, gratia, VIM)
 ```
 
 ```{r}
-#| label: data
+#| label: data import
 
 # AMNIOTES 
 amniote <- read.csv("https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/AmnioteDB2015/Amniote_Database_Aug_2015.csv")
 
+# ANAGE
+AnAge <- read_tsv(
+  file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/AnAge/anage_data.txt", 
+  col_names = TRUE, 
+  show_col_types = FALSE
+  )
+
+# ERNEST
+ernest <- read_delim(
+  file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/Ernest/Mammal_lifehistories_v2.txt", 
+  col_names = TRUE, 
+  show_col_types = FALSE
+  )
+
+# PANTHERIA
+pan <- read_tsv(
+  file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/PanTHERIA/PanTHERIA_1-0_WR05_Aug2008.txt", 
+  col_names = TRUE, 
+  show_col_types = FALSE
+  )
+
+# Kappeler & Pereira 
+kp <- read.csv(file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/Kappeler-Pereira/KP.csv")
+```
+
+```{r}
+#| label: primate data extraction
+
+# AMNIOTES
+
 ## filters out non primates
-amniote_p <- subset(amniote, order == "Primates")
+amniote_p <- amniote %>% filter(order == "Primates")
+
+# ANAGE
+
+## creates subset df for primates
+AnAge_p <- AnAge %>% filter(Order == "Primates")
+
+# ERNEST
+
+## creates subset df for fprimates
+ernest_p <- ernest %>% filter(order == "Primates")
+
+# PANTHERIA
+
+## creates subset df for primates
+pan_p <- pan %>% filter(MSW05_Order == "Primates")
+
+# Kappeler & Pereira is already only primates
+```
+
+```{r}
+#| label: primate data cleaning
+
+# AMNIOTES
 
 ## removes reptile and avian variables
 amniote_p <- amniote_p %>% 
   select(-egg_mass_g, -incubation_d, -fledging_age_d, -egg_width_mm, -egg_length_mm, -fledging_mass_g)
 
 # ANAGE
-AnAge <- read_tsv(file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/AnAge/anage_data.txt", col_names = TRUE, show_col_types = FALSE)
 
 ## converts taxonomic vars to factors to aid in grouping
-AnAge <- AnAge %>% 
+AnAge_p <- AnAge_p %>% 
   mutate(
-    Kingdom = as.factor(Kingdom),
-    Class = as.factor(Class),
-    Order = as.factor(Order),
-    Genus = as.factor(Genus),
-    Species = as.factor(Species)
+    across(c(Kingdom, Class, Order, Genus, Species), as.factor)
   )
-
-## creates subset df for primates
-AnAge_p <- subset(AnAge, Order == "Primates")
 
 # ERNEST
-ernest <- read_delim(file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/Ernest/Mammal_lifehistories_v2.txt", col_names = TRUE, show_col_types = FALSE)
 
 ## converts taxonomic vars to factors to aid in grouping
-ernest <- ernest %>% 
+ernest_p <- ernest_p %>% 
   mutate(
-    order = as.factor(order),
-    family = as.factor(family),
-    Genus = as.factor(Genus),
-    species = as.factor(species)
+    across(c(order, family, Genus, species), as.factor)
   )
-
-## creates subset df for fprimates
-ernest_p <- subset(ernest, order == "Primates")
 
 # PANTHERIA
-pan <- read_tsv(file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/PanTHERIA/PanTHERIA_1-0_WR05_Aug2008.txt", col_names = TRUE, show_col_types = FALSE)
 
 ## converts taxonmic vars to factors for easier grouping
-pan <- pan %>% 
+pan_p <- pan_p %>% 
   mutate(
-    MSW05_Order = as.factor(MSW05_Order),
-    MSW05_Family = as.factor(MSW05_Family),
-    MSW05_Genus = as.factor(MSW05_Genus),
-    MSW05_Species = as.factor(MSW05_Species),
-    MSW05_Binomial = as.factor(MSW05_Binomial)
-  )
-
-## creates subset df for primates
-pan_p <- subset(pan, order == "Primates")
-
-# Kappeler & Pereira 
-kp <- read.csv(file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/Kappeler-Pereira/KP.csv")
-
-# sets the value "803?" to "803" 
-kp$BM.F[195] = 803
-
-# converts data types to appropriate class
-kp <- kp %>% 
-  mutate(
-    Family = as.factor(Family),
-    Genus = as.factor(Genus),
-    Species = as.factor(Species),
-    BM.F = as.numeric(BM.F)
+    across(c(MSW05_Order, MSW05_Family, MSW05_Genus, MSW05_Species), as.factor)
   )
 
 ## renaming vars for easier indexing
@@ -97,8 +114,7 @@ pan_p <- pan_p %>%
     family = MSW05_Family,
     genus = MSW05_Genus,
     species = MSW05_Species,
-    binom = MSW05_Binomial,
-    actvityCycle = `1-1_ActivityCycle`,
+    # stepping away: was removing vars that ARENT in the comparison table to make "select" tables
     adultBodyMass_g = `5-1_AdultBodyMass_g`,
     adultForearmLen_mm = `8-1_AdultForearmLen_mm`,
     adultHeadBodyLen_mm = `13-1_AdultHeadBodyLen_mm`,
@@ -128,6 +144,23 @@ pan_p <- pan_p %>%
     weaningAge_d = `25-1_WeaningAge_d`,
     weaningBodyMass_g = `5-4_WeaningBodyMass_g`,
     weaningHeadBodyLen_mm = `13-3_WeaningHeadBodyLen_mm`
+  )
+
+# KAPPELER & PEREIRA
+
+# sets the value "803?" to "803" 
+kp <- kp %>% 
+  mutate(
+    BM.F = readr::parse_number(as.character(BM.F))
+  )
+
+# converts data types to appropriate class
+kp <- kp %>% 
+  mutate(
+    Family = as.factor(Family),
+    Genus = as.factor(Genus),
+    Species = as.factor(Species),
+    BM.F = as.numeric(BM.F)
   )
 ```
 
