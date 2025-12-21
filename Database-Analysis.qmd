@@ -83,12 +83,40 @@ pan_p <- pan %>% filter(MSW05_Order == "Primates")
 amniote_p <- amniote_p %>% 
   select(-egg_mass_g, -incubation_d, -fledging_age_d, -egg_width_mm, -egg_length_mm, -fledging_mass_g)
 
+## extracting vars for cross-database comparison
+amniote_selected <- amniote_p %>% 
+  transmute(
+    genus = genus,
+    species = species,
+    body_mass = adult_body_mass_g,
+    AFR = female_maturity_d,
+    gest_len = gestation_d,
+    IBI = inter_litter_or_interbirth_interval_y,
+    max_longevity = maximum_longevity_y,
+    age_at_maturity = NA,
+    weaning_age = weaning_d,
+  )
+
 # ANAGE
 
 ## converts taxonomic vars to factors to aid in grouping
 AnAge_p <- AnAge_p %>% 
   mutate(
     across(c(Kingdom, Class, Order, Genus, Species), as.factor)
+  )
+
+## extracting vars for cross-database comparison
+AnAge_selected <- AnAge_p %>% 
+  transmute(
+    genus = Genus,
+    species = Species,
+    body_mass = `Body mass (g)`,
+    AFR = NA,
+    gest_len = `Gestation/Incubation (days)`,
+    IBI = `Inter-litter/Interbirth interval`,
+    max_longevity = `Maximum longevity (yrs)`,
+    age_at_maturity = `Female maturity (days)`,
+    weaning_age = `Weaning (days)`
   )
 
 # ERNEST
@@ -99,6 +127,19 @@ ernest_p <- ernest_p %>%
     across(c(order, family, Genus, species), as.factor)
   )
 
+ernest_selected <- ernest_p %>% 
+  transmute(
+    genus = genus,
+    species = species,
+    body_mass = `mass(g)`,
+    AFR = `AFR(mo)`,
+    # convert AFR to days
+    gest_len = `gestation(mo)`,
+    # convert gest_len to days
+    IBI = `litters/year`,
+    # convert to days by (365.25 * (1/'litters/year'))
+    
+  )
 # PANTHERIA
 
 ## converts taxonmic vars to factors for easier grouping
@@ -107,43 +148,18 @@ pan_p <- pan_p %>%
     across(c(MSW05_Order, MSW05_Family, MSW05_Genus, MSW05_Species), as.factor)
   )
 
-## renaming vars for easier indexing
+## extracting vars for cross-database comparison
 pan_p <- pan_p %>% 
   rename(
-    order = MSW05_Order,
-    family = MSW05_Family,
     genus = MSW05_Genus,
     species = MSW05_Species,
-    # stepping away: was removing vars that ARENT in the comparison table to make "select" tables
-    adultBodyMass_g = `5-1_AdultBodyMass_g`,
-    adultForearmLen_mm = `8-1_AdultForearmLen_mm`,
-    adultHeadBodyLen_mm = `13-1_AdultHeadBodyLen_mm`,
-    ageAtEyeOpening_d = `2-1_AgeatEyeOpening_d`,
-    ageAtFirstBirth_d = `3-1_AgeatFirstBirth_d`,
-    basalMetRate_mLO2hr = `18-1_BasalMetRate_mLO2hr`,
-    basalMetRateMass_g = `5-2_BasalMetRateMass_g`,
-    dietBreadth = `6-1_DietBreadth`,
-    dispersalAge_d = `7-1_DispersalAge_d`,
-    gestationLen_d = `9-1_GestationLen_d`,
-    habitatBreadth = `12-1_HabitatBreadth`,
-    homeRange_km2 = `22-1_HomeRange_km2`,
-    homeRangeIndiv_km2 = `22-2_HomeRange_Indiv_km2`,
-    interBirthInterval_d = `14-1_InterbirthInterval_d`,
-    litterSize = `15-1_LitterSize`,
-    littersPerYear = `16-1_LittersPerYear`,
-    maxLongevity_m = `17-1_MaxLongevity_m`,
-    neonateBodyMass_g = `5-3_NeonateBodyMass_g`,
-    neoNateHeadBodyLen_mm = `13-2_NeonateHeadBodyLen_mm`,
-    populationDensity = `21-1_PopulationDensity_n/km2`,
-    populationGrpSize = `10-1_PopulationGrpSize`,
-    sexualMaturityAge_d = `23-1_SexualMaturityAge_d`,
-    socialGrpSize = `10-2_SocialGrpSize`,
-    teatNumber = `24-1_TeatNumber`,
-    terrestriality = `12-2_Terrestriality`,
-    trophicLevel = `6-2_TrophicLevel`,
-    weaningAge_d = `25-1_WeaningAge_d`,
-    weaningBodyMass_g = `5-4_WeaningBodyMass_g`,
-    weaningHeadBodyLen_mm = `13-3_WeaningHeadBodyLen_mm`
+    body_mass = `5-1_AdultBodyMass_g`,
+    AFR = `3-1_AgeatFirstBirth_d`,
+    gest_len = `9-1_GestationLen_d`,
+    IBI = `14-1_InterbirthInterval_d`,
+    max_longevity = `17-1_MaxLongevity_m`,
+    age_at_maturity = `23-1_SexualMaturityAge_d`,
+    weaning_age = `25-1_WeaningAge_d`
   )
 
 # KAPPELER & PEREIRA
