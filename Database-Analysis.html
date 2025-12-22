@@ -111,7 +111,8 @@ window.Quarto = {
     <h2 id="toc-title">Contents</h2>
    
   <ul>
-  <li><a href="#preliminaries" id="toc-preliminaries" class="nav-link active" data-scroll-target="#preliminaries">Preliminaries</a>
+  <li><a href="#an-investigation-of-primate-life-history-data-quality" id="toc-an-investigation-of-primate-life-history-data-quality" class="nav-link active" data-scroll-target="#an-investigation-of-primate-life-history-data-quality">An Investigation of Primate Life History Data Quality</a></li>
+  <li><a href="#preliminaries" id="toc-preliminaries" class="nav-link" data-scroll-target="#preliminaries">Preliminaries</a>
   <ul class="collapse">
   <li><a href="#loading-packages-and-data" id="toc-loading-packages-and-data" class="nav-link" data-scroll-target="#loading-packages-and-data">Loading Packages and Data</a>
   <ul class="collapse">
@@ -134,6 +135,7 @@ window.Quarto = {
   <li><a href="#preparation" id="toc-preparation" class="nav-link" data-scroll-target="#preparation">Preparation</a></li>
   </ul></li>
   </ul></li>
+  <li><a href="#sources" id="toc-sources" class="nav-link" data-scroll-target="#sources">Sources</a></li>
   </ul>
 </nav>
 </div>
@@ -166,6 +168,10 @@ window.Quarto = {
 </header>
 
 
+<section id="an-investigation-of-primate-life-history-data-quality" class="level1">
+<h1>An Investigation of Primate Life History Data Quality</h1>
+<p>It has been noted that primate life history data is sparse and often varies in reliability (Borries et al.&nbsp;2013). The primary goals of this investigation are to evaluate and compare 5 databases containing primate life history statistics to assess their completeness and reliability while evaluating the efficacy of principal component analysis (PCA) as an advanced statistical method for identifying hidden trends in multivariate analysis.</p>
+</section>
 <section id="preliminaries" class="level1">
 <h1>Preliminaries</h1>
 <section id="loading-packages-and-data" class="level2">
@@ -411,6 +417,10 @@ window.Quarto = {
 <ul>
 <li>Inter-birth Interval (IBI) should be converted from years to days</li>
 </ul>
+<p><strong>AnAge</strong> <strong>(de Magalhães &amp; Costa et al.&nbsp;2009):</strong></p>
+<ul>
+<li>No changes necessary</li>
+</ul>
 <p><strong>Ernest (2003):</strong></p>
 <ul>
 <li><p>Age at First Reproduction (AFR), Gestation Length (gest_len), and Weaning Age (weaning_age) should be converted from months to days</p></li>
@@ -485,8 +495,10 @@ window.Quarto = {
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># task: extract variables of interest and combine values</span></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#       from different datasets under a common name</span></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># sherry made a holder "&lt;name&gt;_selected" df for the vars of interest</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># then used bind_rows() to combine them, stored "source" and then </span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># new_df &lt;- </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># then used bind_rows() to combine them, stored "source" and then</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># created a new row in the composite dataframe for the "source" </span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># variable (being the in text citation of the database publication)</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co"># new_df &lt;- </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>vars <span class="ot">&lt;-</span> <span class="fu">colnames</span>(pan_p)</span>
@@ -496,6 +508,18 @@ window.Quarto = {
 </section>
 </section>
 </section>
+</section>
+<section id="sources" class="level1">
+<h1>Sources</h1>
+<ol type="1">
+<li><p>Borries, C., Gordon, A. D., &amp; Koenig, A. (2013). Beware of Primate Life History Data: A Plea for Data Standards and a Repository. PLOS ONE, 8(6), e67200. <a href="https://doi.org/10.1371/journal.pone.0067200" class="uri">https://doi.org/10.1371/journal.pone.0067200</a></p></li>
+<li><p>Ernest, S.K.M. (2003), LIFE HISTORY CHARACTERISTICS OF PLACENTAL NONVOLANT MAMMALS. Ecology, 84: 3402-3402.&nbsp;<a href="https://doi.org/10.1890/02-9002" class="uri">https://doi.org/10.1890/02-9002</a></p></li>
+<li><p>de Magalhães JP, Costa J. A database of vertebrate longevity records and their relation to other life-history traits. J Evol Biol. 2009 Aug;22(8):1770-4. doi: 10.1111/j.1420-9101.2009.01783.x. Epub 2009 Jun 10. PMID: 19522730.</p></li>
+<li><p>de Magalhaes, J. P., Abidi, Z., Dos Santos, G. A., Avelar, R. A., Barardo, D., Chatsirisupachai, K., Clark, P., De-Souza, E. A., Johnson, E. J., Lopes, I., Novoa, G., Senez, L., Talay, A., Thornton, D., To, P. K. P. (2024) “Human Ageing Genomic Resources: updates on key databases in ageing research.”&nbsp;Nucleic Acids Research&nbsp;52(D1):D900-D908.</p></li>
+<li><p>Jones, K. E., Bielby, J., Cardillo, M., Fritz, S. A., O’Dell, J., Orme, C. D. L., Safi, K., Sechrest, W., Boakes, E. H., Carbone, C., Connolly, C., Cutts, M. J., Foster, J. K., Grenyer, R., Habib, M., Plaster, C. A., Price, S. A., Rigby, E. A., Rist, J., … Purvis, A. (2009). PanTHERIA: A species-level database of life history, ecology, and geography of extant and recently extinct mammals. Ecology, 90(9), 2648–2648. <a href="https://doi.org/10.1890/08-1494.1" class="uri">https://doi.org/10.1890/08-1494.1</a></p></li>
+<li><p>Kappeler, P. M., Pereira, M. E., &amp; Schaik, C. P. v. (2003). Primate life histories and socioecology. In P. M. Kappeler &amp; M. E. Pereira (Eds.),&nbsp;<em>Primate life histories and socioecology</em>&nbsp;(pp.&nbsp;1–20). The University of Chicago Press.</p></li>
+<li><p>Myhrvold, N.P., Baldridge, E., Chan, B., Sivam, D., Freeman, D.L. and Ernest, S.K.M. (2015), An amniote life-history database to perform comparative analyses with birds, mammals, and reptiles. Ecology, 96: 3109-3109.&nbsp;<a href="https://doi.org/10.1890/15-0846R.1" class="uri">https://doi.org/10.1890/15-0846R.1</a></p></li>
+</ol>
 </section>
 
 </main>

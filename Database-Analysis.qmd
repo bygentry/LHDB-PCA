@@ -13,6 +13,10 @@ format:
 editor: visual
 ---
 
+# An Investigation of Primate Life History Data Quality
+
+It has been noted that primate life history data is sparse and often varies in reliability (Borries et al. 2013). The primary goals of this investigation are to evaluate and compare 5 databases containing primate life history statistics to assess their completeness and reliability while evaluating the efficacy of principal component analysis (PCA) as an advanced statistical method for identifying hidden trends in multivariate analysis.
+
 # Preliminaries
 
 ## Loading Packages and Data
@@ -262,6 +266,10 @@ Therefore the following changes are necessary:
 
 -   Inter-birth Interval (IBI) should be converted from years to days
 
+**AnAge** **(de Magalhães & Costa et al. 2009):**
+
+-   No changes necessary
+
 **Ernest (2003):**
 
 -   Age at First Reproduction (AFR), Gestation Length (gest_len), and Weaning Age (weaning_age) should be converted from months to days
@@ -338,7 +346,9 @@ kp_s <- kp_s %>%
 # task: extract variables of interest and combine values
 #       from different datasets under a common name
 # sherry made a holder "<name>_selected" df for the vars of interest
-# then used bind_rows() to combine them, stored "source" and then 
+# then used bind_rows() to combine them, stored "source" and then
+# created a new row in the composite dataframe for the "source" 
+# variable (being the in text citation of the database publication)
 # new_df <- 
 
 ```
@@ -350,3 +360,19 @@ count = 0
 i = 0
 
 ```
+
+# Sources
+
+1.  Borries, C., Gordon, A. D., & Koenig, A. (2013). Beware of Primate Life History Data: A Plea for Data Standards and a Repository. PLOS ONE, 8(6), e67200. <https://doi.org/10.1371/journal.pone.0067200>
+
+2.  Ernest, S.K.M. (2003), LIFE HISTORY CHARACTERISTICS OF PLACENTAL NONVOLANT MAMMALS. Ecology, 84: 3402-3402. <https://doi.org/10.1890/02-9002>
+
+3.  de Magalhães JP, Costa J. A database of vertebrate longevity records and their relation to other life-history traits. J Evol Biol. 2009 Aug;22(8):1770-4. doi: 10.1111/j.1420-9101.2009.01783.x. Epub 2009 Jun 10. PMID: 19522730.
+
+4.  de Magalhaes, J. P., Abidi, Z., Dos Santos, G. A., Avelar, R. A., Barardo, D., Chatsirisupachai, K., Clark, P., De-Souza, E. A., Johnson, E. J., Lopes, I., Novoa, G., Senez, L., Talay, A., Thornton, D., To, P. K. P. (2024) "Human Ageing Genomic Resources: updates on key databases in ageing research." Nucleic Acids Research 52(D1):D900-D908.
+
+5.  Jones, K. E., Bielby, J., Cardillo, M., Fritz, S. A., O’Dell, J., Orme, C. D. L., Safi, K., Sechrest, W., Boakes, E. H., Carbone, C., Connolly, C., Cutts, M. J., Foster, J. K., Grenyer, R., Habib, M., Plaster, C. A., Price, S. A., Rigby, E. A., Rist, J., ... Purvis, A. (2009). PanTHERIA: A species-level database of life history, ecology, and geography of extant and recently extinct mammals. Ecology, 90(9), 2648–2648. <https://doi.org/10.1890/08-1494.1>
+
+6.  Kappeler, P. M., Pereira, M. E., & Schaik, C. P. v. (2003). Primate life histories and socioecology. In P. M. Kappeler & M. E. Pereira (Eds.), *Primate life histories and socioecology* (pp. 1–20). The University of Chicago Press.
+
+7.  Myhrvold, N.P., Baldridge, E., Chan, B., Sivam, D., Freeman, D.L. and Ernest, S.K.M. (2015), An amniote life-history database to perform comparative analyses with birds, mammals, and reptiles. Ecology, 96: 3109-3109. <https://doi.org/10.1890/15-0846R.1>
