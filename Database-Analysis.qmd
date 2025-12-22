@@ -28,7 +28,9 @@ It has been noted that primate life history data is sparse and often varies in r
 
 options(repos = "http://cran.us.r-project.org")
 
-pacman::p_load(psych, tidyverse, curl, mice, rlang, yaml, gridExtra, lme4, XML, lubridate, gratia, VIM)
+pacman::p_load(
+  psych, tidyverse, curl, mice, rlang, yaml, gridExtra, lme4, XML, lubridate, gratia, VIM
+  )
 ```
 
 ### Importing Data
@@ -38,31 +40,39 @@ pacman::p_load(psych, tidyverse, curl, mice, rlang, yaml, gridExtra, lme4, XML, 
 #| code-fold: true
 
 # AMNIOTES 
-amniote <- read.csv("https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/AmnioteDB2015/Amniote_Database_Aug_2015.csv")
+amniote <- readr::read_csv(
+  file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/AmnioteDB2015/Amniote_Database_Aug_2015.csv",
+  col_names = TRUE,
+  show_col_types = FALSE
+  )
 
 # ANAGE
-AnAge <- read_tsv(
+AnAge <- readr::read_tsv(
   file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/AnAge/anage_data.txt", 
   col_names = TRUE, 
   show_col_types = FALSE
   )
 
 # ERNEST
-ernest <- read_delim(
+ernest <- readr::read_delim(
   file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/Ernest/Mammal_lifehistories_v2.txt", 
   col_names = TRUE, 
   show_col_types = FALSE
   )
 
 # PANTHERIA
-pan <- read_tsv(
+pan <- readr::read_tsv(
   file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/PanTHERIA/PanTHERIA_1-0_WR05_Aug2008.txt", 
   col_names = TRUE, 
   show_col_types = FALSE
   )
 
 # Kappeler & Pereira 
-kp <- read.csv(file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/Kappeler-Pereira/KP.csv")
+kp <- readr::read_csv(
+  file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/Kappeler-Pereira/KP.csv",
+  col_names = TRUE,
+  show_col_types = FALSE
+  )
 ```
 
 ### Filtering Primate Data
@@ -74,13 +84,13 @@ Four of the databases under investigation include data for more animals than pri
 #| code-fold: true
 
 ## creating subset df for primates
-amniote_p <- amniote %>% filter(order == "Primates")
+amniote_p <- amniote %>% dplyr::filter(order == "Primates")
 
-AnAge_p <- AnAge %>% filter(Order == "Primates")
+AnAge_p <- AnAge %>% dplyr::filter(Order == "Primates")
 
-ernest_p <- ernest %>% filter(order == "Primates")
+ernest_p <- ernest %>% dplyr::filter(order == "Primates")
 
-pan_p <- pan %>% filter(MSW05_Order == "Primates")
+pan_p <- pan %>% dplyr::filter(MSW05_Order == "Primates")
 
 # Kappeler & Pereira is already only primates
 ```
