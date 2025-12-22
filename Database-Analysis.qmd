@@ -1,13 +1,23 @@
 ---
 title: "Database Analysis"
 author: "Gentry Miller"
-format: html
+format: 
+  html:
+    code-overflow: wrap
+    toc: true
+    toc-location: left
+    toc-depth: 3
+    toc-title: Contents
+    df-print: kable
+    theme: readable
 editor: visual
 ---
 
 # Preliminaries
 
-## Data Import & Exploration
+## Loading Packages and Data
+
+### Loading Packages
 
 ```{r}
 #| label: packages
@@ -17,8 +27,11 @@ options(repos = "http://cran.us.r-project.org")
 pacman::p_load(psych, tidyverse, curl, mice, rlang, yaml, gridExtra, lme4, XML, lubridate, gratia, VIM)
 ```
 
+### Importing Data
+
 ```{r}
 #| label: data import
+#| code-fold: true
 
 # AMNIOTES 
 amniote <- read.csv("https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/AmnioteDB2015/Amniote_Database_Aug_2015.csv")
@@ -48,97 +61,139 @@ pan <- read_tsv(
 kp <- read.csv(file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/Kappeler-Pereira/KP.csv")
 ```
 
+### Filtering Primate Data
+
+Four of the databases under investigation include data for more animals than primates - pulling out the primate data makes analysis cleaner and easier.
+
 ```{r}
 #| label: primate data extraction
+#| code-fold: true
 
-# AMNIOTES
-
-## creates subset df for primates
+## creating subset df for primates
 amniote_p <- amniote %>% filter(order == "Primates")
 
-# ANAGE
-
-## creates subset df for primates
 AnAge_p <- AnAge %>% filter(Order == "Primates")
 
-# ERNEST
-
-## creates subset df for fprimates
 ernest_p <- ernest %>% filter(order == "Primates")
 
-# PANTHERIA
-
-## creates subset df for primates
 pan_p <- pan %>% filter(MSW05_Order == "Primates")
 
 # Kappeler & Pereira is already only primates
 ```
 
-```{r}
-#| label: primate data cleaning
+## Data Wrangling & Analysis Prep
 
-# AMNIOTES
+### Removing Irrelevant Variables
+
+The Amniotes Database (Myrhvold et al. 2015) has six variables that apply only to reptiles and avians, e.g. incubation time. Since these have no values for mammals and are not represented in any other databases, they will unfairly negatively impact measurements of completeness for primate data. As such, I have decided to remove them to more accurately represent the completeness of *primate* life history statistics in the database.
+
+```{r}
+#| code-fold: true
 
 ## removes reptile and avian variables
 amniote_p <- amniote_p %>% 
-  select(-egg_mass_g, -incubation_d, -fledging_age_d, -egg_width_mm, -egg_length_mm, -fledging_mass_g)
+  select(-any_of(c(
+    "egg_mass_g", "incubation_d", "fledging_age_d", "egg_width_mm", "egg_length_mm", "fledging_mass_g"
+    )))
+```
 
-## converts taxonomic vars to factors to aid in grouping
+### Data Type Conversions and Missing Values
+
+```{r}
+#| code-fold: true
+
+## converts -999 ('no data' value) to NA
+amniote_p[amniote_p == -999] <- NA
+
+ernest_p[ernest_p == -999] <- NA
+
+pan_p[pan_p == -999] <- NA
+
+## removes non-number characters (see variable description page for details)
+## not removing non-number characters will result in forced NA for value in row 195
+kp <- kp %>% 
+  mutate(
+    BM.F = readr::parse_number(as.character(BM.F))
+  )
+
+## converting taxonomic vars to factors to aid in grouping
 amniote_p <- amniote_p %>% 
   mutate(
     across(c(class, order, family, genus, species, subspecies, common_name), as.factor)
   )
+
+AnAge_p <- AnAge_p %>% 
+  mutate(
+    across(c(Kingdom, Class, Order, Genus, Species), as.factor)
+  )
+
+ernest_p <- ernest_p %>% 
+  mutate(
+    across(c(order, family, Genus, species), as.factor)
+  )
+
+pan_p <- pan_p %>% 
+  mutate(
+    across(c(MSW05_Order, MSW05_Family, MSW05_Genus, MSW05_Species), as.factor)
+  )
+
+kp <- kp %>% 
+  mutate(
+    across(c(Family, Genus, Species), as.factor),
+    BM.F = as.numeric(BM.F)
+  )
+```
+
+### Extracting Key LH Variables
+
+\> Why did we choose these variables? Are they representative?
+
+```{r}
+#| code-fold: true
 
 ## selecting vars for cross-database comparison
 amniote_s <- amniote_p %>% 
   transmute(
     genus = genus,
     species = species,
-    body_mass = adult_body_mass_g,
+    body_mass_u = adult_body_mass_g,
+    body_mass_f = female_body_mass_g,
+    body_mass_m = male_body_mass_g,
     AFR = female_maturity_d,
     gest_len = gestation_d,
     IBI = inter_litter_or_interbirth_interval_y,
+    # convert to days by 365.25 * IBI
     max_longevity = maximum_longevity_y,
-    age_at_maturity = NA,
+    age_at_maturity_u = NA,
+    age_at_maturity_f = female_maturity_d,
+    age_at_maturity_m = male_maturity_d,
     weaning_age = weaning_d,
   )
 
-# ANAGE
-
-## converts taxonomic vars to factors to aid in grouping
-AnAge_p <- AnAge_p %>% 
-  mutate(
-    across(c(Kingdom, Class, Order, Genus, Species), as.factor)
-  )
-
-## selecting vars for cross-database comparison
 AnAge_s <- AnAge_p %>% 
   transmute(
     genus = Genus,
     species = Species,
-    body_mass = `Body mass (g)`,
+    body_mass_u = `Body mass (g)`,
+    body_mass_f = NA,
+    body_mass_m = NA,
     AFR = NA,
     gest_len = `Gestation/Incubation (days)`,
     IBI = `Inter-litter/Interbirth interval`,
     max_longevity = `Maximum longevity (yrs)`,
-    age_at_maturity = `Female maturity (days)`,
+    age_at_maturity_u = NA,
+    age_at_maturity_f = `Female maturity (days)`,
+    age_at_maturity_m = `Male maturity (days)`,
     weaning_age = `Weaning (days)`
   )
 
-# ERNEST
-
-## converts taxonomic vars to factors to aid in grouping
-ernest_p <- ernest_p %>% 
-  mutate(
-    across(c(order, family, Genus, species), as.factor)
-  )
-
-## selecting vars for cross-database comparison
 ernest_s <- ernest_p %>% 
   transmute(
     genus = Genus,
     species = species,
-    body_mass = `mass(g)`,
+    body_mass_u = NA,
+    body_mass_f = `mass(g)`,
+    body_mass_m = NA,
     AFR = `AFR(mo)`,
     # convert AFR to days 30.438 * AFR
     gest_len = `gestation(mo)`,
@@ -147,51 +202,122 @@ ernest_s <- ernest_p %>%
     # convert to days by (365.25 * (1/'litters/year'))
     max_longevity = `max. life(mo)`,
     # convert to years max_longevity/12
-    age_at_maturity = NA,
+    age_at_maturity_u = NA,
+    age_at_maturity_f = NA,
+    age_at_maturity_m = NA,
     weaning_age = `weaning(mo)`
     # convert to days 30.438 * weaning_age
   )
 
-# PANTHERIA
-
-## converts taxonmic vars to factors for easier grouping
-pan_p <- pan_p %>% 
-  mutate(
-    across(c(MSW05_Order, MSW05_Family, MSW05_Genus, MSW05_Species), as.factor)
-  )
-
-## selecting vars for cross-database comparison
 pan_s <- pan_p %>% 
   transmute(
     genus = MSW05_Genus,
     species = MSW05_Species,
-    body_mass = `5-1_AdultBodyMass_g`,
+    body_mass_u = `5-1_AdultBodyMass_g`,
+    body_mass_f = NA,
+    body_mass_m = NA,
     AFR = `3-1_AgeatFirstBirth_d`,
     gest_len = `9-1_GestationLen_d`,
     IBI = `14-1_InterbirthInterval_d`,
     max_longevity = `17-1_MaxLongevity_m`,
-    age_at_maturity = `23-1_SexualMaturityAge_d`,
+    # convert to years max_longevity/12
+    age_at_maturity_u = `23-1_SexualMaturityAge_d`,
+    age_at_maturity_f = NA,
+    age_at_maturity_m = NA,
     weaning_age = `25-1_WeaningAge_d`
   )
 
-# KAPPELER & PEREIRA
+kp_s <- kp %>% 
+  transmute(
+    genus = Genus,
+    species = Species,
+    body_mass_u = BM.U,
+    body_mass_f = BM.F,
+    body_mass_m = NA,
+    AFR = AFR,
+    gest_len = GL,
+    IBI = IBI,
+    # convert to days by 30.438 * IBI
+    max_longevity = NA,
+    age_at_maturity_u = NA,
+    age_at_maturity_f = NA,
+    age_at_maturity_m = NA,
+    weaning_age = WA
+  )
+```
 
-## removes non-number characters 
-kp <- kp %>% 
+### Standardizing Units
+
+To make valid comparisons, variables across databases should be in common units. There are several changes to be made to standardize the units to meet these conditions:
+
+1.  Longevity is reported in years
+
+2.  All other time values are reported in days
+
+3.  All mass values are reported in grams
+
+Therefore the following changes are necessary:
+
+**Amniotes (Myrhvold et al. 2015):**
+
+-   Inter-birth Interval (IBI) should be converted from years to days
+
+**Ernest (2003):**
+
+-   Age at First Reproduction (AFR), Gestation Length (gest_len), and Weaning Age (weaning_age) should be converted from months to days
+
+-   IBI should be converted from litters/year to days
+
+-   Maximum Longevity (max_longevity) should be converted from months to years
+
+**PanTHERIA (Jones et al. 2009):**
+
+-   Maximum Longevity should be converted from months to years
+
+**Kappeler & Pereira (2003):**
+
+-   IBI should be converted from months to days
+
+To make these changes I will use these unit conversions:
+
+$$
+1 \text{ year } = \frac{365.25 \text{ days}}{1 \text{ year}} = \frac{365.25 \text{ days}}{12 \text{ months}} = \frac{30.438 \text{ days}}{1 \text{ month}} \\
+$$
+
+```{r}
+#| code-fold: true
+
+amniote_s <- amniote_s %>% 
   mutate(
-    BM.F = readr::parse_number(as.character(BM.F))
+    IBI = IBI * 365.25
+    # converts years to days
   )
 
-## converts data types to appropriate class
-kp <- kp %>% 
+ernest_s <- ernest_s %>% 
   mutate(
-    Family = as.factor(Family),
-    Genus = as.factor(Genus),
-    Species = as.factor(Species),
-    BM.F = as.numeric(BM.F)
+    AFR = AFR * 30.438,
+    # converts months to days
+    gest_len = gest_len * 30.438,
+    # converts months to days
+    IBI = (365.25 * (1/IBI)),
+    # converts litters/year to IBI, then years to days
+    max_longevity = max_longevity/12,
+    # converts months to years
+    weaning_age = weaning_age * 30.438
+    # converts months to days
   )
 
-## 
+pan_s <- pan_s %>% 
+  mutate(
+    max_longevity = max_longevity/12
+    # converts months to years
+  )
+
+kp_s <- kp_s %>% 
+  mutate(
+    IBI = IBI * 30.438
+    # converts months to days
+  )
 ```
 
 # Analysis
@@ -213,7 +339,7 @@ kp <- kp %>%
 #       from different datasets under a common name
 # sherry made a holder "<name>_selected" df for the vars of interest
 # then used bind_rows() to combine them, stored "source" and then 
-new_df <- 
+# new_df <- 
 
 ```
 
@@ -222,13 +348,5 @@ new_df <-
 vars <- colnames(pan_p)
 count = 0
 i = 0
-
-# finding max value of numeric variables
-# for pantheria if max = -999, no data is available for any species
-for(i in 1:ncol(pan_p)){
-  if(is.numeric(pan_p[[i]])){
-    cat(names(pan_p)[i], ": ", max(pan_p[[i]]), "\n")
-  }
-}
 
 ```
