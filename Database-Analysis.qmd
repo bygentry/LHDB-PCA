@@ -97,11 +97,14 @@ pan_p <- pan %>% dplyr::filter(MSW05_Order == "Primates")
 
 ### Data Wrangling & Analysis Prep
 
+> See the [Variable_Comparisons page](https://docs.google.com/spreadsheets/d/12S0tICGxE4arILK3V4fUOHz7dU1SGTNLb7kZeripvZU/edit?gid=909701723#gid=909701723) for a quick side-by-side of how our variables are defined in each source. Individual database variable description pages can be accessed through the toolbar at the bottom of the linked page for more details.
+
 #### Removing Irrelevant Variables
 
 The Amniotes Database (Myrhvold et al. 2015) has six variables that apply only to reptiles and avians, e.g. incubation time. Since these have no values for mammals and are not represented in any other databases, they will unfairly negatively impact measurements of completeness for primate data. As such, I have decided to remove them to more accurately represent the completeness of *primate* life history statistics in the database.
 
 ```{r}
+#| label: removing reptile and avian vars
 #| code-fold: true
 
 ## removes reptile and avian variables
@@ -114,6 +117,7 @@ amniote_p <- amniote_p %>%
 #### Missing Values and Point Correction
 
 ```{r}
+#| label: converting missing vals to NA
 #| code-fold: true
 
 ## converts -999 ('no data' value) to NA
@@ -139,7 +143,10 @@ kp <- kp %>%
 \> Why did we choose these variables? Are they representative?
 
 ```{r}
+#| label: building dfs of key vars
 #| code-fold: true
+
+sources = c("Myrhvold et al. 2015", "de Magalhães & Costa 2009", "Ernest 2003", "Jones et al. 2009", "Kappeler & Pereira 2003")
 
 ## selecting vars for cross-database comparison
 amniote_s <- amniote_p %>% 
@@ -152,12 +159,12 @@ amniote_s <- amniote_p %>%
     AFR = female_maturity_d,
     gest_len = gestation_d,
     IBI = inter_litter_or_interbirth_interval_y,
-    # convert to days by 365.25 * IBI
     max_longevity = maximum_longevity_y,
     age_at_maturity_u = NA,
     age_at_maturity_f = female_maturity_d,
     age_at_maturity_m = male_maturity_d,
     weaning_age = weaning_d,
+    source = sources[1]
   )
 
 AnAge_s <- AnAge_p %>% 
@@ -174,7 +181,8 @@ AnAge_s <- AnAge_p %>%
     age_at_maturity_u = NA,
     age_at_maturity_f = `Female maturity (days)`,
     age_at_maturity_m = `Male maturity (days)`,
-    weaning_age = `Weaning (days)`
+    weaning_age = `Weaning (days)`,
+    source = sources[2]
   )
 
 ernest_s <- ernest_p %>% 
@@ -185,18 +193,14 @@ ernest_s <- ernest_p %>%
     body_mass_f = `mass(g)`,
     body_mass_m = NA,
     AFR = `AFR(mo)`,
-    # convert AFR to days 30.438 * AFR
     gest_len = `gestation(mo)`,
-    # convert gest_len to days 30.438 * gest_len
     IBI = `litters/year`,
-    # convert to days by (365.25 * (1/'litters/year'))
     max_longevity = `max. life(mo)`,
-    # convert to years max_longevity/12
     age_at_maturity_u = NA,
     age_at_maturity_f = NA,
     age_at_maturity_m = NA,
-    weaning_age = `weaning(mo)`
-    # convert to days 30.438 * weaning_age
+    weaning_age = `weaning(mo)`,
+    source = sources[3]
   )
 
 pan_s <- pan_p %>% 
@@ -210,11 +214,11 @@ pan_s <- pan_p %>%
     gest_len = `9-1_GestationLen_d`,
     IBI = `14-1_InterbirthInterval_d`,
     max_longevity = `17-1_MaxLongevity_m`,
-    # convert to years max_longevity/12
     age_at_maturity_u = `23-1_SexualMaturityAge_d`,
     age_at_maturity_f = NA,
     age_at_maturity_m = NA,
-    weaning_age = `25-1_WeaningAge_d`
+    weaning_age = `25-1_WeaningAge_d`,
+    source = sources[4]
   )
 
 kp_s <- kp %>% 
@@ -227,12 +231,12 @@ kp_s <- kp %>%
     AFR = AFR,
     gest_len = GL,
     IBI = IBI,
-    # convert to days by 30.438 * IBI
     max_longevity = NA,
     age_at_maturity_u = NA,
     age_at_maturity_f = NA,
     age_at_maturity_m = NA,
-    weaning_age = WA
+    weaning_age = WA,
+    source = sources[5]
   )
 ```
 
@@ -256,7 +260,7 @@ The following changes are necessary:
 
 -   Inter-birth Interval (IBI) should be converted from years to days
 
-**AnAge** **(de Magalhães & Costa et al. 2009):**
+**AnAge** **(de Magalhães & Costa 2009):**
 
 -   No changes necessary
 
@@ -282,6 +286,7 @@ The following changes are necessary:
 -   IBI should be converted from months to days
 
 ```{r}
+#| label: unit conversions
 #| code-fold: true
 
 days_per_year <- 365.25
@@ -325,14 +330,10 @@ kp_s <- kp_s %>%
 
 ### Proportions of Missing Variables
 
-#### Preparation
-
-##### Variable Selection
-
-> See the [Variable_Comparisons page](https://docs.google.com/spreadsheets/d/12S0tICGxE4arILK3V4fUOHz7dU1SGTNLb7kZeripvZU/edit?gid=909701723#gid=909701723) for a quick side-by-side of how our variables are defined in each source. Individual database variable description pages can be accessed through the toolbar at the bottom of the linked page for more details.
-
 ```{r}
-#| label: analysis
+#| label: heat map prep
+#| code-fold: true
+
 
 # Variable Heat Map
 #
@@ -388,7 +389,7 @@ pan_p <- pan_p %>%
 
 3.  de Magalhães JP, Costa J. A database of vertebrate longevity records and their relation to other life-history traits. J Evol Biol. 2009 Aug;22(8):1770-4. doi: 10.1111/j.1420-9101.2009.01783.x. Epub 2009 Jun 10. PMID: 19522730.
 
-4.  de Magalhaes, J. P., Abidi, Z., Dos Santos, G. A., Avelar, R. A., Barardo, D., Chatsirisupachai, K., Clark, P., De-Souza, E. A., Johnson, E. J., Lopes, I., Novoa, G., Senez, L., Talay, A., Thornton, D., To, P. K. P. (2024) "Human Ageing Genomic Resources: updates on key databases in ageing research." Nucleic Acids Research 52(D1):D900-D908.
+4.  de Magalhães, J. P., Abidi, Z., Dos Santos, G. A., Avelar, R. A., Barardo, D., Chatsirisupachai, K., Clark, P., De-Souza, E. A., Johnson, E. J., Lopes, I., Novoa, G., Senez, L., Talay, A., Thornton, D., To, P. K. P. (2024) "Human Ageing Genomic Resources: updates on key databases in ageing research." Nucleic Acids Research 52(D1):D900-D908.
 
 5.  Jones, K. E., Bielby, J., Cardillo, M., Fritz, S. A., O’Dell, J., Orme, C. D. L., Safi, K., Sechrest, W., Boakes, E. H., Carbone, C., Connolly, C., Cutts, M. J., Foster, J. K., Grenyer, R., Habib, M., Plaster, C. A., Price, S. A., Rigby, E. A., Rist, J., ... Purvis, A. (2009). PanTHERIA: A species-level database of life history, ecology, and geography of extant and recently extinct mammals. Ecology, 90(9), 2648–2648. <https://doi.org/10.1890/08-1494.1>
 
