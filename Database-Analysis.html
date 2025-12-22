@@ -111,31 +111,19 @@ window.Quarto = {
     <h2 id="toc-title">Contents</h2>
    
   <ul>
-  <li><a href="#an-investigation-of-primate-life-history-data-quality" id="toc-an-investigation-of-primate-life-history-data-quality" class="nav-link active" data-scroll-target="#an-investigation-of-primate-life-history-data-quality">An Investigation of Primate Life History Data Quality</a></li>
+  <li><a href="#an-investigation-of-primate-life-history-data-quality" id="toc-an-investigation-of-primate-life-history-data-quality" class="nav-link active" data-scroll-target="#an-investigation-of-primate-life-history-data-quality">An Investigation of Primate Life History Data Quality</a>
+  <ul class="collapse">
   <li><a href="#preliminaries" id="toc-preliminaries" class="nav-link" data-scroll-target="#preliminaries">Preliminaries</a>
   <ul class="collapse">
-  <li><a href="#loading-packages-and-data" id="toc-loading-packages-and-data" class="nav-link" data-scroll-target="#loading-packages-and-data">Loading Packages and Data</a>
-  <ul class="collapse">
-  <li><a href="#loading-packages" id="toc-loading-packages" class="nav-link" data-scroll-target="#loading-packages">Loading Packages</a></li>
-  <li><a href="#importing-data" id="toc-importing-data" class="nav-link" data-scroll-target="#importing-data">Importing Data</a></li>
-  <li><a href="#filtering-primate-data" id="toc-filtering-primate-data" class="nav-link" data-scroll-target="#filtering-primate-data">Filtering Primate Data</a></li>
-  </ul></li>
-  <li><a href="#data-wrangling-analysis-prep" id="toc-data-wrangling-analysis-prep" class="nav-link" data-scroll-target="#data-wrangling-analysis-prep">Data Wrangling &amp; Analysis Prep</a>
-  <ul class="collapse">
-  <li><a href="#removing-irrelevant-variables" id="toc-removing-irrelevant-variables" class="nav-link" data-scroll-target="#removing-irrelevant-variables">Removing Irrelevant Variables</a></li>
-  <li><a href="#data-type-conversions-and-missing-values" id="toc-data-type-conversions-and-missing-values" class="nav-link" data-scroll-target="#data-type-conversions-and-missing-values">Data Type Conversions and Missing Values</a></li>
-  <li><a href="#extracting-key-lh-variables" id="toc-extracting-key-lh-variables" class="nav-link" data-scroll-target="#extracting-key-lh-variables">Extracting Key LH Variables</a></li>
-  <li><a href="#standardizing-units" id="toc-standardizing-units" class="nav-link" data-scroll-target="#standardizing-units">Standardizing Units</a></li>
-  </ul></li>
+  <li><a href="#loading-packages-and-data" id="toc-loading-packages-and-data" class="nav-link" data-scroll-target="#loading-packages-and-data">Loading Packages and Data</a></li>
+  <li><a href="#data-wrangling-analysis-prep" id="toc-data-wrangling-analysis-prep" class="nav-link" data-scroll-target="#data-wrangling-analysis-prep">Data Wrangling &amp; Analysis Prep</a></li>
   </ul></li>
   <li><a href="#analysis" id="toc-analysis" class="nav-link" data-scroll-target="#analysis">Analysis</a>
   <ul class="collapse">
-  <li><a href="#proportions-of-missing-variables" id="toc-proportions-of-missing-variables" class="nav-link" data-scroll-target="#proportions-of-missing-variables">Proportions of Missing Variables</a>
-  <ul class="collapse">
-  <li><a href="#preparation" id="toc-preparation" class="nav-link" data-scroll-target="#preparation">Preparation</a></li>
-  </ul></li>
+  <li><a href="#proportions-of-missing-variables" id="toc-proportions-of-missing-variables" class="nav-link" data-scroll-target="#proportions-of-missing-variables">Proportions of Missing Variables</a></li>
   </ul></li>
   <li><a href="#sources" id="toc-sources" class="nav-link" data-scroll-target="#sources">Sources</a></li>
+  </ul></li>
   </ul>
 </nav>
 </div>
@@ -171,23 +159,22 @@ window.Quarto = {
 <section id="an-investigation-of-primate-life-history-data-quality" class="level1">
 <h1>An Investigation of Primate Life History Data Quality</h1>
 <p>It has been noted that primate life history data is sparse and often varies in reliability (Borries et al.&nbsp;2013). The primary goals of this investigation are to evaluate and compare 5 databases containing primate life history statistics to assess their completeness and reliability while evaluating the efficacy of principal component analysis (PCA) as an advanced statistical method for identifying hidden trends in multivariate analysis.</p>
-</section>
-<section id="preliminaries" class="level1">
-<h1>Preliminaries</h1>
-<section id="loading-packages-and-data" class="level2">
-<h2 class="anchored" data-anchor-id="loading-packages-and-data">Loading Packages and Data</h2>
-<section id="loading-packages" class="level3">
-<h3 class="anchored" data-anchor-id="loading-packages">Loading Packages</h3>
+<section id="preliminaries" class="level2">
+<h2 class="anchored" data-anchor-id="preliminaries">Preliminaries</h2>
+<section id="loading-packages-and-data" class="level3">
+<h3 class="anchored" data-anchor-id="loading-packages-and-data">Loading Packages and Data</h3>
+<section id="loading-packages" class="level4">
+<h4 class="anchored" data-anchor-id="loading-packages">Loading Packages</h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">repos =</span> <span class="st">"http://cran.us.r-project.org"</span>)</span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">repos =</span> <span class="st">"https://cran.us.r-project.org"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  psych, tidyverse, curl, mice, rlang, yaml, gridExtra, lme4, XML, lubridate, gratia, VIM</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="importing-data" class="level3">
-<h3 class="anchored" data-anchor-id="importing-data">Importing Data</h3>
+<section id="importing-data" class="level4">
+<h4 class="anchored" data-anchor-id="importing-data">Importing Data</h4>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -228,8 +215,8 @@ window.Quarto = {
 </details>
 </div>
 </section>
-<section id="filtering-primate-data" class="level3">
-<h3 class="anchored" data-anchor-id="filtering-primate-data">Filtering Primate Data</h3>
+<section id="filtering-primate-data" class="level4">
+<h4 class="anchored" data-anchor-id="filtering-primate-data">Filtering Primate Data</h4>
 <p>Four of the databases under investigation include data for more animals than primates - pulling out the primate data makes analysis cleaner and easier.</p>
 <div class="cell">
 <details class="code-fold">
@@ -248,10 +235,10 @@ window.Quarto = {
 </div>
 </section>
 </section>
-<section id="data-wrangling-analysis-prep" class="level2">
-<h2 class="anchored" data-anchor-id="data-wrangling-analysis-prep">Data Wrangling &amp; Analysis Prep</h2>
-<section id="removing-irrelevant-variables" class="level3">
-<h3 class="anchored" data-anchor-id="removing-irrelevant-variables">Removing Irrelevant Variables</h3>
+<section id="data-wrangling-analysis-prep" class="level3">
+<h3 class="anchored" data-anchor-id="data-wrangling-analysis-prep">Data Wrangling &amp; Analysis Prep</h3>
+<section id="removing-irrelevant-variables" class="level4">
+<h4 class="anchored" data-anchor-id="removing-irrelevant-variables">Removing Irrelevant Variables</h4>
 <p>The Amniotes Database (Myrhvold et al.&nbsp;2015) has six variables that apply only to reptiles and avians, e.g.&nbsp;incubation time. Since these have no values for mammals and are not represented in any other databases, they will unfairly negatively impact measurements of completeness for primate data. As such, I have decided to remove them to more accurately represent the completeness of <em>primate</em> life history statistics in the database.</p>
 <div class="cell">
 <details class="code-fold">
@@ -264,56 +251,32 @@ window.Quarto = {
 </details>
 </div>
 </section>
-<section id="data-type-conversions-and-missing-values" class="level3">
-<h3 class="anchored" data-anchor-id="data-type-conversions-and-missing-values">Data Type Conversions and Missing Values</h3>
+<section id="missing-values-and-point-correction" class="level4">
+<h4 class="anchored" data-anchor-id="missing-values-and-point-correction">Missing Values and Point Correction</h4>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">## converts -999 ('no data' value) to NA</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>amniote_p[amniote_p <span class="sc">==</span> <span class="sc">-</span><span class="dv">999</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>ernest_p[ernest_p <span class="sc">==</span> <span class="sc">-</span><span class="dv">999</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>missing.val.to.na <span class="ot">&lt;-</span> <span class="cf">function</span>(df){</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  df <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), <span class="sc">~</span> <span class="fu">na_if</span>(.x, <span class="sc">-</span><span class="dv">999</span>)))</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>pan_p[pan_p <span class="sc">==</span> <span class="sc">-</span><span class="dv">999</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="do">## removes non-number characters (see Kappeler &amp; Pereira Transcription Key page for details)</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="do">## not removing non-number characters will result in forced NA for value in row 195</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>kp <span class="ot">&lt;-</span> kp <span class="sc">%&gt;%</span> </span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">BM.F =</span> readr<span class="sc">::</span><span class="fu">parse_number</span>(<span class="fu">as.character</span>(BM.F))</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="do">## converting taxonomic vars to factors to aid in grouping</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>amniote_p <span class="ot">&lt;-</span> amniote_p <span class="sc">%&gt;%</span> </span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">c</span>(class, order, family, genus, species, subspecies, common_name), as.factor)</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>AnAge_p <span class="ot">&lt;-</span> AnAge_p <span class="sc">%&gt;%</span> </span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">c</span>(Kingdom, Class, Order, Genus, Species), as.factor)</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>ernest_p <span class="ot">&lt;-</span> ernest_p <span class="sc">%&gt;%</span> </span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">c</span>(order, family, Genus, species), as.factor)</span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>pan_p <span class="ot">&lt;-</span> pan_p <span class="sc">%&gt;%</span> </span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">c</span>(MSW05_Order, MSW05_Family, MSW05_Genus, MSW05_Species), as.factor)</span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>kp <span class="ot">&lt;-</span> kp <span class="sc">%&gt;%</span> </span>
-<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">c</span>(Family, Genus, Species), as.factor),</span>
-<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">BM.F =</span> <span class="fu">as.numeric</span>(BM.F)</span>
-<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>amniote_p <span class="ot">&lt;-</span> <span class="fu">missing.val.to.na</span>(amniote_p)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>ernest_p <span class="ot">&lt;-</span> <span class="fu">missing.val.to.na</span>(ernest_p)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>pan_p <span class="ot">&lt;-</span> <span class="fu">missing.val.to.na</span>(pan_p)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Point Correction: one value of BM.F has a "?" in it, making the object type character instead of numeric (see Kappeler &amp; Pereira Transcription Key for more details). </span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="do">## not removing non-number characters will result in forced NA for that value when converting to type numeric, so it must be corrected for</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>kp <span class="ot">&lt;-</span> kp <span class="sc">%&gt;%</span> </span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">BM.F =</span> readr<span class="sc">::</span><span class="fu">parse_number</span>(<span class="fu">as.character</span>(BM.F)),</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">BM.F =</span> <span class="fu">as.numeric</span>(BM.F)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
-<section id="extracting-key-lh-variables" class="level3">
-<h3 class="anchored" data-anchor-id="extracting-key-lh-variables">Extracting Key LH Variables</h3>
+<section id="extracting-key-lh-variables" class="level4">
+<h4 class="anchored" data-anchor-id="extracting-key-lh-variables">Extracting Key LH Variables</h4>
 <p>&gt; Why did we choose these variables? Are they representative?</p>
 <div class="cell">
 <details class="code-fold">
@@ -414,15 +377,17 @@ window.Quarto = {
 </details>
 </div>
 </section>
-<section id="standardizing-units" class="level3">
-<h3 class="anchored" data-anchor-id="standardizing-units">Standardizing Units</h3>
+<section id="standardizing-units" class="level4">
+<h4 class="anchored" data-anchor-id="standardizing-units">Standardizing Units</h4>
 <p>To make valid comparisons, variables across databases should be in common units. There are several changes to be made to standardize the units to meet these conditions:</p>
 <ol type="1">
 <li><p>Longevity is reported in years</p></li>
 <li><p>All other time values are reported in days</p></li>
 <li><p>All mass values are reported in grams</p></li>
 </ol>
-<p>Therefore the following changes are necessary:</p>
+<p>Some of the time values are reported in months - I treat a month as the average length of a month in the Gregorian calendar and use these conversion factors throughout unit standardization:</p>
+<p><span class="math display">\[ 1 \text{ year } = \frac{365.25 \text{ days}}{1 \text{ year}} = \frac{365.25 \text{ days}}{12 \text{ months}} \approx \frac{30.44 \text{ days}}{1 \text{ month}} \\ \]</span></p>
+<p>The following changes are necessary:</p>
 <p><strong>Amniotes (Myrhvold et al.&nbsp;2015):</strong></p>
 <ul>
 <li>Inter-birth Interval (IBI) should be converted from years to days</li>
@@ -434,7 +399,12 @@ window.Quarto = {
 <p><strong>Ernest (2003):</strong></p>
 <ul>
 <li><p>Age at First Reproduction (AFR), Gestation Length (gest_len), and Weaning Age (weaning_age) should be converted from months to days</p></li>
-<li><p>IBI should be converted from litters/year to days</p></li>
+<li><p>IBI should be converted from litters/year to days</p>
+<ul>
+<li><p>IBI is effectively days/birth (or days/litter) and can be derived from litters/year as such:</p>
+<p><span class="math display">\[ 1 \, \div \frac{x \text{ litters}}{1 \text{ year}} = \frac{x \text{ years}}{1 \text{ litter}} \,\times \, \frac{365.25 \text{ days}}{1 \text{ year}} = \frac{x \text{ days}}{1\text{ litter}}
+\]</span></p></li>
+</ul></li>
 <li><p>Maximum Longevity (max_longevity) should be converted from months to years</p></li>
 </ul>
 <p><strong>PanTHERIA (Jones et al.&nbsp;2009):</strong></p>
@@ -445,57 +415,57 @@ window.Quarto = {
 <ul>
 <li>IBI should be converted from months to days</li>
 </ul>
-<p>To make these changes I will use these unit conversions:</p>
-<p><span class="math display">\[
-1 \text{ year } = \frac{365.25 \text{ days}}{1 \text{ year}} = \frac{365.25 \text{ days}}{12 \text{ months}} = \frac{30.438 \text{ days}}{1 \text{ month}} \\
-\]</span></p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>amniote_s <span class="ot">&lt;-</span> amniote_s <span class="sc">%&gt;%</span> </span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">IBI =</span> IBI <span class="sc">*</span> <span class="fl">365.25</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># converts years to days</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>ernest_s <span class="ot">&lt;-</span> ernest_s <span class="sc">%&gt;%</span> </span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">AFR =</span> AFR <span class="sc">*</span> <span class="fl">30.438</span>,</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># converts months to days</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">gest_len =</span> gest_len <span class="sc">*</span> <span class="fl">30.438</span>,</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># converts months to days</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">IBI =</span> (<span class="fl">365.25</span> <span class="sc">*</span> (<span class="dv">1</span><span class="sc">/</span>IBI)),</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># converts litters/year to IBI, then years to days</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_longevity =</span> max_longevity<span class="sc">/</span><span class="dv">12</span>,</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># converts months to years</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">weaning_age =</span> weaning_age <span class="sc">*</span> <span class="fl">30.438</span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># converts months to days</span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>pan_s <span class="ot">&lt;-</span> pan_s <span class="sc">%&gt;%</span> </span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_longevity =</span> max_longevity<span class="sc">/</span><span class="dv">12</span></span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># converts months to years</span></span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>kp_s <span class="ot">&lt;-</span> kp_s <span class="sc">%&gt;%</span> </span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">IBI =</span> IBI <span class="sc">*</span> <span class="fl">30.438</span></span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># converts months to days</span></span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>days_per_year <span class="ot">&lt;-</span> <span class="fl">365.25</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>months_per_year <span class="ot">&lt;-</span> <span class="dv">12</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>days_per_month <span class="ot">&lt;-</span> days_per_year<span class="sc">/</span>months_per_year</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>amniote_s <span class="ot">&lt;-</span> amniote_s <span class="sc">%&gt;%</span> </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">IBI =</span> IBI <span class="sc">*</span> days_per_year</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># converts years to days</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>ernest_s <span class="ot">&lt;-</span> ernest_s <span class="sc">%&gt;%</span> </span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">AFR =</span> AFR <span class="sc">*</span> days_per_month,</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># converts months to days</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">gest_len =</span> gest_len <span class="sc">*</span> days_per_month,</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># converts months to days</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">IBI =</span> days_per_year<span class="sc">/</span>IBI,</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># converts litters/year to IBI (days)</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_longevity =</span> max_longevity<span class="sc">/</span>months_per_year,</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># converts months to years</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">weaning_age =</span> weaning_age <span class="sc">*</span> days_per_month</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># converts months to days</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>pan_s <span class="ot">&lt;-</span> pan_s <span class="sc">%&gt;%</span> </span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_longevity =</span> max_longevity<span class="sc">/</span>months_per_year</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># converts months to years</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>kp_s <span class="ot">&lt;-</span> kp_s <span class="sc">%&gt;%</span> </span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">IBI =</span> IBI <span class="sc">*</span> days_per_month</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    <span class="co"># converts months to days</span></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
 </section>
 </section>
-<section id="analysis" class="level1">
-<h1>Analysis</h1>
-<section id="proportions-of-missing-variables" class="level2">
-<h2 class="anchored" data-anchor-id="proportions-of-missing-variables">Proportions of Missing Variables</h2>
-<section id="preparation" class="level3">
-<h3 class="anchored" data-anchor-id="preparation">Preparation</h3>
-<section id="variable-selection" class="level4">
-<h4 class="anchored" data-anchor-id="variable-selection">Variable Selection</h4>
+<section id="analysis" class="level2">
+<h2 class="anchored" data-anchor-id="analysis">Analysis</h2>
+<section id="proportions-of-missing-variables" class="level3">
+<h3 class="anchored" data-anchor-id="proportions-of-missing-variables">Proportions of Missing Variables</h3>
+<section id="preparation" class="level4">
+<h4 class="anchored" data-anchor-id="preparation">Preparation</h4>
+<section id="variable-selection" class="level5">
+<h5 class="anchored" data-anchor-id="variable-selection">Variable Selection</h5>
 <blockquote class="blockquote">
 <p>See the <a href="https://docs.google.com/spreadsheets/d/12S0tICGxE4arILK3V4fUOHz7dU1SGTNLb7kZeripvZU/edit?gid=909701723#gid=909701723">Variable_Comparisons page</a> for a quick side-by-side of how our variables are defined in each source. Individual database variable description pages can be accessed through the toolbar at the bottom of the linked page for more details.</p>
 </blockquote>
@@ -517,10 +487,36 @@ window.Quarto = {
 </div>
 </section>
 </section>
+<section id="visualization" class="level4">
+<h4 class="anchored" data-anchor-id="visualization">Visualization</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">## will probbaly not use this in final product but keeping code just in case it comes back up</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="do">## converting taxonomic vars to factors to aid in grouping</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>amniote_p <span class="ot">&lt;-</span> amniote_p <span class="sc">%&gt;%</span> </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">c</span>(class, order, family, genus, species, subspecies, common_name), as.factor)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>AnAge_p <span class="ot">&lt;-</span> AnAge_p <span class="sc">%&gt;%</span> </span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">c</span>(Kingdom, Class, Order, Genus, Species), as.factor)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>ernest_p <span class="ot">&lt;-</span> ernest_p <span class="sc">%&gt;%</span> </span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">c</span>(order, family, Genus, species), as.factor)</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>pan_p <span class="ot">&lt;-</span> pan_p <span class="sc">%&gt;%</span> </span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">c</span>(MSW05_Order, MSW05_Family, MSW05_Genus, MSW05_Species), as.factor)</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 </section>
-<section id="sources" class="level1">
-<h1>Sources</h1>
+</section>
+<section id="sources" class="level2">
+<h2 class="anchored" data-anchor-id="sources">Sources</h2>
 <ol type="1">
 <li><p>Borries, C., Gordon, A. D., &amp; Koenig, A. (2013). Beware of Primate Life History Data: A Plea for Data Standards and a Repository. PLOS ONE, 8(6), e67200. <a href="https://doi.org/10.1371/journal.pone.0067200" class="uri">https://doi.org/10.1371/journal.pone.0067200</a></p></li>
 <li><p>Ernest, S.K.M. (2003), LIFE HISTORY CHARACTERISTICS OF PLACENTAL NONVOLANT MAMMALS. Ecology, 84: 3402-3402.&nbsp;<a href="https://doi.org/10.1890/02-9002" class="uri">https://doi.org/10.1890/02-9002</a></p></li>
@@ -530,6 +526,7 @@ window.Quarto = {
 <li><p>Kappeler, P. M., Pereira, M. E., &amp; Schaik, C. P. v. (2003). Primate life histories and socioecology. In P. M. Kappeler &amp; M. E. Pereira (Eds.),&nbsp;<em>Primate life histories and socioecology</em>&nbsp;(pp.&nbsp;1–20). The University of Chicago Press.</p></li>
 <li><p>Myhrvold, N.P., Baldridge, E., Chan, B., Sivam, D., Freeman, D.L. and Ernest, S.K.M. (2015), An amniote life-history database to perform comparative analyses with birds, mammals, and reptiles. Ecology, 96: 3109-3109.&nbsp;<a href="https://doi.org/10.1890/15-0846R.1" class="uri">https://doi.org/10.1890/15-0846R.1</a></p></li>
 </ol>
+</section>
 </section>
 
 </main>

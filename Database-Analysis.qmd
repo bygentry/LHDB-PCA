@@ -17,23 +17,23 @@ editor: visual
 
 It has been noted that primate life history data is sparse and often varies in reliability (Borries et al. 2013). The primary goals of this investigation are to evaluate and compare 5 databases containing primate life history statistics to assess their completeness and reliability while evaluating the efficacy of principal component analysis (PCA) as an advanced statistical method for identifying hidden trends in multivariate analysis.
 
-# Preliminaries
+## Preliminaries
 
-## Loading Packages and Data
+### Loading Packages and Data
 
-### Loading Packages
+#### Loading Packages
 
 ```{r}
 #| label: packages
 
-options(repos = "http://cran.us.r-project.org")
+options(repos = "https://cran.us.r-project.org")
 
 pacman::p_load(
   psych, tidyverse, curl, mice, rlang, yaml, gridExtra, lme4, XML, lubridate, gratia, VIM
   )
 ```
 
-### Importing Data
+#### Importing Data
 
 ```{r}
 #| label: data import
@@ -75,7 +75,7 @@ kp <- readr::read_csv(
   )
 ```
 
-### Filtering Primate Data
+#### Filtering Primate Data
 
 Four of the databases under investigation include data for more animals than primates - pulling out the primate data makes analysis cleaner and easier.
 
@@ -95,9 +95,9 @@ pan_p <- pan %>% dplyr::filter(MSW05_Order == "Primates")
 # Kappeler & Pereira is already only primates
 ```
 
-## Data Wrangling & Analysis Prep
+### Data Wrangling & Analysis Prep
 
-### Removing Irrelevant Variables
+#### Removing Irrelevant Variables
 
 The Amniotes Database (Myrhvold et al. 2015) has six variables that apply only to reptiles and avians, e.g. incubation time. Since these have no values for mammals and are not represented in any other databases, they will unfairly negatively impact measurements of completeness for primate data. As such, I have decided to remove them to more accurately represent the completeness of *primate* life history statistics in the database.
 
@@ -111,54 +111,30 @@ amniote_p <- amniote_p %>%
     )))
 ```
 
-### Data Type Conversions and Missing Values
+#### Missing Values and Point Correction
 
 ```{r}
 #| code-fold: true
 
 ## converts -999 ('no data' value) to NA
-amniote_p[amniote_p == -999] <- NA
+missing.val.to.na <- function(df){
+  df |> mutate(across(where(is.numeric), ~ na_if(.x, -999)))
+}
 
-ernest_p[ernest_p == -999] <- NA
+amniote_p <- missing.val.to.na(amniote_p)
+ernest_p <- missing.val.to.na(ernest_p)
+pan_p <- missing.val.to.na(pan_p)
 
-pan_p[pan_p == -999] <- NA
-
-## removes non-number characters (see Kappeler & Pereira Transcription Key page for details)
-## not removing non-number characters will result in forced NA for value in row 195
+## Point Correction: one value of BM.F has a "?" in it, making the object type character instead of numeric (see Kappeler & Pereira Transcription Key for more details). 
+## not removing non-number characters will result in forced NA for that value when converting to type numeric, so it must be corrected for
 kp <- kp %>% 
   mutate(
-    BM.F = readr::parse_number(as.character(BM.F))
-  )
-
-## converting taxonomic vars to factors to aid in grouping
-amniote_p <- amniote_p %>% 
-  mutate(
-    across(c(class, order, family, genus, species, subspecies, common_name), as.factor)
-  )
-
-AnAge_p <- AnAge_p %>% 
-  mutate(
-    across(c(Kingdom, Class, Order, Genus, Species), as.factor)
-  )
-
-ernest_p <- ernest_p %>% 
-  mutate(
-    across(c(order, family, Genus, species), as.factor)
-  )
-
-pan_p <- pan_p %>% 
-  mutate(
-    across(c(MSW05_Order, MSW05_Family, MSW05_Genus, MSW05_Species), as.factor)
-  )
-
-kp <- kp %>% 
-  mutate(
-    across(c(Family, Genus, Species), as.factor),
+    BM.F = readr::parse_number(as.character(BM.F)),
     BM.F = as.numeric(BM.F)
   )
 ```
 
-### Extracting Key LH Variables
+#### Extracting Key LH Variables
 
 \> Why did we choose these variables? Are they representative?
 
@@ -260,7 +236,7 @@ kp_s <- kp %>%
   )
 ```
 
-### Standardizing Units
+#### Standardizing Units
 
 To make valid comparisons, variables across databases should be in common units. There are several changes to be made to standardize the units to meet these conditions:
 
@@ -270,7 +246,11 @@ To make valid comparisons, variables across databases should be in common units.
 
 3.  All mass values are reported in grams
 
-Therefore the following changes are necessary:
+Some of the time values are reported in months - I treat a month as the average length of a month in the Gregorian calendar and use these conversion factors throughout unit standardization:
+
+$$ 1 \text{ year } = \frac{365.25 \text{ days}}{1 \text{ year}} = \frac{365.25 \text{ days}}{12 \text{ months}} \approx \frac{30.44 \text{ days}}{1 \text{ month}} \\ $$
+
+The following changes are necessary:
 
 **Amniotes (Myrhvold et al. 2015):**
 
@@ -286,6 +266,11 @@ Therefore the following changes are necessary:
 
 -   IBI should be converted from litters/year to days
 
+    -   IBI is effectively days/birth (or days/litter) and can be derived from litters/year as such:
+
+        $$ 1 \, \div \frac{x \text{ litters}}{1 \text{ year}} = \frac{x \text{ years}}{1 \text{ litter}} \,\times \, \frac{365.25 \text{ days}}{1 \text{ year}} = \frac{x \text{ days}}{1\text{ litter}}
+        $$
+
 -   Maximum Longevity (max_longevity) should be converted from months to years
 
 **PanTHERIA (Jones et al. 2009):**
@@ -296,55 +281,53 @@ Therefore the following changes are necessary:
 
 -   IBI should be converted from months to days
 
-To make these changes I will use these unit conversions:
-
-$$
-1 \text{ year } = \frac{365.25 \text{ days}}{1 \text{ year}} = \frac{365.25 \text{ days}}{12 \text{ months}} = \frac{30.438 \text{ days}}{1 \text{ month}} \\
-$$
-
 ```{r}
 #| code-fold: true
 
+days_per_year <- 365.25
+months_per_year <- 12
+days_per_month <- days_per_year/months_per_year
+
 amniote_s <- amniote_s %>% 
   mutate(
-    IBI = IBI * 365.25
+    IBI = IBI * days_per_year
     # converts years to days
   )
 
 ernest_s <- ernest_s %>% 
   mutate(
-    AFR = AFR * 30.438,
+    AFR = AFR * days_per_month,
     # converts months to days
-    gest_len = gest_len * 30.438,
+    gest_len = gest_len * days_per_month,
     # converts months to days
-    IBI = (365.25 * (1/IBI)),
-    # converts litters/year to IBI, then years to days
-    max_longevity = max_longevity/12,
+    IBI = days_per_year/IBI,
+    # converts litters/year to IBI (days)
+    max_longevity = max_longevity/months_per_year,
     # converts months to years
-    weaning_age = weaning_age * 30.438
+    weaning_age = weaning_age * days_per_month
     # converts months to days
   )
 
 pan_s <- pan_s %>% 
   mutate(
-    max_longevity = max_longevity/12
+    max_longevity = max_longevity/months_per_year
     # converts months to years
   )
 
 kp_s <- kp_s %>% 
   mutate(
-    IBI = IBI * 30.438
+    IBI = IBI * days_per_month
     # converts months to days
   )
 ```
 
-# Analysis
+## Analysis
 
-## Proportions of Missing Variables
+### Proportions of Missing Variables
 
-### Preparation
+#### Preparation
 
-#### Variable Selection
+##### Variable Selection
 
 > See the [Variable_Comparisons page](https://docs.google.com/spreadsheets/d/12S0tICGxE4arILK3V4fUOHz7dU1SGTNLb7kZeripvZU/edit?gid=909701723#gid=909701723) for a quick side-by-side of how our variables are defined in each source. Individual database variable description pages can be accessed through the toolbar at the bottom of the linked page for more details.
 
@@ -371,7 +354,33 @@ i = 0
 
 ```
 
-# Sources
+#### Visualization
+
+```{r}
+## will probbaly not use this in final product but keeping code just in case it comes back up
+## converting taxonomic vars to factors to aid in grouping
+amniote_p <- amniote_p %>% 
+  mutate(
+    across(c(class, order, family, genus, species, subspecies, common_name), as.factor)
+  )
+
+AnAge_p <- AnAge_p %>% 
+  mutate(
+    across(c(Kingdom, Class, Order, Genus, Species), as.factor)
+  )
+
+ernest_p <- ernest_p %>% 
+  mutate(
+    across(c(order, family, Genus, species), as.factor)
+  )
+
+pan_p <- pan_p %>% 
+  mutate(
+    across(c(MSW05_Order, MSW05_Family, MSW05_Genus, MSW05_Species), as.factor)
+  )
+```
+
+## Sources
 
 1.  Borries, C., Gordon, A. D., & Koenig, A. (2013). Beware of Primate Life History Data: A Plea for Data Standards and a Repository. PLOS ONE, 8(6), e67200. <https://doi.org/10.1371/journal.pone.0067200>
 
