@@ -151,8 +151,7 @@ sources = c("Myrhvold et al. 2015", "de Magalhães & Costa 2009", "Ernest 2003",
 ## selecting vars for cross-database comparison
 amniote_s <- amniote_p %>% 
   transmute(
-    genus = genus,
-    species = species,
+    species = paste(genus, species),
     body_mass_u = adult_body_mass_g,
     body_mass_f = female_body_mass_g,
     body_mass_m = male_body_mass_g,
@@ -169,8 +168,7 @@ amniote_s <- amniote_p %>%
 
 AnAge_s <- AnAge_p %>% 
   transmute(
-    genus = Genus,
-    species = Species,
+    species = paste(Genus, Species),
     body_mass_u = `Body mass (g)`,
     body_mass_f = NA,
     body_mass_m = NA,
@@ -187,8 +185,7 @@ AnAge_s <- AnAge_p %>%
 
 ernest_s <- ernest_p %>% 
   transmute(
-    genus = Genus,
-    species = species,
+    species = paste(Genus, species),
     body_mass_u = NA,
     body_mass_f = `mass(g)`,
     body_mass_m = NA,
@@ -205,8 +202,7 @@ ernest_s <- ernest_p %>%
 
 pan_s <- pan_p %>% 
   transmute(
-    genus = MSW05_Genus,
-    species = MSW05_Species,
+    species = paste(MSW05_Genus, MSW05_Species),
     body_mass_u = `5-1_AdultBodyMass_g`,
     body_mass_f = NA,
     body_mass_m = NA,
@@ -223,8 +219,7 @@ pan_s <- pan_p %>%
 
 kp_s <- kp %>% 
   transmute(
-    genus = Genus,
-    species = Species,
+    species = paste(Genus, Species),
     body_mass_u = BM.U,
     body_mass_f = BM.F,
     body_mass_m = NA,
@@ -330,55 +325,78 @@ kp_s <- kp_s %>%
 
 ### Proportions of Missing Variables
 
+#### Pre-visualization Processing
+
 ```{r}
 #| label: heat map prep
 #| code-fold: true
 
-
 # Variable Heat Map
-#
-# task: extract variables of interest and combine values
-#       from different datasets under a common name
-# sherry made a holder "<name>_selected" df for the vars of interest
-# then used bind_rows() to combine them, stored "source" and then
-# created a new row in the composite dataframe for the "source" 
-# variable (being the in text citation of the database publication)
-# new_df <- 
 
-```
+## combine values from key value dfs of each source into a single df "key_vals"
+key_vals <- bind_rows(amniote_s, AnAge_s, ernest_s, kp_s, pan_s)
 
-```{r}
-#| label: misc
-vars <- colnames(pan_p)
-count = 0
-i = 0
+## this calculates the proportion of missing values for each life history trait
+## and stores them in a "missigness" df that stores the trait, the source, 
+## and the % missingness in 3 steps
+## (1) pivots columns except for species and source, 
+##     assigns variable names to trait and values to value 
+## (2) groups traits sourcewise
+## (3) calculates the proportion of NAs to valid entries for each trait
+##     in each source and stores them alongside the source and trait name
+missingness <- key_vals %>%
+  pivot_longer(cols = -c(species, source), 
+               names_to = "trait", 
+               values_to = "value") %>%
+  group_by(source, trait) %>% 
+  summarize(prop_missing = mean(is.na(value)), .groups = "drop")
 
+## renames traits to look pretty on graph
+missingness <- missingness %>%
+  mutate(trait = case_when(
+    trait == "max_longevity" ~ "Lifespan (Years)",
+    trait == "IBI" ~ "Interbirth Interval (Days)",
+    trait == "AFR" ~ "Age at First Reproduction (Days)",
+    trait == "gest_len" ~ "Gestation Length (Days)",
+    trait == "weaning_age" ~ "Weaning Age (Days)",
+    trait == "body_mass_u" ~ "Adult Mass - Unspecified (g)",
+    trait == "body_mass_m" ~ "Adult Mass - Male (g)",
+    trait == "body_mass_f" ~ "Adult Mass - Female (g)",
+    trait == "age_at_maturity_u" ~ "Sexual Maturity - Unspecified (Days)",
+    trait == "age_at_maturity_m" ~ "Sexual Maturity - Male (Days)",
+    trait == "age_at_maturity_f" ~ "Sexual Maturity - Female (Days)",
+    TRUE ~ trait  # keep other traits unchanged
+  ))
+
+## extracts the number of distinct species represented by each source
+## then concatenates a label of the citation and number of primate species
+dataset_labels <- key_vals %>%
+  group_by(source) %>%
+  summarize(n = n_distinct(species), .groups = "drop") %>%
+  mutate(label = paste0(source, "\n(n = ", n, ")")) %>% 
+  { setNames(.$label, .$source) }
 ```
 
 #### Visualization
 
 ```{r}
-## will probbaly not use this in final product but keeping code just in case it comes back up
-## converting taxonomic vars to factors to aid in grouping
-amniote_p <- amniote_p %>% 
-  mutate(
-    across(c(class, order, family, genus, species, subspecies, common_name), as.factor)
-  )
-
-AnAge_p <- AnAge_p %>% 
-  mutate(
-    across(c(Kingdom, Class, Order, Genus, Species), as.factor)
-  )
-
-ernest_p <- ernest_p %>% 
-  mutate(
-    across(c(order, family, Genus, species), as.factor)
-  )
-
-pan_p <- pan_p %>% 
-  mutate(
-    across(c(MSW05_Order, MSW05_Family, MSW05_Genus, MSW05_Species), as.factor)
-  )
+#| label: heatmap visualization
+#| code-fold: true
+ggplot(missingness, aes(x = source, y = trait, fill = prop_missing)) +
+  geom_tile(color = "snow") +
+  scale_fill_gradientn(
+    colors = rev(colorspace::heat_hcl(100)),
+    limits = c(0, 1),
+    breaks = seq(0, 1, by = 0.25),
+    labels = scales::label_percent(accuracy = 1),
+    name = "% Missing"
+    ) +
+  scale_x_discrete(labels = dataset_labels) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "Missing Data Patterns Across Datasets", 
+       x = "Dataset", 
+       y = "Trait")
 ```
 
 ## Sources
