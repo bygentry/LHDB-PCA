@@ -113,7 +113,7 @@ ernest_p[ernest_p == -999] <- NA
 
 pan_p[pan_p == -999] <- NA
 
-## removes non-number characters (see variable description page for details)
+## removes non-number characters (see Kappeler & Pereira Transcription Key page for details)
 ## not removing non-number characters will result in forced NA for value in row 195
 kp <- kp %>% 
   mutate(
