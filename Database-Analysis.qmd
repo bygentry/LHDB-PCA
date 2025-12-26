@@ -323,7 +323,7 @@ kp_s <- kp_s %>%
 
 ## Analysis
 
-### Proportions of Missing Variables
+### Proportions of Missing Values
 
 #### Pre-visualization Processing
 
@@ -398,6 +398,8 @@ ggplot(missingness, aes(x = source, y = trait, fill = prop_missing)) +
        x = "Dataset", 
        y = "Trait")
 ```
+
+#### Interpretation
 
 ## Sources
 
