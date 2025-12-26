@@ -17,130 +17,29 @@ editor: visual
 
 It has been noted that primate life history data is sparse and often varies in reliability (Borries et al. 2013). The primary goals of this investigation are to evaluate and compare 5 databases containing primate life history statistics to assess their completeness and reliability while evaluating the efficacy of principal component analysis (PCA) as an advanced statistical method for identifying hidden trends in multivariate analysis.
 
-## Preliminaries
+## Setup
 
-### Loading Packages and Data
-
-#### Loading Packages
+### Data Import & Cleaning
 
 ```{r}
-#| label: packages
-
-options(repos = "https://cran.us.r-project.org")
-
-pacman::p_load(
-  psych, tidyverse, curl, mice, rlang, yaml, gridExtra, lme4, XML, lubridate, gratia, VIM
-  )
-```
-
-#### Importing Data
-
-```{r}
-#| label: data import
-#| code-fold: true
-
-# AMNIOTES 
-amniote <- readr::read_csv(
-  file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/AmnioteDB2015/Amniote_Database_Aug_2015.csv",
-  col_names = TRUE,
-  show_col_types = FALSE
-  )
-
-# ANAGE
-AnAge <- readr::read_tsv(
-  file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/AnAge/anage_data.txt", 
-  col_names = TRUE, 
-  show_col_types = FALSE
-  )
-
-# ERNEST
-ernest <- readr::read_delim(
-  file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/Ernest/Mammal_lifehistories_v2.txt", 
-  col_names = TRUE, 
-  show_col_types = FALSE
-  )
-
-# PANTHERIA
-pan <- readr::read_tsv(
-  file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/PanTHERIA/PanTHERIA_1-0_WR05_Aug2008.txt", 
-  col_names = TRUE, 
-  show_col_types = FALSE
-  )
-
-# Kappeler & Pereira 
-kp <- readr::read_csv(
-  file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/Kappeler-Pereira/KP.csv",
-  col_names = TRUE,
-  show_col_types = FALSE
-  )
+source("https://raw.githubusercontent.com/bygentry/LHDB-PCA/refs/heads/main/setup.R")
 ```
 
 #### Filtering Primate Data
 
 Four of the databases under investigation include data for more animals than primates - pulling out the primate data makes analysis cleaner and easier.
 
-```{r}
-#| label: primate data extraction
-#| code-fold: true
+#### Missing Values and Point Correction
 
-## creating subset df for primates
-amniote_p <- amniote %>% dplyr::filter(order == "Primates")
+Our .csv of the Kappeler & Pereira database was transcribed by hand from a digital scan of the original paper publication. One value of adult female body mass (`BM.F`) in the Kappeler & Pereira data has a "?", making the object type 'character' instead of 'numeric' . Mixing number and non-number characters will result in forced NA for that value when converting to type numeric, so the '?' is removed to include the value in completeness tests.
 
-AnAge_p <- AnAge %>% dplyr::filter(Order == "Primates")
+Several of the databases use -`999` as the "missing value" - these are converted to `NA` for all fields of type numeric.
 
-ernest_p <- ernest %>% dplyr::filter(order == "Primates")
-
-pan_p <- pan %>% dplyr::filter(MSW05_Order == "Primates")
-
-# Kappeler & Pereira is already only primates
-```
-
-### Data Wrangling & Analysis Prep
+#### Variable Selection
 
 > See the [Variable_Comparisons page](https://docs.google.com/spreadsheets/d/12S0tICGxE4arILK3V4fUOHz7dU1SGTNLb7kZeripvZU/edit?gid=909701723#gid=909701723) for a quick side-by-side of how our variables are defined in each source. Individual database variable description pages can be accessed through the toolbar at the bottom of the linked page for more details.
 
-#### Removing Irrelevant Variables
-
-The Amniotes Database (Myrhvold et al. 2015) has six variables that apply only to reptiles and avians, e.g. incubation time. Since these have no values for mammals and are not represented in any other databases, they will unfairly negatively impact measurements of completeness for primate data. As such, I have decided to remove them to more accurately represent the completeness of *primate* life history statistics in the database.
-
-```{r}
-#| label: removing reptile and avian vars
-#| code-fold: true
-
-## removes reptile and avian variables
-amniote_p <- amniote_p %>% 
-  select(-any_of(c(
-    "egg_mass_g", "incubation_d", "fledging_age_d", "egg_width_mm", "egg_length_mm", "fledging_mass_g"
-    )))
-```
-
-#### Missing Values and Point Correction
-
-```{r}
-#| label: converting missing vals to NA
-#| code-fold: true
-
-## converts -999 ('no data' value) to NA
-missing.val.to.na <- function(df){
-  df |> mutate(across(where(is.numeric), ~ na_if(.x, -999)))
-}
-
-amniote_p <- missing.val.to.na(amniote_p)
-ernest_p <- missing.val.to.na(ernest_p)
-pan_p <- missing.val.to.na(pan_p)
-
-## Point Correction: one value of BM.F has a "?" in it, making the object type character instead of numeric (see Kappeler & Pereira Transcription Key for more details). 
-## not removing non-number characters will result in forced NA for that value when converting to type numeric, so it must be corrected for
-kp <- kp %>% 
-  mutate(
-    BM.F = readr::parse_number(as.character(BM.F)),
-    BM.F = as.numeric(BM.F)
-  )
-```
-
-#### Extracting Key LH Variables
-
-\> Why did we choose these variables? Are they representative?
+\> Why did we choose these variables? Are they representative of LH characteristics?
 
 ```{r}
 #| label: building dfs of key vars
@@ -245,11 +144,11 @@ To make valid comparisons, variables across databases should be in common units.
 
 3.  All mass values are reported in grams
 
-Some of the time values are reported in months - I treat a month as the average length of a month in the Gregorian calendar and use these conversion factors throughout unit standardization:
+Some of the time values are reported in months - I treat a month as the average length of a month in the Gregorian calendar in days and use these conversion factors throughout unit standardization:
 
 $$ 1 \text{ year } = \frac{365.25 \text{ days}}{1 \text{ year}} = \frac{365.25 \text{ days}}{12 \text{ months}} \approx \frac{30.44 \text{ days}}{1 \text{ month}} \\ $$
 
-The following changes are necessary:
+The following unit changes are necessary:
 
 **Amniotes (Myrhvold et al. 2015):**
 
@@ -331,7 +230,7 @@ kp_s <- kp_s %>%
 #| label: heat map prep
 #| code-fold: true
 
-# Variable Heat Map
+# Variable % Missing Vals Heat Map
 
 ## combine values from key value dfs of each source into a single df "key_vals"
 key_vals <- bind_rows(amniote_s, AnAge_s, ernest_s, kp_s, pan_s)
@@ -377,7 +276,14 @@ dataset_labels <- key_vals %>%
   { setNames(.$label, .$source) }
 ```
 
-#### Visualization
+```{r}
+#| label: completeness histogram prep
+#| code-fold: true
+
+
+```
+
+#### Visualization & Interpretation
 
 ```{r}
 #| label: heatmap visualization
@@ -394,12 +300,21 @@ ggplot(missingness, aes(x = source, y = trait, fill = prop_missing)) +
   scale_x_discrete(labels = dataset_labels) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  labs(title = "Missing Data Patterns Across Datasets", 
-       x = "Dataset", 
-       y = "Trait")
+  labs(
+    title = "Proportions of Missing Values Across Datasets",
+    x = "Dataset", 
+    y = "Trait")
 ```
 
-#### Interpretation
+Trends:
+
+-   sex-reliant vars are most incomplete
+
+-   sex-reliant vars for females are more complete than male or unknown
+
+-   weaning age, IBI, and gestation length most complete across datasets (lifespan close 4th but K&P doesn't record longevity)
+
+-   all datasets have at least one unreported variable of our key variable selection
 
 ## Sources
 

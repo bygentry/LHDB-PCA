@@ -48,11 +48,7 @@ missing.val.to.na <- function(df){
 }
 
 # creates subset dfs for primate rows and removes non mammal variables
-amniote_p <- amniote %>% 
-  dplyr::filter(order == "Primates") %>% 
-  select(-any_of(c(
-    "egg_mass_g", "incubation_d", "fledging_age_d", "egg_width_mm", "egg_length_mm", "fledging_mass_g"
-  )))
+amniote_p <- amniote %>% dplyr::filter(order == "Primates")
 amniote_p <- missing.val.to.na(amniote_p)
 
 AnAge_p <- AnAge %>% dplyr::filter(Order == "Primates")
