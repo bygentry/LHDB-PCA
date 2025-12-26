@@ -31,9 +31,7 @@ Four of the databases under investigation include data for more animals than pri
 
 #### Missing Values and Point Correction
 
-Our .csv of the Kappeler & Pereira database was transcribed by hand from a digital scan of the original paper publication. One value of adult female body mass (`BM.F`) in the Kappeler & Pereira data has a "?", making the object type 'character' instead of 'numeric' . Mixing number and non-number characters will result in forced NA for that value when converting to type numeric, so the '?' is removed to include the value in completeness tests.
-
-Several of the databases use -`999` as the "missing value" - these are converted to `NA` for all fields of type numeric.
+Our .csv of the Kappeler & Pereira database was transcribed by hand from a digital scan of the original paper publication. One value of adult female body mass (`BM.F`) in the Kappeler & Pereira data has a "?", making the object type 'character' instead of 'numeric' . Mixing number and non-number characters will result in forced NA for that value when converting to type numeric, so the '?' is removed to include the value in completeness tests. Additionally, several of the databases use -`999` as the "missing value" - these are converted to `NA` for all fields of type numeric to allow quantitative analysis.
 
 #### Variable Selection
 
