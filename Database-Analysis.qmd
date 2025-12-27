@@ -278,7 +278,19 @@ dataset_labels <- key_vals %>%
 #| label: completeness histogram prep
 #| code-fold: true
 
+## makes a new df using prop_missing values from 
+## missingness df and averages them by source, then stores
+## in new df mean_missing
+mean_missing <- missingness %>% 
+  group_by(source) %>% 
+  summarise(
+    mean_missingness = mean(prop_missing)
+    )
 
+## takes the inverse proportion of the mean missingness
+## for each database to give mean completeness
+mean_complete <- mean_missing %>% 
+  mutate(mean_completeness = 1 - mean_missingness)
 ```
 
 #### Visualization & Interpretation
@@ -313,6 +325,19 @@ Trends:
 -   weaning age, IBI, and gestation length most complete across datasets (lifespan close 4th but K&P doesn't record longevity)
 
 -   all datasets have at least one unreported variable of our key variable selection
+
+```{r}
+ggplot(mean_complete,
+       aes(x = source, y = mean_completeness, fill = source)) +
+  geom_col(show.legend = FALSE) +
+  labs(
+    x = "Dataset",
+    y = "Mean Completeness"
+  ) +
+  ylim(0, 1) + 
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
 
 ## Sources
 
