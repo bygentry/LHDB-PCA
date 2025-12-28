@@ -22,6 +22,9 @@ It has been noted that primate life history data is sparse and often varies in r
 ### Data Import & Cleaning
 
 ```{r}
+#| label: data import script
+#| code-fold: show
+
 source("https://raw.githubusercontent.com/bygentry/LHDB-PCA/refs/heads/main/setup.R")
 ```
 
@@ -248,8 +251,16 @@ missingness <- key_vals %>%
   group_by(source, trait) %>% 
   summarize(prop_missing = mean(is.na(value)), .groups = "drop")
 
+missingness2 <- key_vals %>%
+  select(-any_of(c("body_mass_u", "body_mass_f", "body_mass_m", "age_at_maturity_u", "age_at_maturity_f", "age_at_maturity_m"))) %>% 
+  pivot_longer(cols = -c(species, source), 
+               names_to = "trait", 
+               values_to = "value") %>%
+  group_by(source, trait) %>% 
+  summarize(prop_missing = mean(is.na(value)), .groups = "drop")
+
 ## renames traits to look pretty on graph
-missingness2 <- missingness %>%
+missingness <- missingness %>%
   mutate(trait = case_when(
     trait == "max_longevity" ~ "Lifespan (Years)",
     trait == "IBI" ~ "Interbirth Interval (Days)",
@@ -262,6 +273,17 @@ missingness2 <- missingness %>%
     trait == "age_at_maturity_u" ~ "Sexual Maturity - Unspecified (Days)",
     trait == "age_at_maturity_m" ~ "Sexual Maturity - Male (Days)",
     trait == "age_at_maturity_f" ~ "Sexual Maturity - Female (Days)",
+    TRUE ~ trait  # keep other traits unchanged
+  ))
+
+## renames traits to look pretty on graph
+missingness2 <- missingness2 %>%
+  mutate(trait = case_when(
+    trait == "max_longevity" ~ "Lifespan (Years)",
+    trait == "IBI" ~ "Interbirth Interval (Days)",
+    trait == "AFR" ~ "Age at First Reproduction (Days)",
+    trait == "gest_len" ~ "Gestation Length (Days)",
+    trait == "weaning_age" ~ "Weaning Age (Days)",
     TRUE ~ trait  # keep other traits unchanged
   ))
 
@@ -281,7 +303,7 @@ dataset_labels <- key_vals %>%
 ## makes a new df using prop_missing values from 
 ## missingness df and averages them by source, then stores
 ## in new df mean_missing
-mean_missing <- missingness2 %>% 
+mean_missing <- missingness %>% 
   group_by(source) %>% 
   summarise(
     mean_missingness = mean(prop_missing)
@@ -293,15 +315,14 @@ mean_complete <- mean_missing %>%
   mutate(mean_completeness = 1 - mean_missingness)
 
 ## removing sexed variables
-mean_missing_no_sex <- missingness %>% 
-  dplyr::filter(trait == (c("body_mass_u", "body_mass_f", "body_mass_m", "age_at_maturity_u", "age_at_maturity_f", "age_at_maturity_m"))) %>% 
+mean_missing_no_sex <- missingness2 %>% 
   group_by(source) %>% 
   summarise(
-    mean_missing = mean(prop_missing)
+    mean_missingness = mean(prop_missing)
   )
 
 mean_complete_no_sex <- mean_missing_no_sex %>% 
-  mutate(mean_completeness = 1 - mean_missing)
+  mutate(mean_completeness = 1 - mean_missingness)
 ```
 
 #### Visualization & Interpretation
@@ -338,6 +359,9 @@ Trends:
 -   all datasets have at least one unreported variable of our key variable selection
 
 ```{r}
+#| label: completeness bar plots
+#| code-fold: true
+
 ggplot(mean_complete,
        aes(x = source, y = mean_completeness, fill = source)) +
   geom_col(show.legend = FALSE) +
