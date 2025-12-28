@@ -249,7 +249,7 @@ missingness <- key_vals %>%
   summarize(prop_missing = mean(is.na(value)), .groups = "drop")
 
 ## renames traits to look pretty on graph
-missingness <- missingness %>%
+missingness2 <- missingness %>%
   mutate(trait = case_when(
     trait == "max_longevity" ~ "Lifespan (Years)",
     trait == "IBI" ~ "Interbirth Interval (Days)",
@@ -275,13 +275,13 @@ dataset_labels <- key_vals %>%
 ```
 
 ```{r}
-#| label: completeness histogram prep
+#| label: completeness bar chart prep
 #| code-fold: true
 
 ## makes a new df using prop_missing values from 
 ## missingness df and averages them by source, then stores
 ## in new df mean_missing
-mean_missing <- missingness %>% 
+mean_missing <- missingness2 %>% 
   group_by(source) %>% 
   summarise(
     mean_missingness = mean(prop_missing)
@@ -291,6 +291,17 @@ mean_missing <- missingness %>%
 ## for each database to give mean completeness
 mean_complete <- mean_missing %>% 
   mutate(mean_completeness = 1 - mean_missingness)
+
+## removing sexed variables
+mean_missing_no_sex <- missingness %>% 
+  dplyr::filter(trait == (c("body_mass_u", "body_mass_f", "body_mass_m", "age_at_maturity_u", "age_at_maturity_f", "age_at_maturity_m"))) %>% 
+  group_by(source) %>% 
+  summarise(
+    mean_missing = mean(prop_missing)
+  )
+
+mean_complete_no_sex <- mean_missing_no_sex %>% 
+  mutate(mean_completeness = 1 - mean_missing)
 ```
 
 #### Visualization & Interpretation
@@ -328,6 +339,17 @@ Trends:
 
 ```{r}
 ggplot(mean_complete,
+       aes(x = source, y = mean_completeness, fill = source)) +
+  geom_col(show.legend = FALSE) +
+  labs(
+    x = "Dataset",
+    y = "Mean Completeness"
+  ) +
+  ylim(0, 1) + 
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+ggplot(mean_complete_no_sex,
        aes(x = source, y = mean_completeness, fill = source)) +
   geom_col(show.legend = FALSE) +
   labs(
