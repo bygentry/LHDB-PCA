@@ -318,11 +318,33 @@ mean_complete <- mean_missing %>%
 mean_missing_no_sex <- missingness2 %>% 
   group_by(source) %>% 
   summarise(
-    mean_missingness = mean(prop_missing)
+    mean_missingness_no_sex = mean(prop_missing)
   )
 
+## takes the inverse proportion of the mean missingness
+## for each database to give mean completeness
 mean_complete_no_sex <- mean_missing_no_sex %>% 
-  mutate(mean_completeness = 1 - mean_missingness)
+  mutate(mean_completeness_no_sex = 1 - mean_missingness_no_sex)
+
+composite_completeness <- mean_complete %>% 
+  inner_join(mean_complete_no_sex, by = "source") %>% 
+  mutate(
+    cap = pmax(0, mean_completeness_no_sex - mean_completeness)
+  )
+
+composite_plot <- composite_completeness %>% 
+  select(source, mean_completeness, cap) %>% 
+  pivot_longer(
+    cols = c(mean_completeness, cap),
+    names_to = "segment",
+    values_to = "value"
+  ) %>% 
+  mutate(
+    segment = recode(segment,
+                     mean_complete = "All Key Vars",
+                     cap = "Sexless Key Vars"
+                     )
+  )
 ```
 
 #### Visualization & Interpretation
@@ -359,10 +381,40 @@ Trends:
 -   all datasets have at least one unreported variable of our key variable selection
 
 ```{r}
+#| label: layered bar chart
+#| code-fold: true
+
+ggplot() +
+  geom_col(
+    data = composite_plot %>% filter(segment == "All Key Vars"),
+    aes(x = source, y = value, fill = source),
+    fill = source,
+    width = .75
+  ) +
+  geom_col(
+    data = composite_plot %>% filter(segment != "All Key Vars"),
+    aes(x = source, y = value, color = source),
+    fill = "white",
+    width = .75
+  ) +
+  coord_cartesian(ylim = c(0,1)) +
+  labs(
+    x = "Source Database",
+    y = "Mean Completeness",
+    title = "Mean Completeness of Sexless vs All Key Vars"
+  ) +
+  theme_bw() +
+  theme(
+    legend.position = "bottom",
+    axis.text.x = element_text(angle = 33, hjust = 1)
+  )
+```
+
+```{r}
 #| label: completeness bar plots
 #| code-fold: true
 
-p1 <- ggplot(mean_complete,
+ggplot(mean_complete,
        aes(x = source, y = mean_completeness, fill = source)) +
   geom_col() +
   labs(
