@@ -330,7 +330,7 @@ mean_complete_no_sex <- mean_missing_no_sex %>%
 ```{r}
 #| label: heatmap visualization
 #| code-fold: true
-ggplot(missingness, aes(x = source, y = trait, fill = prop_missing)) +
+prop_missing <- ggplot(missingness, aes(x = source, y = trait, fill = prop_missing)) +
   geom_tile(color = "snow") +
   scale_fill_gradientn(
     colors = rev(colorspace::heat_hcl(100)),
@@ -362,31 +362,48 @@ Trends:
 #| label: completeness bar plots
 #| code-fold: true
 
-ggplot(mean_complete,
+p1 <- ggplot(mean_complete,
        aes(x = source, y = mean_completeness, fill = source)) +
-  geom_col(show.legend = FALSE) +
+  geom_col() +
   labs(
-    x = "Dataset",
-    y = "Mean Completeness"
+    title = "All Key Vars"
   ) +
   ylim(0, 1) + 
   theme_bw() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank(),
+    axis.text.x = element_blank()
+  )
 
-ggplot(mean_complete_no_sex,
+p2 <- ggplot(mean_complete_no_sex,
        aes(x = source, y = mean_completeness, fill = source)) +
-  geom_col(show.legend = FALSE) +
+  geom_col() +
   labs(
-    x = "Dataset",
-    y = "Mean Completeness"
+    title = "Sexless Key Vars"
   ) +
   ylim(0, 1) + 
   theme_bw() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank(),
+    axis.text.x = element_blank()
+  )
+
+ggarrange(p1, p2, 
+          nrow = 1, 
+          ncol = 2,
+          legend = "bottom",
+          common.legend = TRUE
+          )
 ```
-- removing sexed vars improves completeness of all databases
-- check significance of difference^ chi-sq?
-- 
+
+-   removing sexed vars improves completeness of all databases
+-   check significance of difference\^ chi-sq?
+
+```{r}
+
+```
 
 ## Sources
 
