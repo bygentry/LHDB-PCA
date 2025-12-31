@@ -10,6 +10,8 @@ format:
     toc-title: Contents
     df-print: kable
     theme: readable
+execute: 
+  freeze: auto
 editor: visual
 ---
 
@@ -49,7 +51,7 @@ Our .csv of the Kappeler & Pereira database was transcribed by hand from a digit
 sources = c("Myrhvold et al. 2015", "de Magalhães & Costa 2009", "Ernest 2003", "Jones et al. 2009", "Kappeler & Pereira 2003")
 
 ## selecting vars for cross-database comparison
-amniote_s <- amniote_p %>% 
+amniote_s <- amniote %>% 
   transmute(
     species = paste(genus, species),
     body_mass_u = adult_body_mass_g,
@@ -66,7 +68,7 @@ amniote_s <- amniote_p %>%
     source = sources[1]
   )
 
-AnAge_s <- AnAge_p %>% 
+AnAge_s <- AnAge %>% 
   transmute(
     species = paste(Genus, Species),
     body_mass_u = `Body mass (g)`,
@@ -83,7 +85,7 @@ AnAge_s <- AnAge_p %>%
     source = sources[2]
   )
 
-ernest_s <- ernest_p %>% 
+ernest_s <- ernest %>% 
   transmute(
     species = paste(Genus, species),
     body_mass_u = NA,
@@ -100,7 +102,7 @@ ernest_s <- ernest_p %>%
     source = sources[3]
   )
 
-pan_s <- pan_p %>% 
+pan_s <- pan %>% 
   transmute(
     species = paste(MSW05_Genus, MSW05_Species),
     body_mass_u = `5-1_AdultBodyMass_g`,
@@ -341,9 +343,10 @@ composite_plot <- composite_completeness %>%
   ) %>% 
   mutate(
     segment = recode(segment,
-                     mean_complete = "All Key Vars",
+                     mean_completeness = "All Key Vars",
                      cap = "Sexless Key Vars"
-                     )
+                     ),
+    source = factor(source, levels = unique(source))
   )
 ```
 
@@ -384,20 +387,29 @@ Trends:
 #| label: layered bar chart
 #| code-fold: true
 
+# make a named palette once so fill & color match perfectly
+src_levels <- levels(composite_plot$source)
+src_pal <- setNames(scales::hue_pal()(length(src_levels)), src_levels)
+
 ggplot() +
-  geom_col(
-    data = composite_plot %>% filter(segment == "All Key Vars"),
-    aes(x = source, y = value, fill = source),
-    fill = source,
-    width = .75
-  ) +
+  # draw Sexless first (white interior, colored outline)
   geom_col(
     data = composite_plot %>% filter(segment != "All Key Vars"),
     aes(x = source, y = value, color = source),
     fill = "white",
-    width = .75
+    width = 0.75,
+    linewidth = 0.6,
+    show.legend = FALSE   # <- key step: prevents outline-style legend
   ) +
-  coord_cartesian(ylim = c(0,1)) +
+  # draw All Key Vars on top (solid fill)
+  geom_col(
+    data = composite_plot %>% filter(segment == "All Key Vars"),
+    aes(x = source, y = value, fill = source),
+    width = 0.75
+  ) +
+  coord_cartesian(ylim = c(0, 1)) +
+  scale_fill_manual(values = src_pal) +
+  scale_color_manual(values = src_pal, guide = "none") +
   labs(
     x = "Source Database",
     y = "Mean Completeness",
@@ -414,7 +426,7 @@ ggplot() +
 #| label: completeness bar plots
 #| code-fold: true
 
-ggplot(mean_complete,
+p1 <- ggplot(mean_complete,
        aes(x = source, y = mean_completeness, fill = source)) +
   geom_col() +
   labs(
@@ -429,7 +441,7 @@ ggplot(mean_complete,
   )
 
 p2 <- ggplot(mean_complete_no_sex,
-       aes(x = source, y = mean_completeness, fill = source)) +
+       aes(x = source, y = mean_completeness_no_sex, fill = source)) +
   geom_col() +
   labs(
     title = "Sexless Key Vars"

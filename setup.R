@@ -43,21 +43,21 @@ kp <- readr::read_csv(
 )
 
 ## converts -999 ('no data' value) to NA
-missing.val.to.na <- function(df){
+missing_val_to_na <- function(df){
   df |> mutate(across(where(is.numeric), ~ na_if(.x, -999)))
 }
 
 # creates subset dfs for primate rows and removes non mammal variables
-amniote_p <- amniote %>% dplyr::filter(order == "Primates")
-amniote_p <- missing.val.to.na(amniote_p)
+amniote <- amniote %>% dplyr::filter(order == "Primates")
+amniote <- missing_val_to_na(amniote)
 
-AnAge_p <- AnAge %>% dplyr::filter(Order == "Primates")
+AnAge <- AnAge %>% dplyr::filter(Order == "Primates")
 
-ernest_p <- ernest %>% dplyr::filter(order == "Primates")
-ernest_p <- missing.val.to.na(ernest_p)
+ernest <- ernest %>% dplyr::filter(order == "Primates")
+ernest <- missing_val_to_na(ernest)
 
-pan_p <- pan %>% dplyr::filter(MSW05_Order == "Primates")
-pan_p <- missing.val.to.na(pan_p)
+pan <- pan %>% dplyr::filter(MSW05_Order == "Primates")
+pan <- missing_val_to_na(pan)
 
 # Kappeler & Pereira is already only primates, no filter necessary
 ## Point Correction: one value of BM.F has a "?" in it, making the object type character instead of numeric (see Kappeler & Pereira Transcription Key for more details). 
