@@ -463,7 +463,7 @@ ggarrange(p1, p2,
 ```
 
 -   removing sexed vars improves completeness of all databases
--   check significance of difference\^ chi-sq?
+-   check significance of difference\^ 2tail?
 
 ```{r}
 
