@@ -333,21 +333,6 @@ composite_completeness <- mean_complete %>%
   mutate(
     cap = pmax(0, mean_completeness_no_sex - mean_completeness)
   )
-
-composite_plot <- composite_completeness %>% 
-  select(source, mean_completeness, cap) %>% 
-  pivot_longer(
-    cols = c(mean_completeness, cap),
-    names_to = "segment",
-    values_to = "value"
-  ) %>% 
-  mutate(
-    segment = recode(segment,
-                     mean_completeness = "All Key Vars",
-                     cap = "Sexless Key Vars"
-                     ),
-    source = factor(source, levels = unique(source))
-  )
 ```
 
 #### Visualization & Interpretation
@@ -387,17 +372,12 @@ Trends:
 #| label: layered bar chart
 #| code-fold: true
 
-# make a named palette once so fill & color match perfectly
-src_levels <- levels(composite_plot$source)
-src_pal <- setNames(scales::hue_pal()(length(src_levels)), src_levels)
-
 ggplot(composite_completeness, aes(x = source)) +
-  # draw Sexless first (white interior, colored outline)
   geom_col(
     aes(y = mean_completeness_no_sex, fill = source, color = source),
-    alpha = 0.5,
+    alpha = 0.4,
     width = 0.75,
-    linewidth = 0.6,
+    linewidth = 0.5,
     show.legend = FALSE
   ) +
   geom_col(
@@ -405,8 +385,8 @@ ggplot(composite_completeness, aes(x = source)) +
     width = 0.75
   ) +
   coord_cartesian(ylim = c(0, 1)) +
-  scale_fill_manual(values = src_pal) +
-  scale_color_manual(values = src_pal, guide = "none") +
+  scale_fill_viridis_d(option = "D", end = 0.9) +
+  scale_color_viridis_d(option = "D", end = 0.9, guide = "none") +
   labs(
     x = "Source Database",
     y = "Mean Completeness",
