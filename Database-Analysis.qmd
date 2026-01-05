@@ -253,7 +253,7 @@ missingness <- key_vals %>%
   group_by(source, trait) %>% 
   summarize(prop_missing = mean(is.na(value)), .groups = "drop")
 
-missingness2 <- key_vals %>%
+missingness_no_sex <- key_vals %>%
   select(-any_of(c("body_mass_u", "body_mass_f", "body_mass_m", "age_at_maturity_u", "age_at_maturity_f", "age_at_maturity_m"))) %>% 
   pivot_longer(cols = -c(species, source), 
                names_to = "trait", 
@@ -279,7 +279,7 @@ missingness <- missingness %>%
   ))
 
 ## renames traits to look pretty on graph
-missingness2 <- missingness2 %>%
+missingness_no_sex <- missingness_no_sex %>%
   mutate(trait = case_when(
     trait == "max_longevity" ~ "Lifespan (Years)",
     trait == "IBI" ~ "Interbirth Interval (Days)",
@@ -317,7 +317,7 @@ mean_complete <- mean_missing %>%
   mutate(mean_completeness = 1 - mean_missingness)
 
 ## removing sexed variables
-mean_missing_no_sex <- missingness2 %>% 
+mean_missing_no_sex <- missingness_no_sex %>% 
   group_by(source) %>% 
   summarise(
     mean_missingness_no_sex = mean(prop_missing)
