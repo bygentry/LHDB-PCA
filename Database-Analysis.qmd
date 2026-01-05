@@ -391,20 +391,17 @@ Trends:
 src_levels <- levels(composite_plot$source)
 src_pal <- setNames(scales::hue_pal()(length(src_levels)), src_levels)
 
-ggplot() +
+ggplot(composite_completeness, aes(x = source)) +
   # draw Sexless first (white interior, colored outline)
   geom_col(
-    data = composite_plot %>% filter(segment != "All Key Vars"),
-    aes(x = source, y = value, color = source),
-    fill = "white",
+    aes(y = mean_completeness_no_sex, fill = source, color = source),
+    alpha = 0.5,
     width = 0.75,
     linewidth = 0.6,
-    show.legend = FALSE   # <- key step: prevents outline-style legend
+    show.legend = FALSE
   ) +
-  # draw All Key Vars on top (solid fill)
   geom_col(
-    data = composite_plot %>% filter(segment == "All Key Vars"),
-    aes(x = source, y = value, fill = source),
+    aes(y = mean_completeness, fill = source),
     width = 0.75
   ) +
   coord_cartesian(ylim = c(0, 1)) +
@@ -420,46 +417,6 @@ ggplot() +
     legend.position = "bottom",
     axis.text.x = element_text(angle = 33, hjust = 1)
   )
-```
-
-```{r}
-#| label: completeness bar plots
-#| code-fold: true
-
-p1 <- ggplot(mean_complete,
-       aes(x = source, y = mean_completeness, fill = source)) +
-  geom_col() +
-  labs(
-    title = "All Key Vars"
-  ) +
-  ylim(0, 1) + 
-  theme_bw() +
-  theme(
-    axis.title.x = element_blank(),
-    axis.title.y = element_blank(),
-    axis.text.x = element_blank()
-  )
-
-p2 <- ggplot(mean_complete_no_sex,
-       aes(x = source, y = mean_completeness_no_sex, fill = source)) +
-  geom_col() +
-  labs(
-    title = "Sexless Key Vars"
-  ) +
-  ylim(0, 1) + 
-  theme_bw() +
-  theme(
-    axis.title.x = element_blank(),
-    axis.title.y = element_blank(),
-    axis.text.x = element_blank()
-  )
-
-ggarrange(p1, p2, 
-          nrow = 1, 
-          ncol = 2,
-          legend = "bottom",
-          common.legend = TRUE
-          )
 ```
 
 -   removing sexed vars improves completeness of all databases
