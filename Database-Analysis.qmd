@@ -1,5 +1,5 @@
 ---
-title: "Database Analysis"
+title: "An Investigation of Primate Life History Data Quality"
 author: "Gentry Miller"
 format: 
   html:
@@ -15,7 +15,7 @@ execute:
 editor: visual
 ---
 
-# An Investigation of Primate Life History Data Quality
+# Introduction
 
 > “Given this general importance of life history data and with the scientific ideals of transparency and repeatability in mind, one would assume that researchers have long since agreed upon life history definitions and are using reliable and accurate data stored in standardized repositories. However, while various databases exist, standards for data quality and specification are lacking.” (Borries et al. 2013)
 
@@ -31,7 +31,7 @@ introduce databases, pros/cons
 
 ```{r}
 #| label: data import script
-#| code-fold: show
+#| code-fold: true
 
 source("https://raw.githubusercontent.com/bygentry/LHDB-PCA/refs/heads/main/setup.R")
 ```
@@ -227,9 +227,9 @@ kp_s <- kp_s %>%
   )
 ```
 
-## Analysis
+# Analysis
 
-### Proportions of Missing Values
+## Proportions of Missing Values
 
 #### Pre-visualization Processing
 
@@ -344,7 +344,7 @@ composite_completeness <- mean_complete %>%
 ```{r}
 #| label: heatmap visualization
 #| code-fold: true
-prop_missing <- ggplot(missingness, aes(x = source, y = trait, fill = prop_missing)) +
+ggplot(missingness, aes(x = source, y = trait, fill = prop_missing)) +
   geom_tile(color = "snow") +
   scale_fill_gradientn(
     colors = rev(colorspace::heat_hcl(100)),
@@ -362,7 +362,7 @@ prop_missing <- ggplot(missingness, aes(x = source, y = trait, fill = prop_missi
     y = "Trait")
 ```
 
-Trends:
+notes:
 
 -   sex-reliant vars are most incomplete
 
@@ -372,9 +372,9 @@ Trends:
 
 -   all datasets have at least one unreported variable of our key variable selection
 
-```{r}
+```{r, fig.cap = "Mean completeness of each database using all key variables (solid color) and sex-independent key variables (transluscent color)."}
 #| label: layered bar chart
-#| code-fold: true
+#| echo: false
 
 ggplot(composite_completeness, aes(x = source)) +
   geom_col(
@@ -402,9 +402,6 @@ ggplot(composite_completeness, aes(x = source)) +
     axis.text.x = element_text(angle = 33, hjust = 1)
   )
 ```
-
--   removing sexed vars improves completeness of all databases
--   check significance of difference\^ 2tail?
 
 ```{r}
 #| label: permutation test
@@ -473,14 +470,14 @@ perm_res %>%
     mean_completeness_no_sex = round(mean_completeness_no_sex, 3)
   ) %>% 
   gt() %>% 
-  cols_label(
+  gt::cols_label(
     source = "Database",
     mean_completeness = "All Vars",
     mean_completeness_no_sex = "Sexless Vars",
     obs_diff = "Difference",
     p_value = "p-value"
     ) %>% 
-  tab_spanner(
+  gt::tab_spanner(
     label = "Mean Completeness",
     columns = c(mean_completeness, mean_completeness_no_sex)
   )

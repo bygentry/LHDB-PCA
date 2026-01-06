@@ -8,7 +8,7 @@
 
 <meta name="author" content="Gentry Miller">
 
-<title>Database Analysis</title>
+<title>An Investigation of Primate Life History Data Quality</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -111,16 +111,16 @@ window.Quarto = {
     <h2 id="toc-title">Contents</h2>
    
   <ul>
-  <li><a href="#an-investigation-of-primate-life-history-data-quality" id="toc-an-investigation-of-primate-life-history-data-quality" class="nav-link active" data-scroll-target="#an-investigation-of-primate-life-history-data-quality">An Investigation of Primate Life History Data Quality</a>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
   <ul class="collapse">
   <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a>
   <ul class="collapse">
   <li><a href="#data-import-cleaning" id="toc-data-import-cleaning" class="nav-link" data-scroll-target="#data-import-cleaning">Data Import &amp; Cleaning</a></li>
   </ul></li>
+  </ul></li>
   <li><a href="#analysis" id="toc-analysis" class="nav-link" data-scroll-target="#analysis">Analysis</a>
   <ul class="collapse">
   <li><a href="#proportions-of-missing-values" id="toc-proportions-of-missing-values" class="nav-link" data-scroll-target="#proportions-of-missing-values">Proportions of Missing Values</a></li>
-  </ul></li>
   <li><a href="#sources" id="toc-sources" class="nav-link" data-scroll-target="#sources">Sources</a></li>
   </ul></li>
   </ul>
@@ -132,7 +132,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Database Analysis</h1>
+<h1 class="title">An Investigation of Primate Life History Data Quality</h1>
 </div>
 
 
@@ -155,15 +155,20 @@ window.Quarto = {
 </header>
 
 
-<section id="an-investigation-of-primate-life-history-data-quality" class="level1">
-<h1>An Investigation of Primate Life History Data Quality</h1>
-<p>It has been noted that primate life history data is sparse and often varies in reliability (Borries et al.&nbsp;2013). The primary goals of this investigation are to evaluate and compare 5 databases containing primate life history statistics to assess their completeness and reliability while evaluating the efficacy of principal component analysis (PCA) as an advanced statistical method for identifying hidden trends in multivariate analysis.</p>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<blockquote class="blockquote">
+<p>“Given this general importance of life history data and with the scientific ideals of transparency and repeatability in mind, one would assume that researchers have long since agreed upon life history definitions and are using reliable and accurate data stored in standardized repositories. However, while various databases exist, standards for data quality and specification are lacking.” (Borries et al.&nbsp;2013)</p>
+</blockquote>
+<p>Life history theory has provided not just a framework to understand how organisms maximize fitness, but a lexicon of variables that represent a shared currency across organisms. Key variables have emerged to characterize growth (weaning age ), reproduction (age at sexual maturity, first reproduction), and duration of reproduction (lifespan). Despite the widespread use of such measures, researchers face consistent methodological challenges in collating life history data for comparative analyses including access to a substantial range, differences in definitions, discrepancies in data quality, and decision trees on which variables to use and how.&nbsp;</p>
+<p>Here we present a guide that addresses these and other issues for primatologists who want to employ life history data. We review the characteristics of five databases that contain life history data on primates. We also present a frequently advocated approach to summarize variation across traits using dimension reduction analysis, with which we summarize data here.&nbsp;</p>
+<p>introduce databases, pros/cons</p>
 <section id="setup" class="level2">
 <h2 class="anchored" data-anchor-id="setup">Setup</h2>
 <section id="data-import-cleaning" class="level3">
 <h3 class="anchored" data-anchor-id="data-import-cleaning">Data Import &amp; Cleaning</h3>
 <div class="cell">
-<details open="" class="code-fold">
+<details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"https://raw.githubusercontent.com/bygentry/LHDB-PCA/refs/heads/main/setup.R"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
@@ -181,11 +186,10 @@ window.Quarto = {
 <blockquote class="blockquote">
 <p>See the <a href="https://docs.google.com/spreadsheets/d/12S0tICGxE4arILK3V4fUOHz7dU1SGTNLb7kZeripvZU/edit?gid=909701723#gid=909701723">Variable_Comparisons page</a> for a quick side-by-side of how our variables are defined in each source. Individual database variable description pages can be accessed through the toolbar at the bottom of the linked page for more details.</p>
 </blockquote>
-<p>&gt; Why did we choose these variables? Are they representative of LH characteristics?</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>sources <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"Myrhvold et al. 2015"</span>, <span class="st">"de Magalhães &amp; Costa 2009"</span>, <span class="st">"Ernest 2003"</span>, <span class="st">"Jones et al. 2009"</span>, <span class="st">"Kappeler &amp; Pereira 2003"</span>)</span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>sources <span class="ot">=</span> <span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="st">"Myrhvold et al. 2015"</span>, <span class="st">"de Magalhães &amp; Costa 2009"</span>, <span class="st">"Ernest 2003"</span>, <span class="st">"Jones et al. 2009"</span>, <span class="st">"Kappeler &amp; Pereira 2003"</span>))</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="do">## selecting vars for cross-database comparison</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>amniote_s <span class="ot">&lt;-</span> amniote <span class="sc">%&gt;%</span> </span>
@@ -356,10 +360,11 @@ window.Quarto = {
 </section>
 </section>
 </section>
-<section id="analysis" class="level2">
-<h2 class="anchored" data-anchor-id="analysis">Analysis</h2>
-<section id="proportions-of-missing-values" class="level3">
-<h3 class="anchored" data-anchor-id="proportions-of-missing-values">Proportions of Missing Values</h3>
+</section>
+<section id="analysis" class="level1">
+<h1>Analysis</h1>
+<section id="proportions-of-missing-values" class="level2">
+<h2 class="anchored" data-anchor-id="proportions-of-missing-values">Proportions of Missing Values</h2>
 <section id="pre-visualization-processing" class="level4">
 <h4 class="anchored" data-anchor-id="pre-visualization-processing">Pre-visualization Processing</h4>
 <div class="cell">
@@ -472,7 +477,7 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>prop_missing <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(missingness, <span class="fu">aes</span>(<span class="at">x =</span> source, <span class="at">y =</span> trait, <span class="at">fill =</span> prop_missing)) <span class="sc">+</span></span>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(missingness, <span class="fu">aes</span>(<span class="at">x =</span> source, <span class="at">y =</span> trait, <span class="at">fill =</span> prop_missing)) <span class="sc">+</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">color =</span> <span class="st">"snow"</span>) <span class="sc">+</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradientn</span>(</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">colors =</span> <span class="fu">rev</span>(colorspace<span class="sc">::</span><span class="fu">heat_hcl</span>(<span class="dv">100</span>)),</span>
@@ -489,8 +494,15 @@ window.Quarto = {
 <span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Dataset"</span>, </span>
 <span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Trait"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Database-Analysis_files/figure-html/heatmap%20visualization-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
-<p>Trends:</p>
+</div>
+</div>
+<p>notes:</p>
 <ul>
 <li><p>sex-reliant vars are most incomplete</p></li>
 <li><p>sex-reliant vars for females are more complete than male or unknown</p></li>
@@ -498,47 +510,608 @@ window.Quarto = {
 <li><p>all datasets have at least one unreported variable of our key variable selection</p></li>
 </ul>
 <div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(composite_completeness, <span class="fu">aes</span>(<span class="at">x =</span> source)) <span class="sc">+</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">y =</span> mean_completeness_no_sex, <span class="at">fill =</span> source, <span class="at">color =</span> source),</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.4</span>,</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">width =</span> <span class="fl">0.75</span>,</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="fl">0.5</span>,</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">show.legend =</span> <span class="cn">FALSE</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">y =</span> mean_completeness, <span class="at">fill =</span> source),</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">width =</span> <span class="fl">0.75</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_d</span>(<span class="at">option =</span> <span class="st">"D"</span>, <span class="at">end =</span> <span class="fl">0.9</span>) <span class="sc">+</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_d</span>(<span class="at">option =</span> <span class="st">"D"</span>, <span class="at">end =</span> <span class="fl">0.9</span>, <span class="at">guide =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Source Database"</span>,</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Mean Completeness"</span>,</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Mean Completeness of Sexless vs All Key Vars"</span></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"bottom"</span>,</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">33</span>, <span class="at">hjust =</span> <span class="dv">1</span>)</span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output-display">
-<div>
+<div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="Database-Analysis_files/figure-html/layered%20bar%20chart-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>Mean completeness of each database using all key variables (solid color) and sex-independent key variables (transluscent color).</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<ul>
-<li>removing sexed vars improves completeness of all databases</li>
-<li>check significance of difference^ 2tail?</li>
-</ul>
-</section>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create list of sex dependent variable names for checking sex dependency</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>sex_dep_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Sexual Maturity - Female (Days)"</span>, <span class="st">"Sexual Maturity - Male (Days)"</span>, <span class="st">"Sexual Maturity - Unspecified (Days)"</span>, <span class="st">"Adult Mass - Female (g)"</span>, <span class="st">"Adult Mass - Male (g)"</span>, <span class="st">"Adult Mass - Unspecified (g)"</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># create a new df for the permutation test</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="do">## completeness - the inverse proportion of missing values</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="do">## is_sexless - a boolean representing a traits dependency on sex</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>perm_df <span class="ot">&lt;-</span> missingness <span class="sc">%&gt;%</span> </span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">source =</span> source,                          <span class="co"># the database citations</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">trait =</span> trait,                            <span class="co"># the names of the traits</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">completeness =</span> <span class="dv">1</span> <span class="sc">-</span> prop_missing,          <span class="co"># inverse proportion of missingness for each trait</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">is_sexless =</span> <span class="sc">!</span>(trait <span class="sc">%in%</span> sex_dep_vars)   <span class="co"># boolean: FALSE if variable is sex dependent, else TRUE </span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co"># creates a function for the permutation test to see if the improved completeness after removing sex dependent variables is significantly greater than 10,000 random selections of variables</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>perm_test <span class="ot">&lt;-</span> <span class="cf">function</span>(df, <span class="at">n =</span> <span class="dv">10000</span>, <span class="at">seed =</span> <span class="dv">1</span>){</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set.seed</span>(seed)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> df<span class="sc">$</span>completeness                    <span class="co"># completeness of each trait</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  sexless <span class="ot">&lt;-</span> df<span class="sc">$</span>is_sexless                <span class="co"># boolean: FALSE if var is sex dependent</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  k <span class="ot">&lt;-</span> <span class="fu">sum</span>(sexless)                       <span class="co"># number of sex independent variables</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  mu_all <span class="ot">&lt;-</span> <span class="fu">mean</span>(x)                       <span class="co"># mean completeness by database of all variables</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  mu_no_sex <span class="ot">&lt;-</span> <span class="fu">mean</span>(x[df<span class="sc">$</span>is_sexless])     <span class="co"># mean completeness of only sex-independent variables</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  obs <span class="ot">&lt;-</span> mu_no_sex <span class="sc">-</span> mu_all               <span class="co"># difference between both means</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(k <span class="sc">==</span> <span class="dv">0</span>L <span class="sc">||</span> k <span class="sc">==</span> <span class="fu">length</span>(x)) {</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">tibble</span>(</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>      <span class="at">mean_completeness =</span> mu_all,</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>      <span class="at">mean_completeness_no_sex =</span> mu_no_sex,</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>      <span class="at">obs_diff =</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>      <span class="at">p_value =</span> <span class="cn">NA_real_</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>    ))</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>  perm_stats <span class="ot">&lt;-</span> <span class="fu">replicate</span>(n, {</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>    idx <span class="ot">&lt;-</span> <span class="fu">sample.int</span>(<span class="fu">length</span>(x), k, <span class="at">replace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mean</span>(x[idx]) <span class="sc">-</span> mu_all</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">mean</span>(perm_stats <span class="sc">&gt;=</span> obs)</span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_completeness =</span> mu_all,</span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_completeness_no_sex =</span> mu_no_sex,</span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">obs_diff =</span> obs,</span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">p_value =</span> p</span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>perm_res <span class="ot">&lt;-</span> perm_df <span class="sc">%&gt;%</span> </span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(source) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_modify</span>(<span class="sc">~</span> <span class="fu">perm_test</span>(.x, <span class="at">n =</span> <span class="dv">10000</span>, <span class="at">seed =</span> <span class="dv">1</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>perm_res <span class="sc">%&gt;%</span> </span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a>    <span class="at">p_value =</span> <span class="fu">signif</span>(p_value, <span class="dv">3</span>),</span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a>    <span class="at">obs_diff =</span> <span class="fu">round</span>(obs_diff, <span class="dv">3</span>),</span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_completeness =</span> <span class="fu">round</span>(mean_completeness, <span class="dv">3</span>),</span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_completeness_no_sex =</span> <span class="fu">round</span>(mean_completeness_no_sex, <span class="dv">3</span>)</span>
+<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a>  gt<span class="sc">::</span><span class="fu">cols_label</span>(</span>
+<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a>    <span class="at">source =</span> <span class="st">"Database"</span>,</span>
+<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_completeness =</span> <span class="st">"All Vars"</span>,</span>
+<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_completeness_no_sex =</span> <span class="st">"Sexless Vars"</span>,</span>
+<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a>    <span class="at">obs_diff =</span> <span class="st">"Difference"</span>,</span>
+<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a>    <span class="at">p_value =</span> <span class="st">"p-value"</span></span>
+<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a>  gt<span class="sc">::</span><span class="fu">tab_spanner</span>(</span>
+<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="st">"Mean Completeness"</span>,</span>
+<span id="cb7-73"><a href="#cb7-73" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">c</span>(mean_completeness, mean_completeness_no_sex)</span>
+<span id="cb7-74"><a href="#cb7-74" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="mexkcvwsaj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#mexkcvwsaj table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#mexkcvwsaj thead, #mexkcvwsaj tbody, #mexkcvwsaj tfoot, #mexkcvwsaj tr, #mexkcvwsaj td, #mexkcvwsaj th {
+  border-style: none;
+}
+
+#mexkcvwsaj p {
+  margin: 0;
+  padding: 0;
+}
+
+#mexkcvwsaj .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#mexkcvwsaj .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#mexkcvwsaj .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#mexkcvwsaj .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#mexkcvwsaj .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#mexkcvwsaj .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mexkcvwsaj .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#mexkcvwsaj .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#mexkcvwsaj .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#mexkcvwsaj .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#mexkcvwsaj .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#mexkcvwsaj .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#mexkcvwsaj .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#mexkcvwsaj .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#mexkcvwsaj .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#mexkcvwsaj .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#mexkcvwsaj .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#mexkcvwsaj .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#mexkcvwsaj .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mexkcvwsaj .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#mexkcvwsaj .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#mexkcvwsaj .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#mexkcvwsaj .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mexkcvwsaj .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#mexkcvwsaj .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#mexkcvwsaj .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mexkcvwsaj .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mexkcvwsaj .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#mexkcvwsaj .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mexkcvwsaj .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#mexkcvwsaj .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mexkcvwsaj .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#mexkcvwsaj .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mexkcvwsaj .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#mexkcvwsaj .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mexkcvwsaj .gt_left {
+  text-align: left;
+}
+
+#mexkcvwsaj .gt_center {
+  text-align: center;
+}
+
+#mexkcvwsaj .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#mexkcvwsaj .gt_font_normal {
+  font-weight: normal;
+}
+
+#mexkcvwsaj .gt_font_bold {
+  font-weight: bold;
+}
+
+#mexkcvwsaj .gt_font_italic {
+  font-style: italic;
+}
+
+#mexkcvwsaj .gt_super {
+  font-size: 65%;
+}
+
+#mexkcvwsaj .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#mexkcvwsaj .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#mexkcvwsaj .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#mexkcvwsaj .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#mexkcvwsaj .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#mexkcvwsaj .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#mexkcvwsaj .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#mexkcvwsaj .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#mexkcvwsaj div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="gt_col_headings gt_spanner_row header">
+<th rowspan="2" id="source" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">Database</th>
+<th colspan="2" id="Mean Completeness" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="colgroup"><div class="gt_column_spanner">
+Mean Completeness
+</div></th>
+<th rowspan="2" id="obs_diff" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Difference</th>
+<th rowspan="2" id="p_value" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">p-value</th>
+</tr>
+<tr class="gt_col_headings even">
+<th id="mean_completeness" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">All Vars</th>
+<th id="mean_completeness_no_sex" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Sexless Vars</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_center" headers="source">de Magalhães &amp; Costa 2009</td>
+<td class="gt_row gt_right" headers="mean_completeness">0.399</td>
+<td class="gt_row gt_right" headers="mean_completeness_no_sex">0.585</td>
+<td class="gt_row gt_right" headers="obs_diff">0.186</td>
+<td class="gt_row gt_right" headers="p_value">0.0686</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_center" headers="source">Ernest 2003</td>
+<td class="gt_row gt_right" headers="mean_completeness">0.378</td>
+<td class="gt_row gt_right" headers="mean_completeness_no_sex">0.635</td>
+<td class="gt_row gt_right" headers="obs_diff">0.256</td>
+<td class="gt_row gt_right" headers="p_value">0.0130</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_center" headers="source">Jones et al. 2009</td>
+<td class="gt_row gt_right" headers="mean_completeness">0.236</td>
+<td class="gt_row gt_right" headers="mean_completeness_no_sex">0.321</td>
+<td class="gt_row gt_right" headers="obs_diff">0.084</td>
+<td class="gt_row gt_right" headers="p_value">0.1840</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_center" headers="source">Kappeler &amp; Pereira 2003</td>
+<td class="gt_row gt_right" headers="mean_completeness">0.170</td>
+<td class="gt_row gt_right" headers="mean_completeness_no_sex">0.212</td>
+<td class="gt_row gt_right" headers="obs_diff">0.042</td>
+<td class="gt_row gt_right" headers="p_value">0.3700</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_center" headers="source">Myrhvold et al. 2015</td>
+<td class="gt_row gt_right" headers="mean_completeness">0.611</td>
+<td class="gt_row gt_right" headers="mean_completeness_no_sex">0.764</td>
+<td class="gt_row gt_right" headers="obs_diff">0.153</td>
+<td class="gt_row gt_right" headers="p_value">0.0519</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
 </section>
 </section>
 <section id="sources" class="level2">
