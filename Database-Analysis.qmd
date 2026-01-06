@@ -15,7 +15,7 @@ execute:
 editor: visual
 ---
 
-# Introduction
+## Introduction
 
 > “Given this general importance of life history data and with the scientific ideals of transparency and repeatability in mind, one would assume that researchers have long since agreed upon life history definitions and are using reliable and accurate data stored in standardized repositories. However, while various databases exist, standards for data quality and specification are lacking.” (Borries et al. 2013)
 
