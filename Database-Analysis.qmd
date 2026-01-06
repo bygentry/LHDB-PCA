@@ -231,13 +231,12 @@ kp_s <- kp_s %>%
 
 ## Proportions of Missing Values
 
-#### Pre-visualization Processing
+#### Pre-visualization Processing & Test Setup
 
 ```{r}
 #| label: heat map prep
 #| code-fold: true
-
-# Variable % Missing Vals Heat Map
+# Variable % Missing Vals Heat Map Prep
 
 ## combine values from key value dfs of each source into a single df "key_vals"
 key_vals <- bind_rows(amniote_s, AnAge_s, ernest_s, kp_s, pan_s)
@@ -303,78 +302,9 @@ dataset_labels <- key_vals %>%
 ```
 
 ```{r}
-#| label: completeness bar chart prep
-#| code-fold: true
-
-## makes a new df using prop_missing values from 
-## missingness df and averages them by source, then stores
-## in new df mean_missing
-mean_missing <- missingness %>% 
-  group_by(source) %>% 
-  summarise(
-    mean_missingness = mean(prop_missing)
-    )
-
-## takes the inverse proportion of the mean missingness
-## for each database to give mean completeness
-mean_complete <- mean_missing %>% 
-  mutate(mean_completeness = 1 - mean_missingness)
-
-## removing sexed variables
-mean_missing_no_sex <- missingness_no_sex %>% 
-  group_by(source) %>% 
-  summarise(
-    mean_missingness_no_sex = mean(prop_missing)
-  )
-
-## takes the inverse proportion of the mean missingness
-## for each database to give mean completeness
-mean_complete_no_sex <- mean_missing_no_sex %>% 
-  mutate(mean_completeness_no_sex = 1 - mean_missingness_no_sex)
-
-composite_completeness <- mean_complete %>% 
-  inner_join(mean_complete_no_sex, by = "source") %>% 
-  mutate(
-    cap = pmax(0, mean_completeness_no_sex - mean_completeness)
-  )
-```
-
-#### Visualization & Interpretation
-
-```{r}
-#| label: heatmap visualization
-#| code-fold: true
-ggplot(missingness, aes(x = source, y = trait, fill = prop_missing)) +
-  geom_tile(color = "snow") +
-  scale_fill_gradientn(
-    colors = rev(colorspace::heat_hcl(100)),
-    limits = c(0, 1),
-    breaks = seq(0, 1, by = 0.25),
-    labels = scales::label_percent(accuracy = 1),
-    name = "% Missing"
-    ) +
-  scale_x_discrete(labels = dataset_labels) +
-  theme_bw() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  labs(
-    title = "Proportions of Missing Values Across Datasets",
-    x = "Dataset", 
-    y = "Trait")
-```
-
-notes:
-
--   sex-reliant vars are most incomplete
-
--   sex-reliant vars for females are more complete than male or unknown
-
--   weaning age, IBI, and gestation length most complete across datasets (lifespan close 4th but K&P doesn't record longevity)
-
--   all datasets have at least one unreported variable of our key variable selection
-
-```{r}
 #| label: permutation test
 #| code-fold: true
+# One-tailed Permutation Test
 
 # create list of sex dependent variable names for checking sex dependency
 sex_dep_vars <- c("Sexual Maturity - Female (Days)", "Sexual Maturity - Male (Days)", "Sexual Maturity - Unspecified (Days)", "Adult Mass - Female (g)", "Adult Mass - Male (g)", "Adult Mass - Unspecified (g)")
@@ -425,7 +355,84 @@ perm_test <- function(df, n = 10000, seed = 1){
     p_value = p
   )
 }
+```
 
+```{r}
+#| label: completeness bar chart prep
+#| code-fold: true
+# Completeness Bar Chart Prep
+
+## makes a new df using prop_missing values from 
+## missingness df and averages them by source, then stores
+## in new df mean_missing
+mean_missing <- missingness %>% 
+  group_by(source) %>% 
+  summarise(
+    mean_missingness = mean(prop_missing)
+    )
+
+## takes the inverse proportion of the mean missingness
+## for each database to give mean completeness
+mean_complete <- mean_missing %>% 
+  mutate(mean_completeness = 1 - mean_missingness)
+
+## removing sexed variables
+mean_missing_no_sex <- missingness_no_sex %>% 
+  group_by(source) %>% 
+  summarise(
+    mean_missingness_no_sex = mean(prop_missing)
+  )
+
+## takes the inverse proportion of the mean missingness
+## for each database to give mean completeness
+mean_complete_no_sex <- mean_missing_no_sex %>% 
+  mutate(mean_completeness_no_sex = 1 - mean_missingness_no_sex)
+
+composite_completeness <- mean_complete %>% 
+  inner_join(mean_complete_no_sex, by = "source") %>% 
+  mutate(
+    cap = pmax(0, mean_completeness_no_sex - mean_completeness)
+  )
+```
+
+#### Visualization & Interpretation
+
+```{r}
+#| label: heatmap visualization
+#| echo: false
+ggplot(missingness, aes(x = source, y = trait, fill = prop_missing)) +
+  geom_tile(color = "snow") +
+  scale_fill_gradientn(
+    colors = rev(colorspace::heat_hcl(100)),
+    limits = c(0, 1),
+    breaks = seq(0, 1, by = 0.25),
+    labels = scales::label_percent(accuracy = 1),
+    name = "% Missing"
+    ) +
+  scale_x_discrete(labels = dataset_labels) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(
+    title = "Proportions of Missing Values Across Datasets",
+    x = "Dataset", 
+    y = "Trait")
+```
+
+notes:
+
+-   sex-reliant vars are most incomplete
+
+-   sex-reliant vars for females are more complete than male or unknown
+
+-   weaning age, IBI, and gestation length most complete across datasets (lifespan close 4th but K&P doesn't record longevity)
+
+-   all datasets have at least one unreported variable of our key variable selection
+
+Since it appears that the sex-dependent variables ("Sexual Maturity - Female (Days)", "Sexual Maturity - Male (Days)", "Sexual Maturity - Unspecified (Days)", "Adult Mass - Female (g)", "Adult Mass - Male (g)", "Adult Mass - Unspecified (g)") are the most incomplete across all of the databases, I ran a one-tailed permutation test to compare the mean completeness of the databases using all of our key LH variables and the mean completeness when the sex-dependent variables are excluded:
+
+```{r}
+#| label: permutation test results
+#| echo: false
 perm_res <- perm_df %>% 
   dplyr::group_by(source) %>% 
   group_modify(~ perm_test(.x, n = 10000, seed = 1)) %>% 
@@ -451,6 +458,8 @@ perm_res %>%
     columns = c(mean_completeness, mean_completeness_no_sex)
   )
 ```
+
+Removing the sex-dependent variables improves completeness across the board, but the difference from a null distribution was only significant for Ernest (2003) (p = 0.013). However, because Ernest's database doesn't report these variables to begin with, we are essentially just making the comparison more fair by not including unreported variables. A similar effect takes place in the Amniote (Myrhvold et al. 2015) and AnAge (de Magalhães & Costa 2009) databases, which both had near-significant increases in completeness (0.052 and 0.069, respectively).
 
 ```{r, fig.cap = "Mean completeness of each database using all key variables (solid color) and sex-independent key variables (subset, translucent color). Numeric p-values indicate results of one-tailed permutation tests comparing the observed difference in mean completeness to the null distribution generated by random subsets of equal size (n = 10,000)"}
 #| label: layered bar chart
@@ -494,6 +503,14 @@ ggplot(composite_completeness, aes(x = source)) +
     axis.text.x = element_text(angle = 33, hjust = 1)
   )
 ```
+
+Considering the limited effect of including sex-dependent variables on the completeness of the PanTHERIA (Jones et al. 2009) and Kappeler & Pereira (2003) databases, and the significant improvement to completeness of the three databases which don't report sex-dependent variables for adult mass and age at maturity, it is my opinion that including these variables only serves to make comparisons between databases less meaningful and more complicated computationally. I remember us debating including body mass to begin with, but couldn't find in our notes whether we came to a conclusion. Age at maturity is irrefutably an important life history statistic, though, so the scarcity of sex-specific data can pose a problem to researchers.
+
+Thoughts:
+
+-   is age at maturity even dimorphic enough to justify splitting sex classes?
+
+-   is it better to combine the sex classes for the sake of more data or to rely on the scant sex-specific data points?
 
 ## Sources
 
