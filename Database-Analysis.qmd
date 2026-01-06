@@ -17,7 +17,13 @@ editor: visual
 
 # An Investigation of Primate Life History Data Quality
 
-It has been noted that primate life history data is sparse and often varies in reliability (Borries et al. 2013). The primary goals of this investigation are to evaluate and compare 5 databases containing primate life history statistics to assess their completeness and reliability while evaluating the efficacy of principal component analysis (PCA) as an advanced statistical method for identifying hidden trends in multivariate analysis.
+> “Given this general importance of life history data and with the scientific ideals of transparency and repeatability in mind, one would assume that researchers have long since agreed upon life history definitions and are using reliable and accurate data stored in standardized repositories. However, while various databases exist, standards for data quality and specification are lacking.” (Borries et al. 2013)
+
+Life history theory has provided not just a framework to understand how organisms maximize fitness, but a lexicon of variables that represent a shared currency across organisms. Key variables have emerged to characterize growth (weaning age ), reproduction (age at sexual maturity, first reproduction), and duration of reproduction (lifespan). Despite the widespread use of such measures, researchers face consistent methodological challenges in collating life history data for comparative analyses including access to a substantial range, differences in definitions, discrepancies in data quality, and decision trees on which variables to use and how. 
+
+Here we present a guide that addresses these and other issues for primatologists who want to employ life history data. We review the characteristics of five databases that contain life history data on primates. We also present a frequently advocated approach to summarize variation across traits using dimension reduction analysis, with which we summarize data here. 
+
+introduce databases, pros/cons
 
 ## Setup
 
@@ -42,13 +48,11 @@ Our .csv of the Kappeler & Pereira database was transcribed by hand from a digit
 
 > See the [Variable_Comparisons page](https://docs.google.com/spreadsheets/d/12S0tICGxE4arILK3V4fUOHz7dU1SGTNLb7kZeripvZU/edit?gid=909701723#gid=909701723) for a quick side-by-side of how our variables are defined in each source. Individual database variable description pages can be accessed through the toolbar at the bottom of the linked page for more details.
 
-\> Why did we choose these variables? Are they representative of LH characteristics?
-
 ```{r}
 #| label: building dfs of key vars
 #| code-fold: true
 
-sources = c("Myrhvold et al. 2015", "de Magalhães & Costa 2009", "Ernest 2003", "Jones et al. 2009", "Kappeler & Pereira 2003")
+sources = as.factor(c("Myrhvold et al. 2015", "de Magalhães & Costa 2009", "Ernest 2003", "Jones et al. 2009", "Kappeler & Pereira 2003"))
 
 ## selecting vars for cross-database comparison
 amniote_s <- amniote %>% 
@@ -394,7 +398,7 @@ ggplot(composite_completeness, aes(x = source)) +
   ) +
   theme_bw() +
   theme(
-    legend.position = "bottom",
+    legend.position = "none",
     axis.text.x = element_text(angle = 33, hjust = 1)
   )
 ```
@@ -403,7 +407,83 @@ ggplot(composite_completeness, aes(x = source)) +
 -   check significance of difference\^ 2tail?
 
 ```{r}
+#| label: permutation test
+#| code-fold: true
 
+# create list of sex dependent variable names for checking sex dependency
+sex_dep_vars <- c("Sexual Maturity - Female (Days)", "Sexual Maturity - Male (Days)", "Sexual Maturity - Unspecified (Days)", "Adult Mass - Female (g)", "Adult Mass - Male (g)", "Adult Mass - Unspecified (g)")
+
+# create a new df for the permutation test
+## completeness - the inverse proportion of missing values
+## is_sexless - a boolean representing a traits dependency on sex
+perm_df <- missingness %>% 
+  transmute(
+    source = source,                          # the database citations
+    trait = trait,                            # the names of the traits
+    completeness = 1 - prop_missing,          # inverse proportion of missingness for each trait
+    is_sexless = !(trait %in% sex_dep_vars)   # boolean: FALSE if variable is sex dependent, else TRUE 
+  )
+
+# creates a function for the permutation test to see if the improved completeness after removing sex dependent variables is significantly greater than 10,000 random selections of variables
+perm_test <- function(df, n = 10000, seed = 1){
+  set.seed(seed)
+  
+  x <- df$completeness                    # completeness of each trait
+  sexless <- df$is_sexless                # boolean: FALSE if var is sex dependent
+  k <- sum(sexless)                       # number of sex independent variables
+  
+  mu_all <- mean(x)                       # mean completeness by database of all variables
+  mu_no_sex <- mean(x[df$is_sexless])     # mean completeness of only sex-independent variables
+  obs <- mu_no_sex - mu_all               # difference between both means
+  
+  if(k == 0L || k == length(x)) {
+    return(tibble(
+      mean_completeness = mu_all,
+      mean_completeness_no_sex = mu_no_sex,
+      obs_diff = NA_real_,
+      p_value = NA_real_
+    ))
+  }
+  
+  perm_stats <- replicate(n, {
+    idx <- sample.int(length(x), k, replace = FALSE)
+    mean(x[idx]) - mu_all
+  })
+  
+  p <- mean(perm_stats >= obs)
+  
+  tibble(
+    mean_completeness = mu_all,
+    mean_completeness_no_sex = mu_no_sex,
+    obs_diff = obs,
+    p_value = p
+  )
+}
+
+perm_res <- perm_df %>% 
+  dplyr::group_by(source) %>% 
+  group_modify(~ perm_test(.x, n = 10000, seed = 1)) %>% 
+  ungroup()
+
+perm_res %>% 
+  mutate(
+    p_value = signif(p_value, 3),
+    obs_diff = round(obs_diff, 3),
+    mean_completeness = round(mean_completeness, 3),
+    mean_completeness_no_sex = round(mean_completeness_no_sex, 3)
+  ) %>% 
+  gt() %>% 
+  cols_label(
+    source = "Database",
+    mean_completeness = "All Vars",
+    mean_completeness_no_sex = "Sexless Vars",
+    obs_diff = "Difference",
+    p_value = "p-value"
+    ) %>% 
+  tab_spanner(
+    label = "Mean Completeness",
+    columns = c(mean_completeness, mean_completeness_no_sex)
+  )
 ```
 
 ## Sources
