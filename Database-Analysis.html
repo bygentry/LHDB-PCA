@@ -534,7 +534,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="Database-Analysis_files/figure-html/heatmap%20visualization-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Database-Analysis_files/figure-html/heatmap%20visualization%201-1.png" class="img-fluid figure-img" width="672"></p>
 <figcaption>Heat map of missing values for key life history traits across all five databases. Low heat (yellow) signifies few missing values while high heat (red) signifies many missing values.</figcaption>
 </figure>
 </div>
@@ -1064,7 +1064,7 @@ Mean Completeness
 </div>
 </div>
 </div>
-<p>Removing the sex-dependent variables improves completeness across the board, but the difference from a null distribution was only significant for Ernest (2003) (p = 0.013). However, because Ernest’s database doesn’t report these variables to begin with, we are essentially just making the comparison more fair by not including unreported variables. A similar effect takes place in the Amniote (Myrhvold et al.&nbsp;2015) and AnAge (de Magalhães &amp; Costa 2009) databases, which both had near-significant increases in completeness (0.052 and 0.069, respectively) when not testing for unreported variables.</p>
+<p>Removing the sex-dependent variables improves completeness across the board, but the difference from a null distribution was only significant for Ernest (2003) (p = 0.013). However, because Ernest’s database doesn’t report these variables to begin with, we are essentially just making the comparison more fair by not including unreported variables. A similar effect takes place in the Amniote (Myrhvold et al.&nbsp;2015) and AnAge (de Magalhães &amp; Costa 2009) databases, which both had near-significant increases in completeness (0.052 and 0.069, respectively) when not testing for unreported variables. The variables that were the most complete across databases were also all sex-independent: weaning age, gestation length, and IBI. Lifespan and age at first reproduction have moderate completeness across all the databases except for AnAge, which doesn’t report AFR, and the K&amp;P dataset, which doesn’t report lifespan.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -1075,11 +1075,23 @@ Mean Completeness
 </div>
 </div>
 </div>
-<p>Considering the limited effect of including sex-dependent variables on the completeness of the PanTHERIA (Jones et al.&nbsp;2009) and Kappeler &amp; Pereira (2003) databases, and the significant improvement to completeness of the three databases which don’t report sex-dependent variables for adult mass and age at maturity, it is my opinion that including these variables only serves to make comparisons between databases less meaningful and more complicated computationally. I remember us debating including body mass to begin with, but couldn’t find in our notes whether we came to a conclusion. Age at maturity is irrefutably an important life history statistic, though, so the scarcity of sex-specific data can pose a problem to researchers.</p>
+<p>The PanTHERIA (blue) and Kappeler &amp; Pereira (green) databases both had very poor completeness scores across all variables. For select species with high representation, like humans or chimpanzees, the Kappeler &amp; Pereira set seems like a good inclusion but it doesn’t have much to offer in wide taxonomic comparisons. Ernest (dark blue) has the second highest mean completeness when only considering sex-independent variables but falls short in the number of primate species represented (only 156). Similarly, the AnAge database (purple) demonstrates high completeness for key variables but only contains data for 174 species of primates. PanTHERIA, while only having a mean completeness of 32% with sex-independent variables, boasts the greatest representation of primates with 376 species. In both representation and completeness, the Amniote database (yellow) is arguably the best. While only representing 365 primate species, its mean completeness is 61% for all variables and 76% for sex-independent variables.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Database-Analysis_files/figure-html/heatmap%20visualization%202-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>Heat map of missing values for key, sex-independent life history traits across all five databases. Low heat (yellow) signifies few missing values while high heat (red) signifies many missing values.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Considering the limited effect of including sex-dependent variables on the completeness of the PanTHERIA (Jones et al.&nbsp;2009) and Kappeler &amp; Pereira (2003) databases, and the significant improvement to completeness of the three databases which don’t report sex-dependent variables for adult mass and age at maturity, it is my opinion that including these variables only serves to make comparisons between databases less meaningful and more complicated computationally. I remember us debating including body mass to begin with, but couldn’t find in our notes whether we came to a conclusion. Age at maturity is irrefutably an important life history statistic, though, so the scarcity of sex-specific data can pose a problem to researchers. One alternative is age at first reproduction, which is a more definitive way of knowing that an individual has reached maturity but doesn’t necessarily correlate to when they <em>reached</em> maturity, because first reproduction tends to occur later than when it is technically possible.</p>
 <p>Thoughts:</p>
 <ul>
 <li><p>is age at maturity even dimorphic enough to justify splitting sex classes?</p></li>
 <li><p>is it better to combine the sex classes for the sake of more data or to rely on the scant sex-specific data points?</p></li>
+<li><p>is AFR a sufficient proxy? or depending on the study AFR may be the preferred measure?</p></li>
 </ul>
 </section>
 </section>
