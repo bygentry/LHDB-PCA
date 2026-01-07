@@ -15,7 +15,7 @@ execute:
 editor: visual
 ---
 
-## Introduction
+# Introduction
 
 > “Given this general importance of life history data and with the scientific ideals of transparency and repeatability in mind, one would assume that researchers have long since agreed upon life history definitions and are using reliable and accurate data stored in standardized repositories. However, while various databases exist, standards for data quality and specification are lacking.” (Borries et al. 2013)
 
@@ -23,15 +23,17 @@ Life history theory has provided not just a framework to understand how organism
 
 Here we present a guide that addresses these and other issues for primatologists who want to employ life history data. We review the characteristics of five databases that contain life history data on primates. We also present a frequently advocated approach to summarize variation across traits using dimension reduction analysis, with which we summarize data here. 
 
-introduce databases, pros/cons
+The databases assessed here are the PanTHERIA (Jones et al. 2009), AnAge (de Magalhães & Costa 2009)
 
-## Setup
+# Analysis
 
-### Data Import & Cleaning
+## Proportions of Missing Values
+
+### Data Cleaning
 
 ```{r}
 #| label: data import script
-#| code-fold: true
+#| echo: false
 
 source("https://raw.githubusercontent.com/bygentry/LHDB-PCA/refs/heads/main/setup.R")
 ```
@@ -227,11 +229,7 @@ kp_s <- kp_s %>%
   )
 ```
 
-# Analysis
-
-## Proportions of Missing Values
-
-#### Pre-visualization Processing & Test Setup
+### Pre-visualization Processing & Permutation Test Setup
 
 ```{r}
 #| label: heat map prep
