@@ -429,7 +429,7 @@ Of the species we have data for, many are lacking at least one important life hi
 
 ```{r}
 #| label: heatmap visualization 1
-#| fig.cap: "**Figure 1.** Heat map of missing values for key life history traits across all five databases. Low heat (yellow) signifies few missing values while high heat (red) signifies many missing values."
+#| fig-cap: "**Figure 1.** Heat map of missing values for key life history traits across all five databases. Low heat (yellow) signifies few missing values while high heat (red) signifies many missing values."
 #| echo: false
 ggplot(missingness, aes(x = source, y = trait, fill = prop_missing)) +
   geom_tile(color = "snow") +
@@ -455,7 +455,7 @@ notes:
 
 -   sex-reliant vars for females are more complete than male or unknown
 
--   weaning age, IBI, and gestation length are the most complete across all data sets (lifespan is a close 4th but K&P don't report any values for it)
+-   weaning age, IBI, and gestation length are the most complete across all data sets (lifespan is a close 4th but K&P don't report any values for it - same with AnAge )
 
 -   **all databases have at least one unreported variable of our key variable selection**
 
