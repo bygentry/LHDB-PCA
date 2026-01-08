@@ -118,11 +118,10 @@ window.Quarto = {
   <li><a href="#preliminaries" id="toc-preliminaries" class="nav-link" data-scroll-target="#preliminaries">Preliminaries</a>
   <ul class="collapse">
   <li><a href="#data-cleaning" id="toc-data-cleaning" class="nav-link" data-scroll-target="#data-cleaning">Data Cleaning</a></li>
+  <li><a href="#pre-vis-processing-stats-test-setup" id="toc-pre-vis-processing-stats-test-setup" class="nav-link" data-scroll-target="#pre-vis-processing-stats-test-setup">Pre-vis Processing &amp; Stats Test Setup</a></li>
   </ul></li>
-  <li><a href="#proportions-of-missing-values" id="toc-proportions-of-missing-values" class="nav-link" data-scroll-target="#proportions-of-missing-values">Proportions of Missing Values</a>
-  <ul class="collapse">
-  <li><a href="#pre-vis-processing-permutation-test-setup" id="toc-pre-vis-processing-permutation-test-setup" class="nav-link" data-scroll-target="#pre-vis-processing-permutation-test-setup">Pre-vis Processing &amp; Permutation Test Setup</a></li>
-  </ul></li>
+  <li><a href="#proportions-of-missing-values" id="toc-proportions-of-missing-values" class="nav-link" data-scroll-target="#proportions-of-missing-values">Proportions of Missing Values</a></li>
+  <li><a href="#other-analysis" id="toc-other-analysis" class="nav-link" data-scroll-target="#other-analysis">other analysis?</a></li>
   <li><a href="#sources" id="toc-sources" class="nav-link" data-scroll-target="#sources">Sources</a></li>
   </ul></li>
   </ul>
@@ -399,49 +398,8 @@ window.Quarto = {
 </div>
 </section>
 </section>
-</section>
-<section id="proportions-of-missing-values" class="level2">
-<h2 class="anchored" data-anchor-id="proportions-of-missing-values">Proportions of Missing Values</h2>
-<p>One of the primary issues with primate life history data is how few species are represented. None of the databases inspected in this study represent more than 70% of primate species, highlighting the ever-present need for more data.</p>
-<table class="caption-top table">
-<caption><strong>Table 2.</strong> Proportions of primate species represented by each database. * Calculated as N/535, the number of species recognized by the IUCN / SSC Primate Specialist Group (2023)</caption>
-<thead>
-<tr class="header">
-<th>Database</th>
-<th>N species</th>
-<th>Proportion of Primates Represented*</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Amniotes (Myhrvold et al.&nbsp;2015)</td>
-<td>365</td>
-<td>.68</td>
-</tr>
-<tr class="even">
-<td>AnAge (de Magalhães &amp; Costa 2009)</td>
-<td>174</td>
-<td>.33</td>
-</tr>
-<tr class="odd">
-<td>Ernest (2003)</td>
-<td>156</td>
-<td>.29</td>
-</tr>
-<tr class="even">
-<td>PanTHERIA (Jones et al.&nbsp;2009)</td>
-<td>376</td>
-<td>.70</td>
-</tr>
-<tr class="odd">
-<td>Kappeler &amp; Pereira (2003)</td>
-<td>310</td>
-<td>.58</td>
-</tr>
-</tbody>
-</table>
-<section id="pre-vis-processing-permutation-test-setup" class="level3">
-<h3 class="anchored" data-anchor-id="pre-vis-processing-permutation-test-setup">Pre-vis Processing &amp; Permutation Test Setup</h3>
+<section id="pre-vis-processing-stats-test-setup" class="level3">
+<h3 class="anchored" data-anchor-id="pre-vis-processing-stats-test-setup">Pre-vis Processing &amp; Stats Test Setup</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -604,6 +562,49 @@ window.Quarto = {
 <span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
+</section>
+</section>
+<section id="proportions-of-missing-values" class="level2">
+<h2 class="anchored" data-anchor-id="proportions-of-missing-values">Proportions of Missing Values</h2>
+<p>One of the primary issues with primate life history data is how few species are represented. None of the databases inspected in this study represent more than 70% of primate species, highlighting the ever-present need for more data.</p>
+<table class="caption-top table">
+<caption><strong>Table 2.</strong> Proportions of primate species represented by each database. *Calculated as N/535, the number of species recognized by the IUCN / SSC Primate Specialist Group (2023)</caption>
+<thead>
+<tr class="header">
+<th>Database</th>
+<th>N species</th>
+<th>Proportion of Primates Represented*</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Amniotes (Myhrvold et al.&nbsp;2015)</td>
+<td>365</td>
+<td>.68</td>
+</tr>
+<tr class="even">
+<td>AnAge (de Magalhães &amp; Costa 2009)</td>
+<td>174</td>
+<td>.33</td>
+</tr>
+<tr class="odd">
+<td>Ernest (2003)</td>
+<td>156</td>
+<td>.29</td>
+</tr>
+<tr class="even">
+<td>PanTHERIA (Jones et al.&nbsp;2009)</td>
+<td>376</td>
+<td>.70</td>
+</tr>
+<tr class="odd">
+<td>Kappeler &amp; Pereira (2003)</td>
+<td>310</td>
+<td>.58</td>
+</tr>
+</tbody>
+</table>
+<p>Of the species we have data for, many are lacking at least one important life history statistic. Heat map analysis of the proportion of missing values to data points for each key life history trait reveal several patterns in the short-comings of the data we have available:</p>
 <section id="visualization-interpretation" class="level4">
 <h4 class="anchored" data-anchor-id="visualization-interpretation">Visualization &amp; Interpretation</h4>
 <div class="cell">
@@ -620,8 +621,8 @@ window.Quarto = {
 <ul>
 <li><p>sex-reliant vars are most incomplete</p></li>
 <li><p>sex-reliant vars for females are more complete than male or unknown</p></li>
-<li><p>weaning age, IBI, and gestation length most complete across datasets (lifespan close 4th but K&amp;P doesn’t record longevity)</p></li>
-<li><p><strong>all datasets have at least one unreported variable of our key variable selection</strong></p></li>
+<li><p>weaning age, IBI, and gestation length are the most complete across all data sets (lifespan is a close 4th but K&amp;P don’t report any values for it)</p></li>
+<li><p><strong>all databases have at least one unreported variable of our key variable selection</strong></p></li>
 </ul>
 <p>Since it appears that the sex-dependent variables (“Sexual Maturity - Female (Days)”, “Sexual Maturity - Male (Days)”, “Sexual Maturity - Unspecified (Days)”, “Adult Mass - Female (g)”, “Adult Mass - Male (g)”, “Adult Mass - Unspecified (g)”) are the most incomplete across all of the databases, I ran a one-tailed permutation test to compare the mean completeness of the databases using all of our key LH variables and the mean completeness when the sex-dependent variables are excluded:</p>
 <div class="cell">
@@ -1173,6 +1174,8 @@ Mean Completeness
 </ul>
 </section>
 </section>
+<section id="other-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="other-analysis">other analysis?</h2>
 </section>
 <section id="sources" class="level2">
 <h2 class="anchored" data-anchor-id="sources">Sources</h2>
