@@ -23,11 +23,11 @@ Life history theory has provided not just a framework to understand how organism
 
 Here we present a guide that addresses these and other issues for primatologists who want to employ life history data. We review the characteristics of five databases that contain life history data on primates. We also present a frequently advocated approach to summarize variation across traits using dimension reduction analysis, with which we summarize data here. 
 
-The databases assessed here are the PanTHERIA (Jones et al. 2009), AnAge (de Magalhães & Costa 2009)
+The databases assessed here are the PanTHERIA (Jones et al. 2009), AnAge (de Magalhães & Costa 2009), Amniotes (Myrhvold et al. 2015), Ernest (2003), and Kappeler & Pereira (2003) databases on life history statistics.
 
 # Analysis
 
-## Proportions of Missing Values
+## Preliminaries
 
 ### Data Cleaning
 
@@ -40,15 +40,31 @@ source("https://raw.githubusercontent.com/bygentry/LHDB-PCA/refs/heads/main/setu
 
 #### Filtering Primate Data
 
-Four of the databases under investigation include data for more animals than primates - pulling out the primate data makes analysis cleaner and easier.
+Four of the databases under investigation (all but Kappeler & Pereira (2003)) include data for more animals than primates - our focus is on the quality of *primate* life history data, so all other taxa were excluded from our tests.
 
 #### Missing Values and Point Correction
 
-Our .csv of the Kappeler & Pereira database was transcribed by hand from a digital scan of the original paper publication. One value of adult female body mass (`BM.F`) in the Kappeler & Pereira data has a "?", making the object type 'character' instead of 'numeric' . Mixing number and non-number characters will result in forced NA for that value when converting to type numeric, so the '?' is removed to include the value in completeness tests. Additionally, several of the databases use -`999` as the "missing value" - these are converted to `NA` for all fields of type numeric to allow quantitative analysis.
+Our .csv of the Kappeler & Pereira database was transcribed by hand from a digital scan of the original paper publication. One value of adult female body mass (`BM.F`) in the Kappeler & Pereira data has a "?", making the object type 'character' instead of 'numeric' . Mixing number and non-number characters would result in a forced NA for that value when converting to type numeric, so the '?' is removed to include the value in completeness tests despite its uncertainty. Additionally, several of the databases use -`999` as the "missing value" - these are converted to `NA` for all fields of type numeric to allow quantitative analysis.
 
 #### Variable Selection
 
 > See the [Variable_Comparisons page](https://docs.google.com/spreadsheets/d/12S0tICGxE4arILK3V4fUOHz7dU1SGTNLb7kZeripvZU/edit?gid=909701723#gid=909701723) for a quick side-by-side of how our variables are defined in each source. Individual database variable description pages can be accessed through the toolbar at the bottom of the linked page for more details.
+
+Each database records a number of life history statistics. Many of the statistics are reported in most or all of the databases, as they are core life history traits (i.e. inter-birth interval, gestation length, etc). Rather than evaluating the completeness and reliability of every variable across all databases, we focus on a subset of “key life history traits” that characterize primate reproductive life history and are present in all or most of the databases examined. These traits serve as a representative sample of variables commonly used in taxonomic comparisons in life history research:
+
+| Trait                                | Definition |
+|:-------------------------------------|------------|
+| Adult Body Mass (Female)             |            |
+| Adult Body Mass (Male)               |            |
+| Adult Body Mass (Unspecified)        |            |
+| Age at First Reproduction            |            |
+| Age at Sexual Maturity (Female)      |            |
+| Age at Sexual Maturity (Male)        |            |
+| Age at Sexual Maturity (Unspecified) |            |
+| Gestation Length                     |            |
+| Inter-birth Interval                 |            |
+| Lifespan                             |            |
+| Weaning Age                          |            |
 
 ```{r}
 #| label: building dfs of key vars
@@ -153,7 +169,7 @@ To make valid comparisons, variables across databases should be in common units.
 
 3.  All mass values are reported in grams
 
-Some of the time values are reported in months - I treat a month as the average length of a month in the Gregorian calendar in days and use these conversion factors throughout unit standardization:
+Some of the time values are reported in months - we treat a month as the average length of a month in the Gregorian calendar in days and use these conversion factors throughout unit standardization:
 
 $$ 1 \text{ year } = \frac{365.25 \text{ days}}{1 \text{ year}} = \frac{365.25 \text{ days}}{12 \text{ months}} \approx \frac{30.44 \text{ days}}{1 \text{ month}} \\ $$
 
@@ -171,7 +187,7 @@ The following unit changes are necessary:
 
 -   Age at First Reproduction (AFR), Gestation Length (gest_len), and Weaning Age (weaning_age) should be converted from months to days
 
--   IBI should be converted from litters/year to days
+-   IBI should be derived from litters/year
 
     -   IBI is effectively days/birth (or days/litter) and can be derived from litters/year as such:
 
@@ -229,7 +245,21 @@ kp_s <- kp_s %>%
   )
 ```
 
-### Pre-visualization Processing & Permutation Test Setup
+## Proportions of Missing Values
+
+One of the primary issues with primate life history data is how few species are represented. None of the databases inspected in this study represent more than 70% of primate species, highlighting the ever-present need for more data.
+
+| Database | N species | Proportion of Primates Represented\* |
+|----|----|----|
+| Amniotes (Myhrvold et al. 2015) | 365 | .68 |
+| AnAge (de Magalhães & Costa 2009) | 174 | .33 |
+| Ernest (2003) | 156 | .29 |
+| PanTHERIA (Jones et al. 2009) | 376 | .70 |
+| Kappeler & Pereira (2003) | 310 | .58 |
+
+: \* Calculated as N/535, the number of species recognized by the IUCN / SSC Primate Specialist Group (2023)
+
+### Pre-vis Processing & Permutation Test Setup
 
 ```{r}
 #| label: heat map prep
@@ -411,7 +441,7 @@ ggplot(missingness, aes(x = source, y = trait, fill = prop_missing)) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   labs(
-    title = "Proportions of Missing Values Across Datasets",
+    title = "Proportions of Missing Values for Key Traits",
     x = "Dataset", 
     y = "Trait")
 ```
@@ -424,7 +454,7 @@ notes:
 
 -   weaning age, IBI, and gestation length most complete across datasets (lifespan close 4th but K&P doesn't record longevity)
 
--   all datasets have at least one unreported variable of our key variable selection
+-   **all datasets have at least one unreported variable of our key variable selection**
 
 Since it appears that the sex-dependent variables ("Sexual Maturity - Female (Days)", "Sexual Maturity - Male (Days)", "Sexual Maturity - Unspecified (Days)", "Adult Mass - Female (g)", "Adult Mass - Male (g)", "Adult Mass - Unspecified (g)") are the most incomplete across all of the databases, I ran a one-tailed permutation test to compare the mean completeness of the databases using all of our key LH variables and the mean completeness when the sex-dependent variables are excluded:
 
@@ -457,7 +487,7 @@ perm_res %>%
   )
 ```
 
-Removing the sex-dependent variables improves completeness across the board, but the difference from a null distribution was only significant for Ernest (2003) (p = 0.013). However, because Ernest's database doesn't report these variables to begin with, we are essentially just making the comparison more fair by not including unreported variables. A similar effect takes place in the Amniote (Myrhvold et al. 2015) and AnAge (de Magalhães & Costa 2009) databases, which both had near-significant increases in completeness (0.052 and 0.069, respectively) when not testing for unreported variables. The variables that were the most complete across databases were also all sex-independent: weaning age, gestation length, and IBI. Lifespan and age at first reproduction have moderate completeness across all the databases except for AnAge, which doesn't report AFR, and the K&P dataset, which doesn't report lifespan.
+Removing the sex-dependent variables improves completeness across the board, but the difference from a null distribution was only significant for Ernest (2003) (p = 0.013). However, because Ernest's database doesn't report these variables to begin with, we are essentially just making the comparison more fair by not including unreported variables. A similar effect takes place in the Amniote (Myrhvold et al. 2015) and AnAge (de Magalhães & Costa 2009) databases, which both had near-significant increases in completeness (0.052 and 0.069, respectively) when not testing for unreported sex-dependent variables. The variables that were the most complete across databases were also all sex-*independent*: weaning age, gestation length, and IBI. Lifespan and age at first reproduction have moderate completeness across all the databases except for AnAge, which doesn't report AFR, and the K&P dataset, which doesn't report lifespan.
 
 ```{r, fig.cap = "Mean completeness of each database using all key variables (solid color) and sex-independent key variables (subset, translucent color). Numeric p-values indicate results of one-tailed permutation tests comparing the observed difference in mean completeness to the null distribution generated by random subsets of equal size (n = 10,000)"}
 #| label: layered bar chart
@@ -493,7 +523,7 @@ ggplot(composite_completeness, aes(x = source)) +
   labs(
     x = "Source Database",
     y = "Mean Completeness",
-    title = "Mean Completeness of Sexless vs All Key Vars"
+    title = "Mean Completeness of Sexless vs All Key Traits"
   ) +
   theme_bw() +
   theme(
@@ -502,7 +532,9 @@ ggplot(composite_completeness, aes(x = source)) +
   )
 ```
 
-The PanTHERIA (blue) and Kappeler & Pereira (green) databases both had very poor completeness scores across all variables. For select species with high representation, like humans or chimpanzees, the Kappeler & Pereira set seems like a good inclusion but it doesn't have much to offer in wide taxonomic comparisons. Ernest (dark blue) has the second highest mean completeness when only considering sex-independent variables but falls short in the number of primate species represented (only 156). Similarly, the AnAge database (purple) demonstrates high completeness for key variables but only contains data for 174 species of primates. PanTHERIA, while only having a mean completeness of 32% with sex-independent variables, boasts the greatest representation of primates with 376 species. In both representation and completeness, the Amniote database (yellow) is arguably the best. While only representing 365 primate species, its mean completeness is 61% for all variables and 76% for sex-independent variables.
+The PanTHERIA (blue) and Kappeler & Pereira (green) databases both had poor completeness scores across all variables. For select species with high representation, like humans or chimpanzees, the Kappeler & Pereira set seems like a good inclusion but it doesn't have much to offer in wide taxonomic comparisons. Ernest (dark blue) has the second highest mean completeness when only considering sex-independent variables but falls short in the number of primate species represented (only 156). Similarly, the AnAge database (purple) demonstrates high completeness for key variables but only contains data for 174 species of primates. PanTHERIA, while only having a mean completeness of 32% with sex-independent variables, boasts the greatest representation of primates with 376 species. In both representation and completeness, the Amniote database (yellow) is arguably the best. While only representing 365 primate species, its mean completeness is 61% for all variables and 76% for sex-independent variables.
+
+NOTE: AnAge cites all other databases in our analysis so how is its completeness and number of species represented lower? more rigorous standard for data?
 
 ```{r, fig.cap="Heat map of missing values for key, sex-independent life history traits across all five databases. Low heat (yellow) signifies few missing values while high heat (red) signifies many missing values."}
 #| label: heatmap visualization 2
@@ -521,7 +553,7 @@ ggplot(missingness_no_sex, aes(x = source, y = trait, fill = prop_missing)) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   labs(
-    title = "Proportions of Missing Values for Sexless Variables Across Datasets",
+    title = "Proportions of Missing Values for Sexless Key Traits",
     x = "Dataset", 
     y = "Trait")
 ```
@@ -546,8 +578,10 @@ Thoughts:
 
 4.  de Magalhães, J. P., Abidi, Z., Dos Santos, G. A., Avelar, R. A., Barardo, D., Chatsirisupachai, K., Clark, P., De-Souza, E. A., Johnson, E. J., Lopes, I., Novoa, G., Senez, L., Talay, A., Thornton, D., To, P. K. P. (2024) "Human Ageing Genomic Resources: updates on key databases in ageing research." Nucleic Acids Research 52(D1):D900-D908.
 
-5.  Jones, K. E., Bielby, J., Cardillo, M., Fritz, S. A., O’Dell, J., Orme, C. D. L., Safi, K., Sechrest, W., Boakes, E. H., Carbone, C., Connolly, C., Cutts, M. J., Foster, J. K., Grenyer, R., Habib, M., Plaster, C. A., Price, S. A., Rigby, E. A., Rist, J., ... Purvis, A. (2009). PanTHERIA: A species-level database of life history, ecology, and geography of extant and recently extinct mammals. Ecology, 90(9), 2648–2648. <https://doi.org/10.1890/08-1494.1>
+5.  IUCN SSC Primate Specialist Group. (2023). *Report of the IUCN Species Survival Commission Primate Specialist Group, Issue 64* (2023). IUCN. <https://iucn.org/sites/default/files/2024-10/2023-iucn-ssc-primate-sg-report_publication.pdf>
 
-6.  Kappeler, P. M., Pereira, M. E., & Schaik, C. P. v. (2003). Primate life histories and socioecology. In P. M. Kappeler & M. E. Pereira (Eds.), *Primate life histories and socioecology* (pp. 1–20). The University of Chicago Press.
+6.  Jones, K. E., Bielby, J., Cardillo, M., Fritz, S. A., O’Dell, J., Orme, C. D. L., Safi, K., Sechrest, W., Boakes, E. H., Carbone, C., Connolly, C., Cutts, M. J., Foster, J. K., Grenyer, R., Habib, M., Plaster, C. A., Price, S. A., Rigby, E. A., Rist, J., ... Purvis, A. (2009). PanTHERIA: A species-level database of life history, ecology, and geography of extant and recently extinct mammals. Ecology, 90(9), 2648–2648. <https://doi.org/10.1890/08-1494.1>
 
-7.  Myhrvold, N.P., Baldridge, E., Chan, B., Sivam, D., Freeman, D.L. and Ernest, S.K.M. (2015), An amniote life-history database to perform comparative analyses with birds, mammals, and reptiles. Ecology, 96: 3109-3109. <https://doi.org/10.1890/15-0846R.1>
+7.  Kappeler, P. M., Pereira, M. E., & Schaik, C. P. v. (2003). Primate life histories and socioecology. In P. M. Kappeler & M. E. Pereira (Eds.), *Primate life histories and socioecology* (pp. 1–20). The University of Chicago Press.
+
+8.  Myhrvold, N.P., Baldridge, E., Chan, B., Sivam, D., Freeman, D.L. and Ernest, S.K.M. (2015), An amniote life-history database to perform comparative analyses with birds, mammals, and reptiles. Ecology, 96: 3109-3109. <https://doi.org/10.1890/15-0846R.1>
