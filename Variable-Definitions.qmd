@@ -1,0 +1,82 @@
+---
+title: "An Investigation of Primate Life History Data Quality"
+author: "Gentry Miller, B.A. Biological Anthropology"
+format: 
+  html:
+    code-overflow: wrap
+    toc: true
+    toc-location: left
+    toc-depth: 3
+    toc-title: Contents
+    df-print: kable
+    theme: readable
+execute: 
+  freeze: auto
+editor: visual
+---
+
+# Life History Database Variable Definitions
+
+```{r}
+#| label: variable definiton tables
+#| echo: false
+#| code-fold: true
+#| message: false
+#| warning: false
+#| results: asis
+
+options(repos = "https://cran.us.r-project.org")
+
+# loads necessary packages
+pacman::p_load(
+  gt, dplyr, readr, tidyverse, xfun, knitr, rmarkdown, htmltools
+)
+
+# loads file
+var_defs <- readr::read_csv(
+  file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/refs/heads/main/Data/variable_definition_comparisons.csv",
+  col_names = TRUE,
+  show_col_types = FALSE
+)
+
+# cleans any hanging whitespaces and converts "-" to NA
+var_defs <- var_defs %>% 
+  dplyr::mutate(
+    Database = stringr::str_squish(Database),
+    Variable = stringr::str_squish(Variable),
+    Unit = dplyr::na_if(stringr::str_squish(Unit), "-"),
+    Description = dplyr::na_if(stringr::str_squish(Description), "-"),
+    Notes = dplyr::na_if(stringr::str_squish(Notes), "-")
+  ) %>% 
+  dplyr::arrange(Database, Variable)
+
+# splits by source database
+var_defs <- var_defs %>% split(.$Database)
+
+# creates table of variable, unit, definition, and notes for each database
+iwalk(var_defs, function(db_df, db_name){
+  anchor_id <- paste0("db-", stringr::str_replace_all(db_name, "[^A-Za-z0-9]+", "-"))
+  
+  cat("\n\n")
+  cat("## ", db_name, " {#", anchor_id, "}\n\n", sep = "")
+  
+  db_df %>% 
+    select(Variable, Unit, Description, Notes) %>% 
+    gt() %>% 
+    tab_options(table.font.size = px(12), data_row.padding = px(3)) %>% 
+    cols_label(
+      Variable = "Variable",
+      Unit = "Unit",
+      Description = "Definition",
+      Notes = "Notes"
+    ) %>% 
+    cols_width(
+      Variable ~ px(180),
+      Unit ~ px(90),
+      Description ~ px(380),
+      Notes ~ px(300)
+    ) %>% 
+    fmt_markdown(columns = c(Description, Notes)) %>% 
+    print()
+})
+```

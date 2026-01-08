@@ -1,0 +1,3667 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Gentry Miller, B.A. Biological Anthropology">
+
+<title>An Investigation of Primate Life History Data Quality</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="Variable-Definitions_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Variable-Definitions_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="Variable-Definitions_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="Variable-Definitions_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="Variable-Definitions_files/libs/quarto-html/popper.min.js"></script>
+<script src="Variable-Definitions_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Variable-Definitions_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Variable-Definitions_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Variable-Definitions_files/libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Variable-Definitions_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Variable-Definitions_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Variable-Definitions_files/libs/bootstrap/bootstrap-0df8dfdce555b5e457e6102d33c50900.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#life-history-database-variable-definitions" id="toc-life-history-database-variable-definitions" class="nav-link active" data-scroll-target="#life-history-database-variable-definitions">Life History Database Variable Definitions</a>
+  <ul class="collapse">
+  <li><a href="#db-AnAge" id="toc-db-AnAge" class="nav-link" data-scroll-target="#db-AnAge">AnAge</a></li>
+  <li><a href="#db-Ernest" id="toc-db-Ernest" class="nav-link" data-scroll-target="#db-Ernest">Ernest</a></li>
+  <li><a href="#db-Kappeler-Pereira" id="toc-db-Kappeler-Pereira" class="nav-link" data-scroll-target="#db-Kappeler-Pereira">Kappeler &amp; Pereira</a></li>
+  <li><a href="#db-Myrhvold-et-al" id="toc-db-Myrhvold-et-al" class="nav-link" data-scroll-target="#db-Myrhvold-et-al">Myrhvold et al</a></li>
+  <li><a href="#db-PanTHERIA" id="toc-db-PanTHERIA" class="nav-link" data-scroll-target="#db-PanTHERIA">PanTHERIA</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">An Investigation of Primate Life History Data Quality</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Gentry Miller, B.A. Biological Anthropology </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="life-history-database-variable-definitions" class="level1">
+<h1>Life History Database Variable Definitions</h1>
+<section id="db-AnAge" class="level2">
+<h2 class="anchored" data-anchor-id="db-AnAge">AnAge</h2>
+<div id="avqdjjvnif" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#avqdjjvnif table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#avqdjjvnif thead, #avqdjjvnif tbody, #avqdjjvnif tfoot, #avqdjjvnif tr, #avqdjjvnif td, #avqdjjvnif th {
+  border-style: none;
+}
+
+#avqdjjvnif p {
+  margin: 0;
+  padding: 0;
+}
+
+#avqdjjvnif .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 12px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#avqdjjvnif .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#avqdjjvnif .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#avqdjjvnif .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#avqdjjvnif .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#avqdjjvnif .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#avqdjjvnif .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#avqdjjvnif .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#avqdjjvnif .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#avqdjjvnif .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#avqdjjvnif .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#avqdjjvnif .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#avqdjjvnif .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#avqdjjvnif .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#avqdjjvnif .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#avqdjjvnif .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#avqdjjvnif .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#avqdjjvnif .gt_row {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#avqdjjvnif .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#avqdjjvnif .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#avqdjjvnif .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#avqdjjvnif .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#avqdjjvnif .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#avqdjjvnif .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#avqdjjvnif .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#avqdjjvnif .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#avqdjjvnif .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#avqdjjvnif .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#avqdjjvnif .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#avqdjjvnif .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#avqdjjvnif .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#avqdjjvnif .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#avqdjjvnif .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#avqdjjvnif .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#avqdjjvnif .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#avqdjjvnif .gt_left {
+  text-align: left;
+}
+
+#avqdjjvnif .gt_center {
+  text-align: center;
+}
+
+#avqdjjvnif .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#avqdjjvnif .gt_font_normal {
+  font-weight: normal;
+}
+
+#avqdjjvnif .gt_font_bold {
+  font-weight: bold;
+}
+
+#avqdjjvnif .gt_font_italic {
+  font-style: italic;
+}
+
+#avqdjjvnif .gt_super {
+  font-size: 65%;
+}
+
+#avqdjjvnif .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#avqdjjvnif .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#avqdjjvnif .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#avqdjjvnif .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#avqdjjvnif .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#avqdjjvnif .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#avqdjjvnif .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#avqdjjvnif .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#avqdjjvnif div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<colgroup>
+<col style="width:180px;">
+<col style="width:90px;">
+<col style="width:380px;">
+<col style="width:300px;">
+</colgroup>
+<thead>
+<tr class="gt_col_headings">
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Variable">
+Variable
+</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Unit">
+Unit
+</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Description">
+Definition
+</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Notes">
+Notes
+</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Adult Mass (F)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Adult Mass (M)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Adult Mass (Unspecified)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+grams
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Age @ First Reproductoin
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Gestation Length
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Interbirth Interval
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Lifespan
+</td>
+<td headers="Unit" class="gt_row gt_left">
+years
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Sexual Maturity (F)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Sexual Maturity (M)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Sexual Maturity (Unspecified)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Weaning Age
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="db-Ernest" class="level2">
+<h2 class="anchored" data-anchor-id="db-Ernest">Ernest</h2>
+<div id="gumojkwezc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#gumojkwezc table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#gumojkwezc thead, #gumojkwezc tbody, #gumojkwezc tfoot, #gumojkwezc tr, #gumojkwezc td, #gumojkwezc th {
+  border-style: none;
+}
+
+#gumojkwezc p {
+  margin: 0;
+  padding: 0;
+}
+
+#gumojkwezc .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 12px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#gumojkwezc .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#gumojkwezc .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#gumojkwezc .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#gumojkwezc .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#gumojkwezc .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#gumojkwezc .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#gumojkwezc .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#gumojkwezc .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#gumojkwezc .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#gumojkwezc .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#gumojkwezc .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#gumojkwezc .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#gumojkwezc .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#gumojkwezc .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#gumojkwezc .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#gumojkwezc .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#gumojkwezc .gt_row {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#gumojkwezc .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#gumojkwezc .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#gumojkwezc .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#gumojkwezc .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#gumojkwezc .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#gumojkwezc .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#gumojkwezc .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#gumojkwezc .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#gumojkwezc .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#gumojkwezc .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#gumojkwezc .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#gumojkwezc .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#gumojkwezc .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#gumojkwezc .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#gumojkwezc .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#gumojkwezc .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#gumojkwezc .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#gumojkwezc .gt_left {
+  text-align: left;
+}
+
+#gumojkwezc .gt_center {
+  text-align: center;
+}
+
+#gumojkwezc .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#gumojkwezc .gt_font_normal {
+  font-weight: normal;
+}
+
+#gumojkwezc .gt_font_bold {
+  font-weight: bold;
+}
+
+#gumojkwezc .gt_font_italic {
+  font-style: italic;
+}
+
+#gumojkwezc .gt_super {
+  font-size: 65%;
+}
+
+#gumojkwezc .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#gumojkwezc .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#gumojkwezc .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#gumojkwezc .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#gumojkwezc .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#gumojkwezc .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#gumojkwezc .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#gumojkwezc .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#gumojkwezc div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<colgroup>
+<col style="width:180px;">
+<col style="width:90px;">
+<col style="width:380px;">
+<col style="width:300px;">
+</colgroup>
+<thead>
+<tr class="gt_col_headings">
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Variable">
+Variable
+</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Unit">
+Unit
+</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Description">
+Definition
+</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Notes">
+Notes
+</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Adult Mass (F)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+grams
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="YXZlcmFnZSBtYXNzIG9mIGEgbm9uLXByZWduYW50IGFkdWx0IEY="><span class="gt_from_md">average mass of a non-pregnant adult F</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Adult Mass (M)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Adult Mass (Unspecified)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Age @ First Reproductoin
+</td>
+<td headers="Unit" class="gt_row gt_left">
+months
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="YXZlcmFnZSBhZ2Ugb2YgZmlyc3QgY29uY2VwdGlvbg=="><span class="gt_from_md">average age of first conception</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Gestation Length
+</td>
+<td headers="Unit" class="gt_row gt_left">
+months
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="QXZlcmFnZSBsZW5ndGggb2YgdGltZSBmb3IgdGhlIGdlc3RhdGlvbiBvZiBhIGxpdmUgb2Zmc3ByaW5nLiBEZWxheWVkIGltcGxhbnRhdGlvbiBub3QgaW5jbHVkZWQgaW4gZ2VzdGF0aW9uIGxlbmd0aA=="><span class="gt_from_md">Average length of time for the gestation of a live offspring. Delayed implantation not included in gestation length</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Interbirth Interval
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="RXJuZXN0IHJlcG9ydHMgbGl0dGVycy95ZWFyLCBraW5kIG9mIHJlY2lwcm9jYWwgb2YgSUJJPyBBbHNvIHJlcG9ydGVkIGJ5IE15cmh2b2xkICYgUGFuVEhFUklB"><span class="gt_from_md">Ernest reports litters/year, kind of reciprocal of IBI? Also reported by Myrhvold &amp; PanTHERIA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Lifespan
+</td>
+<td headers="Unit" class="gt_row gt_left">
+months
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TWF4aW11bSByZWNvcmRlZCBsaWZlc3BhbiBvZiBlaXRoZXIgc2V4"><span class="gt_from_md">Maximum recorded lifespan of either sex</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Sexual Maturity (F)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Sexual Maturity (M)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Sexual Maturity (Unspecified)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Weaning Age
+</td>
+<td headers="Unit" class="gt_row gt_left">
+months
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="VGhlIHRpbWUgZnJvbSBicml0aCB0byB3aGVuIG9mZnNwcmluZyBiZWdpbnMgZWF0aW5nIHNvbGlkIGZvb2Q="><span class="gt_from_md">The time from brith to when offspring begins eating solid food</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="db-Kappeler-Pereira" class="level2">
+<h2 class="anchored" data-anchor-id="db-Kappeler-Pereira">Kappeler &amp; Pereira</h2>
+<div id="tqkiqlavij" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#tqkiqlavij table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#tqkiqlavij thead, #tqkiqlavij tbody, #tqkiqlavij tfoot, #tqkiqlavij tr, #tqkiqlavij td, #tqkiqlavij th {
+  border-style: none;
+}
+
+#tqkiqlavij p {
+  margin: 0;
+  padding: 0;
+}
+
+#tqkiqlavij .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 12px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#tqkiqlavij .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#tqkiqlavij .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#tqkiqlavij .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#tqkiqlavij .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#tqkiqlavij .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#tqkiqlavij .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#tqkiqlavij .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#tqkiqlavij .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#tqkiqlavij .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#tqkiqlavij .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#tqkiqlavij .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#tqkiqlavij .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#tqkiqlavij .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#tqkiqlavij .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#tqkiqlavij .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#tqkiqlavij .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#tqkiqlavij .gt_row {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#tqkiqlavij .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#tqkiqlavij .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#tqkiqlavij .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#tqkiqlavij .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#tqkiqlavij .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#tqkiqlavij .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#tqkiqlavij .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#tqkiqlavij .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#tqkiqlavij .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#tqkiqlavij .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#tqkiqlavij .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#tqkiqlavij .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#tqkiqlavij .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#tqkiqlavij .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#tqkiqlavij .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#tqkiqlavij .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#tqkiqlavij .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#tqkiqlavij .gt_left {
+  text-align: left;
+}
+
+#tqkiqlavij .gt_center {
+  text-align: center;
+}
+
+#tqkiqlavij .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#tqkiqlavij .gt_font_normal {
+  font-weight: normal;
+}
+
+#tqkiqlavij .gt_font_bold {
+  font-weight: bold;
+}
+
+#tqkiqlavij .gt_font_italic {
+  font-style: italic;
+}
+
+#tqkiqlavij .gt_super {
+  font-size: 65%;
+}
+
+#tqkiqlavij .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#tqkiqlavij .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#tqkiqlavij .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#tqkiqlavij .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#tqkiqlavij .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#tqkiqlavij .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#tqkiqlavij .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#tqkiqlavij .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#tqkiqlavij div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<colgroup>
+<col style="width:180px;">
+<col style="width:90px;">
+<col style="width:380px;">
+<col style="width:300px;">
+</colgroup>
+<thead>
+<tr class="gt_col_headings">
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Variable">
+Variable
+</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Unit">
+Unit
+</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Description">
+Definition
+</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Notes">
+Notes
+</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Adult Mass (F)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+grams
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="bWVhbiBib2R5IG1hc3Mgb2Ygd2lsZCBhZHVsdCBmZW1hbGVz"><span class="gt_from_md">mean body mass of wild adult females</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Adult Mass (M)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Adult Mass (Unspecified)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+grams
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="bWVhbiBib2R5IG1hc3Mgb2Ygd2lsZCBhZHVsdHMgb2YgdW5rbm93biBzZXg="><span class="gt_from_md">mean body mass of wild adults of unknown sex</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="ZGVzY3JpcHRpb24gbXkgb3duIC0gb3JpZ2luYWwgcmVwb3J0cyBmZW1hbGUgYW5kIHVua25vd24gc2V4IHdpdGhpbiBhIHNpbmdsZSB2YXJpYWJsZSB3aGVyZWluIHVua25vd24gc2V4IHZhbHVlcyBhcmUgZGVub3RlZCBieSB+eCB3aGVyZSB4IGlzIHRoZSBtYXNzIGluIGdyYW1z"><span class="gt_from_md">description my own - original reports female and unknown sex within a single variable wherein unknown sex values are denoted by ~x where x is the mass in grams</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Age @ First Reproductoin
+</td>
+<td headers="Unit" class="gt_row gt_left">
+years
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="bWVhbiBhZ2Ugb2YgZmlyc3QgZmVtYWxlIHJlcHJvZHVjdGlvbg=="><span class="gt_from_md">mean age of first female reproduction</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Gestation Length
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="bWVhbiBnZXN0YXRpb24gbGVuZ3Ro"><span class="gt_from_md">mean gestation length</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Interbirth Interval
+</td>
+<td headers="Unit" class="gt_row gt_left">
+months
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="bWVhbiBpbnRlcmJpcnRoIGludGVydmFs"><span class="gt_from_md">mean interbirth interval</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Lifespan
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Sexual Maturity (F)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="cmVwb3J0cyBkdXJhdGlvbiBvZiBqdXZlbmlsZSBwZXJpb2QgaW4geWVhcnMsIHdlYW5pbmcgYWdlICsgZHVyYXRpb24gb2YganV2ZW5pbGUgPSBhZ2UgYXQgbWF0dXJpdHk/"><span class="gt_from_md">reports duration of juvenile period in years, weaning age + duration of juvenile = age at maturity?</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Sexual Maturity (M)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Sexual Maturity (Unspecified)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Weaning Age
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="bWVhbiBhZ2UgYXQgd2VhbmluZw=="><span class="gt_from_md">mean age at weaning</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="db-Myrhvold-et-al" class="level2">
+<h2 class="anchored" data-anchor-id="db-Myrhvold-et-al">Myrhvold et al</h2>
+<div id="nwuzoeytlg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#nwuzoeytlg table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#nwuzoeytlg thead, #nwuzoeytlg tbody, #nwuzoeytlg tfoot, #nwuzoeytlg tr, #nwuzoeytlg td, #nwuzoeytlg th {
+  border-style: none;
+}
+
+#nwuzoeytlg p {
+  margin: 0;
+  padding: 0;
+}
+
+#nwuzoeytlg .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 12px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#nwuzoeytlg .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#nwuzoeytlg .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#nwuzoeytlg .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#nwuzoeytlg .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#nwuzoeytlg .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#nwuzoeytlg .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#nwuzoeytlg .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#nwuzoeytlg .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#nwuzoeytlg .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#nwuzoeytlg .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#nwuzoeytlg .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#nwuzoeytlg .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#nwuzoeytlg .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#nwuzoeytlg .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#nwuzoeytlg .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#nwuzoeytlg .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#nwuzoeytlg .gt_row {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#nwuzoeytlg .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#nwuzoeytlg .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#nwuzoeytlg .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#nwuzoeytlg .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#nwuzoeytlg .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#nwuzoeytlg .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#nwuzoeytlg .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#nwuzoeytlg .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#nwuzoeytlg .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#nwuzoeytlg .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#nwuzoeytlg .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#nwuzoeytlg .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#nwuzoeytlg .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#nwuzoeytlg .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#nwuzoeytlg .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#nwuzoeytlg .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#nwuzoeytlg .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#nwuzoeytlg .gt_left {
+  text-align: left;
+}
+
+#nwuzoeytlg .gt_center {
+  text-align: center;
+}
+
+#nwuzoeytlg .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#nwuzoeytlg .gt_font_normal {
+  font-weight: normal;
+}
+
+#nwuzoeytlg .gt_font_bold {
+  font-weight: bold;
+}
+
+#nwuzoeytlg .gt_font_italic {
+  font-style: italic;
+}
+
+#nwuzoeytlg .gt_super {
+  font-size: 65%;
+}
+
+#nwuzoeytlg .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#nwuzoeytlg .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#nwuzoeytlg .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#nwuzoeytlg .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#nwuzoeytlg .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#nwuzoeytlg .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#nwuzoeytlg .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#nwuzoeytlg .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#nwuzoeytlg div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<colgroup>
+<col style="width:180px;">
+<col style="width:90px;">
+<col style="width:380px;">
+<col style="width:300px;">
+</colgroup>
+<thead>
+<tr class="gt_col_headings">
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Variable">
+Variable
+</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Unit">
+Unit
+</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Description">
+Definition
+</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Notes">
+Notes
+</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Adult Mass (F)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+grams
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="InRoZSBib2R5IG1hc3Mgb2YgYSBmZW1hbGUgaW4gZ3JhbXMi"><span class="gt_from_md">“the body mass of a female in grams”</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Adult Mass (M)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+grams
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="InRoZSBib2R5IG1hc3Mgb2YgYSBtYWxlIGluZGl2aWR1YWwgaW4gZ3JhbXMi"><span class="gt_from_md">“the body mass of a male individual in grams”</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Adult Mass (Unspecified)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+grams
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="InRoZSBib2R5IG1hc3Mgb2YgYW4gYWR1bHQgaW5kaXZpZHVhbCBpbiBncmFtcyI="><span class="gt_from_md">“the body mass of an adult individual in grams”</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Age @ First Reproductoin
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="bWVhbiBhZ2UgYXQgY29uY2VwdGlvbg=="><span class="gt_from_md">mean age at conception</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="cmVwb3J0cyBmZW1hbGUsIG1hbGUsIGFuZCB1bmtub3duIHNleCBtYXR1cml0eSB2YWx1ZXMgLSBpIGluY2x1ZGVkIHRoZSBmZW1hbGUgZGVzY3JpcHRpb24gYmMgaXRzIHRoZSBjbG9zZXN0IHRvIEFGUg=="><span class="gt_from_md">reports female, male, and unknown sex maturity values - i included the female description bc its the closest to AFR</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Gestation Length
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="InRoZSB0aW1lIGJldHdlZW4gY29uY2VwdGlvbiBhbmQgYmlydGggaW4gZGF5cyI="><span class="gt_from_md">“the time between conception and birth in days”</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Interbirth Interval
+</td>
+<td headers="Unit" class="gt_row gt_left">
+years
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="InRoZSB0aW1lIGJldHdlZW4gdGhlIHJlcHJvZHVjdGlvbiBjeWNsZXMgaW4geWVhcnMi"><span class="gt_from_md">“the time between the reproduction cycles in years”</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Lifespan
+</td>
+<td headers="Unit" class="gt_row gt_left">
+years
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TWF4aW11bV9sb25nZXZpdHlfeTogInRoZSBsb25nZXN0IGxpZmVzcGFuIHJlcG9ydGVkIG9mIHRoZSBzcGVjaWVzIGluIHllYXJzIiAvIGxvbmdldml0eV95OiAidGhlIGxpZmVzcGFuIG9mIGFuIGluZGl2aWR1YWwgaW4geWVhcnMi"><span class="gt_from_md">Maximum_longevity_y: “the longest lifespan reported of the species in years” / longevity_y: “the lifespan of an individual in years”</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Sexual Maturity (F)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="InRoZSBhbW91bnQgb2YgdGltZSBpdCB0YWtlcyBmb3IgYSBmZW1hbGUgaW5kaXZpZHVhbCB0byByZWFjaCBtYXR1cml0eSBpbiBkYXlzIg=="><span class="gt_from_md">“the amount of time it takes for a female individual to reach maturity in days”</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Sexual Maturity (M)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="IlRoZSBhbW91bnQgb2YgdGltZSBpdCB0YWtlcyBmb3IgYSBtYWxlIGluZGl2aWR1YWwgdG8gcmVhY2ggbWF0dXJpdHkgaW4gZGF5cyI="><span class="gt_from_md">“The amount of time it takes for a male individual to reach maturity in days”</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Sexual Maturity (Unspecified)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="InRoZSBhbW91bnQgb2YgdGltZSBpdCB0YWtlcyBmb3IgYW4gaW5kaXZpZHVhbCBvZiB1bnJlcG9ydGVkIHNleCB0byByZWFjaCBtYXR1cml0eSBpbiBkYXlzIg=="><span class="gt_from_md">“the amount of time it takes for an individual of unreported sex to reach maturity in days”</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Weaning Age
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="IlRoZSBhbW91bnQgb2YgdGltZSBpdCB0YWtlcyB0byB3ZWFuIHRoZSBvZmZzcHJpbmcgaW4gZGF5cyI="><span class="gt_from_md">“The amount of time it takes to wean the offspring in days”</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="db-PanTHERIA" class="level2">
+<h2 class="anchored" data-anchor-id="db-PanTHERIA">PanTHERIA</h2>
+<div id="fcorcylwdy" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#fcorcylwdy table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#fcorcylwdy thead, #fcorcylwdy tbody, #fcorcylwdy tfoot, #fcorcylwdy tr, #fcorcylwdy td, #fcorcylwdy th {
+  border-style: none;
+}
+
+#fcorcylwdy p {
+  margin: 0;
+  padding: 0;
+}
+
+#fcorcylwdy .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 12px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#fcorcylwdy .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#fcorcylwdy .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#fcorcylwdy .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#fcorcylwdy .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#fcorcylwdy .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#fcorcylwdy .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#fcorcylwdy .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#fcorcylwdy .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#fcorcylwdy .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#fcorcylwdy .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#fcorcylwdy .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#fcorcylwdy .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#fcorcylwdy .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#fcorcylwdy .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#fcorcylwdy .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#fcorcylwdy .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#fcorcylwdy .gt_row {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#fcorcylwdy .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fcorcylwdy .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#fcorcylwdy .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#fcorcylwdy .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#fcorcylwdy .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fcorcylwdy .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#fcorcylwdy .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#fcorcylwdy .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#fcorcylwdy .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fcorcylwdy .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#fcorcylwdy .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#fcorcylwdy .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#fcorcylwdy .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#fcorcylwdy .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#fcorcylwdy .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fcorcylwdy .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#fcorcylwdy .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fcorcylwdy .gt_left {
+  text-align: left;
+}
+
+#fcorcylwdy .gt_center {
+  text-align: center;
+}
+
+#fcorcylwdy .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#fcorcylwdy .gt_font_normal {
+  font-weight: normal;
+}
+
+#fcorcylwdy .gt_font_bold {
+  font-weight: bold;
+}
+
+#fcorcylwdy .gt_font_italic {
+  font-style: italic;
+}
+
+#fcorcylwdy .gt_super {
+  font-size: 65%;
+}
+
+#fcorcylwdy .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#fcorcylwdy .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#fcorcylwdy .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#fcorcylwdy .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#fcorcylwdy .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#fcorcylwdy .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#fcorcylwdy .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#fcorcylwdy .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#fcorcylwdy div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<colgroup>
+<col style="width:180px;">
+<col style="width:90px;">
+<col style="width:380px;">
+<col style="width:300px;">
+</colgroup>
+<thead>
+<tr class="gt_col_headings">
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Variable">
+Variable
+</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Unit">
+Unit
+</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Description">
+Definition
+</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Notes">
+Notes
+</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Adult Mass (F)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Adult Mass (M)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Adult Mass (Unspecified)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+grams
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TWFzcyBvZiBub24gcHJlZ25hbnQgYWR1bHQgc3BlY2ltZW5zIG9mIGFsbCBwb3B1bGF0aW9uIHR5cGVzIGFuZCBzZXggY2xhc3Nlcw=="><span class="gt_from_md">Mass of non pregnant adult specimens of all population types and sex classes</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Age @ First Reproductoin
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="U2VlIFNleHVhbCBNYXR1cml0eSAoVW5zcGVjaWZpZWQp"><span class="gt_from_md">See Sexual Maturity (Unspecified)</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Gestation Length
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TGVuZ3RoIG9mIHRpbWUgb2Ygbm9uLWluYWN0aXZlIGZldGFsIGdyb3d0aDsgbWVhc3VyZWQgYmV0d2VlbiBzdGFydCBwb2ludHMgKGNvbmNlcHRpb24sIGZlcnRpbGlpemF0aW9uLCBmaXJzdCBvYnNlcnZlZCBjb3B1bGF0b2luLCBpbXBsYW50YXRpb24sIHBhbHBhYmx5IHByZWduYW50LCBjYXB0dXJlLCBvciB1bnNwZWNpZmllZCkgYW5kIGJpcnRo"><span class="gt_from_md">Length of time of non-inactive fetal growth; measured between start points (conception, fertiliization, first observed copulatoin, implantation, palpably pregnant, capture, or unspecified) and birth</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Interbirth Interval
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="VGhlIGxlbmd0aCBvZiB0aW1lIGJldHdlZW4gc3VjY2Vzc2l2ZSBiaXJ0aHMgYnkgdGhlIHNhbWUgZmVtYWxlIGFmdGVyIGEgc3VjY2Vzc2Z1bCBvciB1bnNwZWNpZmllZCBsaXR0ZXIgdXNpbmcgYWxsIHBvcHVsYXRpb24gdHlwZXM="><span class="gt_from_md">The length of time between successive births by the same female after a successful or unspecified litter using all population types</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Lifespan
+</td>
+<td headers="Unit" class="gt_row gt_left">
+months
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TWF4aW11bSByZWNvcmRlZCBhZ2UgZnJvbSBhbGwgcG9wdWxhdGlvbiB0eXBlcyAod2lsZCwgY2FwdGl2ZSwgcHJvdmlzaW9uZWQpIGFuZCBzZXggY2xhc3Nlcw=="><span class="gt_from_md">Maximum recorded age from all population types (wild, captive, provisioned) and sex classes</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Sexual Maturity (F)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="QWdlIHdoZW4gaW5kaXZpZHVhbHMgYXJlIGZpcnN0IHBoeXNpY2FsbHkgY2FwYWJsZSBvZiByZXByb2R1Y2luZywgZGVmaW5lZCBhcyBmaXJzdCBtYXRpbmcsIGZpcnN0IGVzdHJ1cywgb3IgZmlyc3QgcHJlZ25hbmN5"><span class="gt_from_md">Age when individuals are first physically capable of reproducing, defined as first mating, first estrus, or first pregnancy</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Sexual Maturity (M)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="QWdlIHdoZW4gaW5kaXZpZHVhbHMgYXJlIGZpcnN0IHBoeXNpY2FsbHkgY2FwYWJsZSBvZiByZXByb2R1Y2luZywgZGVmaW5lZCBhcyBmaXJzdCBtYXRpbmcsIHNwZXJtYXRvZ2VuZXNpcywgb3IgdGVzdGVzIGRlc2NlbnQ="><span class="gt_from_md">Age when individuals are first physically capable of reproducing, defined as first mating, spermatogenesis, or testes descent</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Sexual Maturity (Unspecified)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="QWdlIHdoZW4gaW5kaXZpZHVhbHMgYXJlIGZpcnN0IHBoeXNpY2FsbHkgY2FwYWJsZSBvZiByZXByb2R1Y2luZywgZGVmaW5lZCBhcyBmaXJzdCBtYXRpbmc="><span class="gt_from_md">Age when individuals are first physically capable of reproducing, defined as first mating</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Weaning Age
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="QWdlIHdoZW4gcHJpbWFyeSBudXRyaXRvbmFsIGRlcGVuZGVuY2UgZW5kcyBhbmQgaW5kZXBlbmRlbnQgZm9yYWdpbmcgYmVnaW5zIHRvIGNvbnN0aXR1dGUgdGhlIG1ham9yaXR5IG9mIG9mZnNwcmluZ3MgZW5lcmdldGljIGludGFrZSwgbWVhc3VyZWQgYXMgZWl0aGVyIHdlYW5pbmcvbGFjdGF0aW9uIGxlbmd0aCwgbnV0cml0aW9uYWwgaW5kZXBlbmRlbmNlLCBmaXJzdCBzb2xpZCBmb29kLCBsYXN0IG9ic2VydmVkIG51cnNpbmcgZm9yIGFsbCBwb3B1bGF0aW9uIHR5cGVzIGFuZCBzZXggY2xhc3Nlcw=="><span class="gt_from_md">Age when primary nutritonal dependence ends and independent foraging begins to constitute the majority of offsprings energetic intake, measured as either weaning/lactation length, nutritional independence, first solid food, last observed nursing for all population types and sex classes</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -113,7 +113,7 @@ window.Quarto = {
    
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
-  <li><a href="#analysis" id="toc-analysis" class="nav-link" data-scroll-target="#analysis">Analysis</a>
+  <li><a href="#database-analysis" id="toc-database-analysis" class="nav-link" data-scroll-target="#database-analysis">Database Analysis</a>
   <ul class="collapse">
   <li><a href="#preliminaries" id="toc-preliminaries" class="nav-link" data-scroll-target="#preliminaries">Preliminaries</a>
   <ul class="collapse">
@@ -166,8 +166,8 @@ window.Quarto = {
 <p>Here we present a guide that addresses these and other issues for primatologists who want to employ life history data. We review the characteristics of five databases that contain life history data on primates. We also present a frequently advocated approach to summarize variation across traits using dimension reduction analysis, with which we summarize data here.&nbsp;</p>
 <p>The databases assessed here are the PanTHERIA (Jones et al.&nbsp;2009), AnAge (de Magalhães &amp; Costa 2009), Amniotes (Myrhvold et al.&nbsp;2015), Ernest (2003), and Kappeler &amp; Pereira (2003) databases on life history statistics.</p>
 </section>
-<section id="analysis" class="level1">
-<h1>Analysis</h1>
+<section id="database-analysis" class="level1">
+<h1>Database Analysis</h1>
 <section id="preliminaries" class="level2">
 <h2 class="anchored" data-anchor-id="preliminaries">Preliminaries</h2>
 <section id="data-cleaning" class="level3">
@@ -180,63 +180,3213 @@ window.Quarto = {
 <h4 class="anchored" data-anchor-id="missing-values-and-point-correction">Missing Values and Point Correction</h4>
 <p>Our .csv of the Kappeler &amp; Pereira database was transcribed by hand from a digital scan of the original paper publication. One value of adult female body mass (<code>BM.F</code>) in the Kappeler &amp; Pereira data has a “?”, making the object type ‘character’ instead of ‘numeric’ . Mixing number and non-number characters would result in a forced NA for that value when converting to type numeric, so the ‘?’ is removed to include the value in completeness tests despite its uncertainty. Additionally, several of the databases use -<code>999</code> as the “missing value” - these are converted to <code>NA</code> for all fields of type numeric to allow quantitative analysis.</p>
 </section>
-<section id="variable-selection" class="level4">
-<h4 class="anchored" data-anchor-id="variable-selection">Variable Selection</h4>
-<blockquote class="blockquote">
-<p>See the <a href="https://docs.google.com/spreadsheets/d/12S0tICGxE4arILK3V4fUOHz7dU1SGTNLb7kZeripvZU/edit?gid=909701723#gid=909701723">Variable_Comparisons page</a> for a quick side-by-side of how our variables are defined in each source. Individual database variable description pages can be accessed through the toolbar at the bottom of the linked page for more details.</p>
-</blockquote>
-<p>Each database records a number of life history statistics. Many of the statistics are reported in most or all of the databases, as they are core life history traits (i.e.&nbsp;inter-birth interval, gestation length, etc). Rather than evaluating the completeness and reliability of every variable across all databases, we focus on a subset of “key life history traits” that characterize primate reproductive life history and are present in all or most of the databases examined. These traits serve as a representative sample of variables commonly used in taxonomic comparisons in life history research:</p>
+<section id="variable-definitions-and-selection" class="level4">
+<h4 class="anchored" data-anchor-id="variable-definitions-and-selection">Variable Definitions and Selection</h4>
+<p>Each database records a number of life history statistics,</p>
+<section id="db-AnAge" class="level5">
+<h5 class="anchored" data-anchor-id="db-AnAge">AnAge</h5>
+<div id="hyulmuwahg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#hyulmuwahg table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#hyulmuwahg thead, #hyulmuwahg tbody, #hyulmuwahg tfoot, #hyulmuwahg tr, #hyulmuwahg td, #hyulmuwahg th {
+  border-style: none;
+}
+
+#hyulmuwahg p {
+  margin: 0;
+  padding: 0;
+}
+
+#hyulmuwahg .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 12px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#hyulmuwahg .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#hyulmuwahg .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#hyulmuwahg .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#hyulmuwahg .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#hyulmuwahg .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hyulmuwahg .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#hyulmuwahg .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#hyulmuwahg .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#hyulmuwahg .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#hyulmuwahg .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#hyulmuwahg .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#hyulmuwahg .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#hyulmuwahg .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#hyulmuwahg .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#hyulmuwahg .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#hyulmuwahg .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#hyulmuwahg .gt_row {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#hyulmuwahg .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hyulmuwahg .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#hyulmuwahg .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#hyulmuwahg .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#hyulmuwahg .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hyulmuwahg .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#hyulmuwahg .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#hyulmuwahg .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hyulmuwahg .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hyulmuwahg .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#hyulmuwahg .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hyulmuwahg .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#hyulmuwahg .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hyulmuwahg .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#hyulmuwahg .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hyulmuwahg .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#hyulmuwahg .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hyulmuwahg .gt_left {
+  text-align: left;
+}
+
+#hyulmuwahg .gt_center {
+  text-align: center;
+}
+
+#hyulmuwahg .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#hyulmuwahg .gt_font_normal {
+  font-weight: normal;
+}
+
+#hyulmuwahg .gt_font_bold {
+  font-weight: bold;
+}
+
+#hyulmuwahg .gt_font_italic {
+  font-style: italic;
+}
+
+#hyulmuwahg .gt_super {
+  font-size: 65%;
+}
+
+#hyulmuwahg .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#hyulmuwahg .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#hyulmuwahg .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#hyulmuwahg .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#hyulmuwahg .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#hyulmuwahg .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#hyulmuwahg .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#hyulmuwahg .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#hyulmuwahg div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<colgroup>
+<col style="width:180px;">
+<col style="width:90px;">
+<col style="width:380px;">
+<col style="width:300px;">
+</colgroup>
+<thead>
+<tr class="gt_col_headings">
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Variable">
+Variable
+</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Unit">
+Unit
+</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Description">
+Definition
+</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Notes">
+Notes
+</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Adult Mass (F)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Adult Mass (M)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Adult Mass (Unspecified)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+grams
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Age @ First Reproductoin
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Gestation Length
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Interbirth Interval
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Lifespan
+</td>
+<td headers="Unit" class="gt_row gt_left">
+years
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Sexual Maturity (F)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Sexual Maturity (M)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Sexual Maturity (Unspecified)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Weaning Age
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="db-Ernest" class="level5">
+<h5 class="anchored" data-anchor-id="db-Ernest">Ernest</h5>
+<div id="shanpbvaoj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#shanpbvaoj table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#shanpbvaoj thead, #shanpbvaoj tbody, #shanpbvaoj tfoot, #shanpbvaoj tr, #shanpbvaoj td, #shanpbvaoj th {
+  border-style: none;
+}
+
+#shanpbvaoj p {
+  margin: 0;
+  padding: 0;
+}
+
+#shanpbvaoj .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 12px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#shanpbvaoj .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#shanpbvaoj .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#shanpbvaoj .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#shanpbvaoj .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#shanpbvaoj .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#shanpbvaoj .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#shanpbvaoj .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#shanpbvaoj .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#shanpbvaoj .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#shanpbvaoj .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#shanpbvaoj .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#shanpbvaoj .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#shanpbvaoj .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#shanpbvaoj .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#shanpbvaoj .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#shanpbvaoj .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#shanpbvaoj .gt_row {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#shanpbvaoj .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#shanpbvaoj .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#shanpbvaoj .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#shanpbvaoj .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#shanpbvaoj .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#shanpbvaoj .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#shanpbvaoj .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#shanpbvaoj .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#shanpbvaoj .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#shanpbvaoj .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#shanpbvaoj .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#shanpbvaoj .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#shanpbvaoj .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#shanpbvaoj .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#shanpbvaoj .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#shanpbvaoj .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#shanpbvaoj .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#shanpbvaoj .gt_left {
+  text-align: left;
+}
+
+#shanpbvaoj .gt_center {
+  text-align: center;
+}
+
+#shanpbvaoj .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#shanpbvaoj .gt_font_normal {
+  font-weight: normal;
+}
+
+#shanpbvaoj .gt_font_bold {
+  font-weight: bold;
+}
+
+#shanpbvaoj .gt_font_italic {
+  font-style: italic;
+}
+
+#shanpbvaoj .gt_super {
+  font-size: 65%;
+}
+
+#shanpbvaoj .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#shanpbvaoj .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#shanpbvaoj .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#shanpbvaoj .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#shanpbvaoj .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#shanpbvaoj .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#shanpbvaoj .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#shanpbvaoj .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#shanpbvaoj div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<colgroup>
+<col style="width:180px;">
+<col style="width:90px;">
+<col style="width:380px;">
+<col style="width:300px;">
+</colgroup>
+<thead>
+<tr class="gt_col_headings">
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Variable">
+Variable
+</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Unit">
+Unit
+</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Description">
+Definition
+</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Notes">
+Notes
+</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Adult Mass (F)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+grams
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="YXZlcmFnZSBtYXNzIG9mIGEgbm9uLXByZWduYW50IGFkdWx0IEY="><span class="gt_from_md">average mass of a non-pregnant adult F</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Adult Mass (M)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Adult Mass (Unspecified)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Age @ First Reproductoin
+</td>
+<td headers="Unit" class="gt_row gt_left">
+months
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="YXZlcmFnZSBhZ2Ugb2YgZmlyc3QgY29uY2VwdGlvbg=="><span class="gt_from_md">average age of first conception</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Gestation Length
+</td>
+<td headers="Unit" class="gt_row gt_left">
+months
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="QXZlcmFnZSBsZW5ndGggb2YgdGltZSBmb3IgdGhlIGdlc3RhdGlvbiBvZiBhIGxpdmUgb2Zmc3ByaW5nLiBEZWxheWVkIGltcGxhbnRhdGlvbiBub3QgaW5jbHVkZWQgaW4gZ2VzdGF0aW9uIGxlbmd0aA=="><span class="gt_from_md">Average length of time for the gestation of a live offspring. Delayed implantation not included in gestation length</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Interbirth Interval
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="RXJuZXN0IHJlcG9ydHMgbGl0dGVycy95ZWFyLCBraW5kIG9mIHJlY2lwcm9jYWwgb2YgSUJJPyBBbHNvIHJlcG9ydGVkIGJ5IE15cmh2b2xkICYgUGFuVEhFUklB"><span class="gt_from_md">Ernest reports litters/year, kind of reciprocal of IBI? Also reported by Myrhvold &amp; PanTHERIA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Lifespan
+</td>
+<td headers="Unit" class="gt_row gt_left">
+months
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TWF4aW11bSByZWNvcmRlZCBsaWZlc3BhbiBvZiBlaXRoZXIgc2V4"><span class="gt_from_md">Maximum recorded lifespan of either sex</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Sexual Maturity (F)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Sexual Maturity (M)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Sexual Maturity (Unspecified)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Weaning Age
+</td>
+<td headers="Unit" class="gt_row gt_left">
+months
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="VGhlIHRpbWUgZnJvbSBicml0aCB0byB3aGVuIG9mZnNwcmluZyBiZWdpbnMgZWF0aW5nIHNvbGlkIGZvb2Q="><span class="gt_from_md">The time from brith to when offspring begins eating solid food</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="db-Kappeler-Pereira" class="level5">
+<h5 class="anchored" data-anchor-id="db-Kappeler-Pereira">Kappeler &amp; Pereira</h5>
+<div id="xouysfblro" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#xouysfblro table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#xouysfblro thead, #xouysfblro tbody, #xouysfblro tfoot, #xouysfblro tr, #xouysfblro td, #xouysfblro th {
+  border-style: none;
+}
+
+#xouysfblro p {
+  margin: 0;
+  padding: 0;
+}
+
+#xouysfblro .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 12px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#xouysfblro .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#xouysfblro .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#xouysfblro .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#xouysfblro .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#xouysfblro .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#xouysfblro .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#xouysfblro .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#xouysfblro .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#xouysfblro .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#xouysfblro .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#xouysfblro .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#xouysfblro .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#xouysfblro .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#xouysfblro .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#xouysfblro .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#xouysfblro .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#xouysfblro .gt_row {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#xouysfblro .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#xouysfblro .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#xouysfblro .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#xouysfblro .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#xouysfblro .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#xouysfblro .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#xouysfblro .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#xouysfblro .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#xouysfblro .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#xouysfblro .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#xouysfblro .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#xouysfblro .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#xouysfblro .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#xouysfblro .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#xouysfblro .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#xouysfblro .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#xouysfblro .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#xouysfblro .gt_left {
+  text-align: left;
+}
+
+#xouysfblro .gt_center {
+  text-align: center;
+}
+
+#xouysfblro .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#xouysfblro .gt_font_normal {
+  font-weight: normal;
+}
+
+#xouysfblro .gt_font_bold {
+  font-weight: bold;
+}
+
+#xouysfblro .gt_font_italic {
+  font-style: italic;
+}
+
+#xouysfblro .gt_super {
+  font-size: 65%;
+}
+
+#xouysfblro .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#xouysfblro .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#xouysfblro .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#xouysfblro .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#xouysfblro .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#xouysfblro .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#xouysfblro .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#xouysfblro .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#xouysfblro div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<colgroup>
+<col style="width:180px;">
+<col style="width:90px;">
+<col style="width:380px;">
+<col style="width:300px;">
+</colgroup>
+<thead>
+<tr class="gt_col_headings">
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Variable">
+Variable
+</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Unit">
+Unit
+</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Description">
+Definition
+</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Notes">
+Notes
+</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Adult Mass (F)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+grams
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="bWVhbiBib2R5IG1hc3Mgb2Ygd2lsZCBhZHVsdCBmZW1hbGVz"><span class="gt_from_md">mean body mass of wild adult females</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Adult Mass (M)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Adult Mass (Unspecified)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+grams
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="bWVhbiBib2R5IG1hc3Mgb2Ygd2lsZCBhZHVsdHMgb2YgdW5rbm93biBzZXg="><span class="gt_from_md">mean body mass of wild adults of unknown sex</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="ZGVzY3JpcHRpb24gbXkgb3duIC0gb3JpZ2luYWwgcmVwb3J0cyBmZW1hbGUgYW5kIHVua25vd24gc2V4IHdpdGhpbiBhIHNpbmdsZSB2YXJpYWJsZSB3aGVyZWluIHVua25vd24gc2V4IHZhbHVlcyBhcmUgZGVub3RlZCBieSB+eCB3aGVyZSB4IGlzIHRoZSBtYXNzIGluIGdyYW1z"><span class="gt_from_md">description my own - original reports female and unknown sex within a single variable wherein unknown sex values are denoted by ~x where x is the mass in grams</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Age @ First Reproductoin
+</td>
+<td headers="Unit" class="gt_row gt_left">
+years
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="bWVhbiBhZ2Ugb2YgZmlyc3QgZmVtYWxlIHJlcHJvZHVjdGlvbg=="><span class="gt_from_md">mean age of first female reproduction</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Gestation Length
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="bWVhbiBnZXN0YXRpb24gbGVuZ3Ro"><span class="gt_from_md">mean gestation length</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Interbirth Interval
+</td>
+<td headers="Unit" class="gt_row gt_left">
+months
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="bWVhbiBpbnRlcmJpcnRoIGludGVydmFs"><span class="gt_from_md">mean interbirth interval</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Lifespan
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Sexual Maturity (F)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="cmVwb3J0cyBkdXJhdGlvbiBvZiBqdXZlbmlsZSBwZXJpb2QgaW4geWVhcnMsIHdlYW5pbmcgYWdlICsgZHVyYXRpb24gb2YganV2ZW5pbGUgPSBhZ2UgYXQgbWF0dXJpdHk/"><span class="gt_from_md">reports duration of juvenile period in years, weaning age + duration of juvenile = age at maturity?</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Sexual Maturity (M)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Sexual Maturity (Unspecified)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Weaning Age
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="bWVhbiBhZ2UgYXQgd2VhbmluZw=="><span class="gt_from_md">mean age at weaning</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="db-Myrhvold-et-al" class="level5">
+<h5 class="anchored" data-anchor-id="db-Myrhvold-et-al">Myrhvold et al</h5>
+<div id="bnbaylqvbc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#bnbaylqvbc table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#bnbaylqvbc thead, #bnbaylqvbc tbody, #bnbaylqvbc tfoot, #bnbaylqvbc tr, #bnbaylqvbc td, #bnbaylqvbc th {
+  border-style: none;
+}
+
+#bnbaylqvbc p {
+  margin: 0;
+  padding: 0;
+}
+
+#bnbaylqvbc .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 12px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#bnbaylqvbc .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#bnbaylqvbc .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#bnbaylqvbc .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#bnbaylqvbc .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#bnbaylqvbc .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#bnbaylqvbc .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#bnbaylqvbc .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#bnbaylqvbc .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#bnbaylqvbc .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#bnbaylqvbc .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#bnbaylqvbc .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#bnbaylqvbc .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#bnbaylqvbc .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#bnbaylqvbc .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#bnbaylqvbc .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#bnbaylqvbc .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#bnbaylqvbc .gt_row {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#bnbaylqvbc .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#bnbaylqvbc .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#bnbaylqvbc .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#bnbaylqvbc .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#bnbaylqvbc .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#bnbaylqvbc .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#bnbaylqvbc .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#bnbaylqvbc .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#bnbaylqvbc .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#bnbaylqvbc .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#bnbaylqvbc .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#bnbaylqvbc .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#bnbaylqvbc .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#bnbaylqvbc .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#bnbaylqvbc .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#bnbaylqvbc .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#bnbaylqvbc .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#bnbaylqvbc .gt_left {
+  text-align: left;
+}
+
+#bnbaylqvbc .gt_center {
+  text-align: center;
+}
+
+#bnbaylqvbc .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#bnbaylqvbc .gt_font_normal {
+  font-weight: normal;
+}
+
+#bnbaylqvbc .gt_font_bold {
+  font-weight: bold;
+}
+
+#bnbaylqvbc .gt_font_italic {
+  font-style: italic;
+}
+
+#bnbaylqvbc .gt_super {
+  font-size: 65%;
+}
+
+#bnbaylqvbc .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#bnbaylqvbc .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#bnbaylqvbc .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#bnbaylqvbc .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#bnbaylqvbc .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#bnbaylqvbc .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#bnbaylqvbc .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#bnbaylqvbc .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#bnbaylqvbc div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<colgroup>
+<col style="width:180px;">
+<col style="width:90px;">
+<col style="width:380px;">
+<col style="width:300px;">
+</colgroup>
+<thead>
+<tr class="gt_col_headings">
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Variable">
+Variable
+</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Unit">
+Unit
+</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Description">
+Definition
+</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Notes">
+Notes
+</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Adult Mass (F)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+grams
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="InRoZSBib2R5IG1hc3Mgb2YgYSBmZW1hbGUgaW4gZ3JhbXMi"><span class="gt_from_md">“the body mass of a female in grams”</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Adult Mass (M)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+grams
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="InRoZSBib2R5IG1hc3Mgb2YgYSBtYWxlIGluZGl2aWR1YWwgaW4gZ3JhbXMi"><span class="gt_from_md">“the body mass of a male individual in grams”</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Adult Mass (Unspecified)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+grams
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="InRoZSBib2R5IG1hc3Mgb2YgYW4gYWR1bHQgaW5kaXZpZHVhbCBpbiBncmFtcyI="><span class="gt_from_md">“the body mass of an adult individual in grams”</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Age @ First Reproductoin
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="bWVhbiBhZ2UgYXQgY29uY2VwdGlvbg=="><span class="gt_from_md">mean age at conception</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="cmVwb3J0cyBmZW1hbGUsIG1hbGUsIGFuZCB1bmtub3duIHNleCBtYXR1cml0eSB2YWx1ZXMgLSBpIGluY2x1ZGVkIHRoZSBmZW1hbGUgZGVzY3JpcHRpb24gYmMgaXRzIHRoZSBjbG9zZXN0IHRvIEFGUg=="><span class="gt_from_md">reports female, male, and unknown sex maturity values - i included the female description bc its the closest to AFR</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Gestation Length
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="InRoZSB0aW1lIGJldHdlZW4gY29uY2VwdGlvbiBhbmQgYmlydGggaW4gZGF5cyI="><span class="gt_from_md">“the time between conception and birth in days”</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Interbirth Interval
+</td>
+<td headers="Unit" class="gt_row gt_left">
+years
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="InRoZSB0aW1lIGJldHdlZW4gdGhlIHJlcHJvZHVjdGlvbiBjeWNsZXMgaW4geWVhcnMi"><span class="gt_from_md">“the time between the reproduction cycles in years”</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Lifespan
+</td>
+<td headers="Unit" class="gt_row gt_left">
+years
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TWF4aW11bV9sb25nZXZpdHlfeTogInRoZSBsb25nZXN0IGxpZmVzcGFuIHJlcG9ydGVkIG9mIHRoZSBzcGVjaWVzIGluIHllYXJzIiAvIGxvbmdldml0eV95OiAidGhlIGxpZmVzcGFuIG9mIGFuIGluZGl2aWR1YWwgaW4geWVhcnMi"><span class="gt_from_md">Maximum_longevity_y: “the longest lifespan reported of the species in years” / longevity_y: “the lifespan of an individual in years”</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Sexual Maturity (F)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="InRoZSBhbW91bnQgb2YgdGltZSBpdCB0YWtlcyBmb3IgYSBmZW1hbGUgaW5kaXZpZHVhbCB0byByZWFjaCBtYXR1cml0eSBpbiBkYXlzIg=="><span class="gt_from_md">“the amount of time it takes for a female individual to reach maturity in days”</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Sexual Maturity (M)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="IlRoZSBhbW91bnQgb2YgdGltZSBpdCB0YWtlcyBmb3IgYSBtYWxlIGluZGl2aWR1YWwgdG8gcmVhY2ggbWF0dXJpdHkgaW4gZGF5cyI="><span class="gt_from_md">“The amount of time it takes for a male individual to reach maturity in days”</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Sexual Maturity (Unspecified)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="InRoZSBhbW91bnQgb2YgdGltZSBpdCB0YWtlcyBmb3IgYW4gaW5kaXZpZHVhbCBvZiB1bnJlcG9ydGVkIHNleCB0byByZWFjaCBtYXR1cml0eSBpbiBkYXlzIg=="><span class="gt_from_md">“the amount of time it takes for an individual of unreported sex to reach maturity in days”</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Weaning Age
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="IlRoZSBhbW91bnQgb2YgdGltZSBpdCB0YWtlcyB0byB3ZWFuIHRoZSBvZmZzcHJpbmcgaW4gZGF5cyI="><span class="gt_from_md">“The amount of time it takes to wean the offspring in days”</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="db-PanTHERIA" class="level5">
+<h5 class="anchored" data-anchor-id="db-PanTHERIA">PanTHERIA</h5>
+<div id="pdnicgnkkc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#pdnicgnkkc table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#pdnicgnkkc thead, #pdnicgnkkc tbody, #pdnicgnkkc tfoot, #pdnicgnkkc tr, #pdnicgnkkc td, #pdnicgnkkc th {
+  border-style: none;
+}
+
+#pdnicgnkkc p {
+  margin: 0;
+  padding: 0;
+}
+
+#pdnicgnkkc .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 12px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#pdnicgnkkc .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#pdnicgnkkc .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#pdnicgnkkc .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#pdnicgnkkc .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#pdnicgnkkc .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#pdnicgnkkc .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#pdnicgnkkc .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#pdnicgnkkc .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#pdnicgnkkc .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#pdnicgnkkc .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#pdnicgnkkc .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#pdnicgnkkc .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#pdnicgnkkc .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#pdnicgnkkc .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#pdnicgnkkc .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#pdnicgnkkc .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#pdnicgnkkc .gt_row {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#pdnicgnkkc .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#pdnicgnkkc .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#pdnicgnkkc .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#pdnicgnkkc .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#pdnicgnkkc .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#pdnicgnkkc .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#pdnicgnkkc .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#pdnicgnkkc .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#pdnicgnkkc .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#pdnicgnkkc .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#pdnicgnkkc .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#pdnicgnkkc .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#pdnicgnkkc .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#pdnicgnkkc .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#pdnicgnkkc .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#pdnicgnkkc .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#pdnicgnkkc .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#pdnicgnkkc .gt_left {
+  text-align: left;
+}
+
+#pdnicgnkkc .gt_center {
+  text-align: center;
+}
+
+#pdnicgnkkc .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#pdnicgnkkc .gt_font_normal {
+  font-weight: normal;
+}
+
+#pdnicgnkkc .gt_font_bold {
+  font-weight: bold;
+}
+
+#pdnicgnkkc .gt_font_italic {
+  font-style: italic;
+}
+
+#pdnicgnkkc .gt_super {
+  font-size: 65%;
+}
+
+#pdnicgnkkc .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#pdnicgnkkc .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#pdnicgnkkc .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#pdnicgnkkc .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#pdnicgnkkc .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#pdnicgnkkc .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#pdnicgnkkc .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#pdnicgnkkc .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#pdnicgnkkc div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<colgroup>
+<col style="width:180px;">
+<col style="width:90px;">
+<col style="width:380px;">
+<col style="width:300px;">
+</colgroup>
+<thead>
+<tr class="gt_col_headings">
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Variable">
+Variable
+</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Unit">
+Unit
+</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Description">
+Definition
+</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Notes">
+Notes
+</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Adult Mass (F)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Adult Mass (M)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Adult Mass (Unspecified)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+grams
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TWFzcyBvZiBub24gcHJlZ25hbnQgYWR1bHQgc3BlY2ltZW5zIG9mIGFsbCBwb3B1bGF0aW9uIHR5cGVzIGFuZCBzZXggY2xhc3Nlcw=="><span class="gt_from_md">Mass of non pregnant adult specimens of all population types and sex classes</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Age @ First Reproductoin
+</td>
+<td headers="Unit" class="gt_row gt_left">
+NA
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="U2VlIFNleHVhbCBNYXR1cml0eSAoVW5zcGVjaWZpZWQp"><span class="gt_from_md">See Sexual Maturity (Unspecified)</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Gestation Length
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TGVuZ3RoIG9mIHRpbWUgb2Ygbm9uLWluYWN0aXZlIGZldGFsIGdyb3d0aDsgbWVhc3VyZWQgYmV0d2VlbiBzdGFydCBwb2ludHMgKGNvbmNlcHRpb24sIGZlcnRpbGlpemF0aW9uLCBmaXJzdCBvYnNlcnZlZCBjb3B1bGF0b2luLCBpbXBsYW50YXRpb24sIHBhbHBhYmx5IHByZWduYW50LCBjYXB0dXJlLCBvciB1bnNwZWNpZmllZCkgYW5kIGJpcnRo"><span class="gt_from_md">Length of time of non-inactive fetal growth; measured between start points (conception, fertiliization, first observed copulatoin, implantation, palpably pregnant, capture, or unspecified) and birth</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Interbirth Interval
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="VGhlIGxlbmd0aCBvZiB0aW1lIGJldHdlZW4gc3VjY2Vzc2l2ZSBiaXJ0aHMgYnkgdGhlIHNhbWUgZmVtYWxlIGFmdGVyIGEgc3VjY2Vzc2Z1bCBvciB1bnNwZWNpZmllZCBsaXR0ZXIgdXNpbmcgYWxsIHBvcHVsYXRpb24gdHlwZXM="><span class="gt_from_md">The length of time between successive births by the same female after a successful or unspecified litter using all population types</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Lifespan
+</td>
+<td headers="Unit" class="gt_row gt_left">
+months
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="TWF4aW11bSByZWNvcmRlZCBhZ2UgZnJvbSBhbGwgcG9wdWxhdGlvbiB0eXBlcyAod2lsZCwgY2FwdGl2ZSwgcHJvdmlzaW9uZWQpIGFuZCBzZXggY2xhc3Nlcw=="><span class="gt_from_md">Maximum recorded age from all population types (wild, captive, provisioned) and sex classes</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Sexual Maturity (F)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="QWdlIHdoZW4gaW5kaXZpZHVhbHMgYXJlIGZpcnN0IHBoeXNpY2FsbHkgY2FwYWJsZSBvZiByZXByb2R1Y2luZywgZGVmaW5lZCBhcyBmaXJzdCBtYXRpbmcsIGZpcnN0IGVzdHJ1cywgb3IgZmlyc3QgcHJlZ25hbmN5"><span class="gt_from_md">Age when individuals are first physically capable of reproducing, defined as first mating, first estrus, or first pregnancy</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Sexual Maturity (M)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="QWdlIHdoZW4gaW5kaXZpZHVhbHMgYXJlIGZpcnN0IHBoeXNpY2FsbHkgY2FwYWJsZSBvZiByZXByb2R1Y2luZywgZGVmaW5lZCBhcyBmaXJzdCBtYXRpbmcsIHNwZXJtYXRvZ2VuZXNpcywgb3IgdGVzdGVzIGRlc2NlbnQ="><span class="gt_from_md">Age when individuals are first physically capable of reproducing, defined as first mating, spermatogenesis, or testes descent</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Sexual Maturity (Unspecified)
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="QWdlIHdoZW4gaW5kaXZpZHVhbHMgYXJlIGZpcnN0IHBoeXNpY2FsbHkgY2FwYWJsZSBvZiByZXByb2R1Y2luZywgZGVmaW5lZCBhcyBmaXJzdCBtYXRpbmc="><span class="gt_from_md">Age when individuals are first physically capable of reproducing, defined as first mating</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+<tr>
+<td headers="Variable" class="gt_row gt_left">
+Weaning Age
+</td>
+<td headers="Unit" class="gt_row gt_left">
+days
+</td>
+<td headers="Description" class="gt_row gt_left">
+<span data-qmd-base64="QWdlIHdoZW4gcHJpbWFyeSBudXRyaXRvbmFsIGRlcGVuZGVuY2UgZW5kcyBhbmQgaW5kZXBlbmRlbnQgZm9yYWdpbmcgYmVnaW5zIHRvIGNvbnN0aXR1dGUgdGhlIG1ham9yaXR5IG9mIG9mZnNwcmluZ3MgZW5lcmdldGljIGludGFrZSwgbWVhc3VyZWQgYXMgZWl0aGVyIHdlYW5pbmcvbGFjdGF0aW9uIGxlbmd0aCwgbnV0cml0aW9uYWwgaW5kZXBlbmRlbmNlLCBmaXJzdCBzb2xpZCBmb29kLCBsYXN0IG9ic2VydmVkIG51cnNpbmcgZm9yIGFsbCBwb3B1bGF0aW9uIHR5cGVzIGFuZCBzZXggY2xhc3Nlcw=="><span class="gt_from_md">Age when primary nutritonal dependence ends and independent foraging begins to constitute the majority of offsprings energetic intake, measured as either weaning/lactation length, nutritional independence, first solid food, last observed nursing for all population types and sex classes</span></span>
+</td>
+<td headers="Notes" class="gt_row gt_left">
+<span data-qmd-base64="TkE="><span class="gt_from_md">NA</span></span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Many of the statistics are reported in several of the databases, as they are core life history traits (i.e.&nbsp;inter-birth interval, gestation length, etc). Rather than evaluating the completeness and reliability of every variable across all databases, we focus on a subset of “key life history traits” that characterize primate reproductive life history and are present in all or most of the databases examined. These traits serve as a representative sample of variables commonly used in taxonomic comparisons in life history research:</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
 <th style="text-align: left;">Trait</th>
-<th>Definition</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Adult Body Mass (Female)</td>
-<td></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Adult Body Mass (Male)</td>
-<td></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Adult Body Mass (Unspecified)</td>
-<td></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Age at First Reproduction</td>
-<td></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Age at Sexual Maturity (Female)</td>
-<td></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Age at Sexual Maturity (Male)</td>
-<td></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Age at Sexual Maturity (Unspecified)</td>
-<td></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Gestation Length</td>
-<td></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Inter-birth Interval</td>
-<td></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Lifespan</td>
-<td></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Weaning Age</td>
-<td></td>
 </tr>
 </tbody>
 </table>
@@ -332,6 +3482,7 @@ window.Quarto = {
 <span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
+</section>
 </section>
 <section id="standardizing-units" class="level4">
 <h4 class="anchored" data-anchor-id="standardizing-units">Standardizing Units</h4>
