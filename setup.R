@@ -7,6 +7,13 @@ pacman::p_load(
 
 # loads data files 
 
+# VARIABLE DEFINITIONS
+var_defs <- readr::read_csv(
+  file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/refs/heads/main/Data/variable_definition_comparisons.csv",
+  col_names = TRUE,
+  show_col_types = FALSE
+)
+
 # AMNIOTES 
 amniote <- readr::read_csv(
   file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/main/Data/AmnioteDB2015/Amniote_Database_Aug_2015.csv",
@@ -41,6 +48,17 @@ kp <- readr::read_csv(
   col_names = TRUE,
   show_col_types = FALSE
 )
+
+## cleans any hanging whitespaces and converts "-" to NA
+var_defs <- var_defs %>% 
+  dplyr::mutate(
+    Database = stringr::str_squish(Database),
+    Variable = stringr::str_squish(Variable),
+    Unit = dplyr::na_if(stringr::str_squish(Unit), "-"),
+    Description = dplyr::na_if(stringr::str_squish(Description), "-"),
+    Notes = dplyr::na_if(stringr::str_squish(Notes), "-")
+  ) %>% 
+  dplyr::arrange(Database, Variable)
 
 ## converts -999 ('no data' value) to NA
 missing_val_to_na <- function(df){

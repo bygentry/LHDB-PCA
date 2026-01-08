@@ -25,7 +25,7 @@ Here we present a guide that addresses these and other issues for primatologists
 
 The databases assessed here are the PanTHERIA (Jones et al. 2009), AnAge (de Magalhães & Costa 2009), Amniotes (Myrhvold et al. 2015), Ernest (2003), and Kappeler & Pereira (2003) databases on life history statistics.
 
-# Analysis
+# Database Analysis
 
 ## Preliminaries
 
@@ -48,23 +48,68 @@ Our .csv of the Kappeler & Pereira database was transcribed by hand from a digit
 
 #### Variable Selection
 
+Each databse records a number of life history statistics,
+
+```{r}
+var_defs <- var_defs %>% 
+  group_split(Database, .keep = TRUE) %>% 
+  rlang::set_names(sort(unique(var_defs$Database)))
+
+defs_index <- tibble(
+  Database = names(var_defs),
+  Anchor = paste0("#db-", str_replace_all(names(var_defs), "[^A-Za-z0-9]+", "-"))
+)
+
+defs_index %>% 
+  gt() %>% 
+  tab_header(title = "Variable Definitions by Database") %>% 
+  cols_label(Database = "Database", Anchor = "Section link") %>% 
+  fmt_markdown(columns = Anchor)
+
+iwalk(var_defs, function(db_df, db_name){
+  anchor_id <- paste0("db-", stringr::str_replace_all(db_name, "[^A-Za-z0-9]+", "-"))
+  
+  cat("\n\n")
+  cat("## ", db_name, " {#", anchor_id, "}\n\n", sep = "")
+  
+  db_df %>% 
+    select(Variable, Unit, Description, Notes) %>% 
+    gt() %>% 
+    tab_options(table.font.size = px(12), data_row.padding = px(3)) %>% 
+    cols_label(
+      Variable = "Variable",
+      Unit = "Unit",
+      Description = "Definition",
+      Notes = "Notes"
+    ) %>% 
+    cols_width(
+      Variable ~ px(180),
+      Unit ~ px(90),
+      Description ~ px(380),
+      Notes ~ px(300)
+    ) %>% 
+    fmt_markdown(columns = c(Description, Notes)) %>% 
+    print()
+})
+```
+
 > See the [Variable_Comparisons page](https://docs.google.com/spreadsheets/d/12S0tICGxE4arILK3V4fUOHz7dU1SGTNLb7kZeripvZU/edit?gid=909701723#gid=909701723) for a quick side-by-side of how our variables are defined in each source. Individual database variable description pages can be accessed through the toolbar at the bottom of the linked page for more details.
 
 Each database records a number of life history statistics. Many of the statistics are reported in most or all of the databases, as they are core life history traits (i.e. inter-birth interval, gestation length, etc). Rather than evaluating the completeness and reliability of every variable across all databases, we focus on a subset of “key life history traits” that characterize primate reproductive life history and are present in all or most of the databases examined. These traits serve as a representative sample of variables commonly used in taxonomic comparisons in life history research:
 
-| Trait                                | Definition |
-|:-------------------------------------|------------|
-| Adult Body Mass (Female)             |            |
-| Adult Body Mass (Male)               |            |
-| Adult Body Mass (Unspecified)        |            |
-| Age at First Reproduction            |            |
-| Age at Sexual Maturity (Female)      |            |
-| Age at Sexual Maturity (Male)        |            |
-| Age at Sexual Maturity (Unspecified) |            |
-| Gestation Length                     |            |
-| Inter-birth Interval                 |            |
-| Lifespan                             |            |
-| Weaning Age                          |            |
+| Trait                                |
+|:-------------------------------------|
+| Adult Body Mass (Female)             |
+| Adult Body Mass (Male)               |
+| Adult Body Mass (Unspecified)        |
+| Age at First Reproduction            |
+| Age at Sexual Maturity (Female)      |
+| Age at Sexual Maturity (Male)        |
+| Age at Sexual Maturity (Unspecified) |
+| Gestation Length                     |
+| Inter-birth Interval                 |
+| Lifespan                             |
+| Weaning Age                          |
 
 ```{r}
 #| label: building dfs of key vars
