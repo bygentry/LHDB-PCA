@@ -517,6 +517,10 @@ scope_summary %>%
 
 I ran a one-tailed permutation test to compare the mean completeness of the databases using all of our key LH variables and the mean completeness when the sex-stratified variables are excluded:
 
+-   began re-applying permutation test to sexed vs non sexed variable completeness
+    -   this informs us about the completeness of sex stratified traits compared to non stratified and informs us if sex stratified traits are systematically less complete
+    -   if sex stratified traits are systematically less complete it may suggest that they are inherently harder to compile data on (expected)
+
 ```{r}
 #| label: permutation test results
 #| echo: false
