@@ -458,6 +458,9 @@ notes:
 Of our key life history traits, most databases only record data for around 60% of them (mostly just **not** the sex-stratified versions of body mass and age at maturity). When testing the mean completeness of the databases using all of the key traits versus only the ones they record, their completeness scores obviously improved. This may appear to call into question our selection of traits, but really the trait scope is under represented because the missing traits are the same measurement for different sex classes.
 
 ```{r}
+#| label: scope summary chart
+#| echo: false
+
 scope_summary %>%
   mutate(
     scope_coverage = scales::percent(scope_coverage, accuracy = 1),
@@ -475,10 +478,6 @@ scope_summary %>%
 ```
 
 I ran a one-tailed permutation test to compare the mean completeness of the sex-stratified and non-sex-stratified variables to determine of sex-stratified traits are systematically less complete than non-stratified as a test of whether the stratified variables truly have worse completeness or if they are just under reported.
-
--   began re-applying permutation test to sexed vs non sexed variable completeness
-    -   this informs us about the completeness of sex stratified traits compared to non stratified and informs us if sex stratified traits are systematically less complete
-    -   if sex stratified traits are systematically less complete it may suggest that they are inherently harder to compile data on (expected)
 
 ```{r}
 #| label: permutation test results
