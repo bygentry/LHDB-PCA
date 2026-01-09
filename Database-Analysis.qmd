@@ -48,7 +48,7 @@ Our .csv of the Kappeler & Pereira database was transcribed by hand from a digit
 
 #### Variable Definitions and Selection
 
-Each database records a number of life history statistics, any of which are reported in several of the databases as they are core life history traits (i.e. inter-birth interval, gestation length, etc). See how the variables are defined in each source database [here](https://bygentry.github.io/LHDB-PCA/Variable-Definitions.html). Rather than evaluating the completeness and reliability of every variable across all databases, we focus on a subset of “key life history traits” that characterize primate reproductive life history and are present in all or most of the databases examined. These traits serve as a representative sample of variables commonly used in taxonomic comparisons in life history research:
+Each database records a number of life history statistics, any of which are reported in several of the databases as they are core life history traits (i.e. inter-birth interval, gestation length, etc). See how the variables are defined in each source database [here](https://bygentry.github.io/LHDB-PCA/Database-Analysis.html#variable-definitions-and-selection). Rather than evaluating the completeness and reliability of every variable across all databases, we focus on a subset of “key life history traits” that characterize primate reproductive life history and are present in all or most of the databases examined. These traits serve as a representative sample of variables commonly used in taxonomic comparisons in life history research:
 
 | Trait                                |
 |:-------------------------------------|

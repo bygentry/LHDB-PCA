@@ -15,7 +15,7 @@ execute:
 editor: visual
 ---
 
-[Home](https://bygentry.github.io/LHDB-PCA/Database-Analysis.html)
+[Home](https://bygentry.github.io/LHDB-PCA/Database-Analysis.html#variable-definitions-and-selection)
 
 # Life History Database Variable Definitions
 
