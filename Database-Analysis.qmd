@@ -15,8 +15,6 @@ execute:
 editor: visual
 ---
 
-## if youre reading this im sorry for how much of a mess this doc is right now im mid overhaul after re-applying the permutation test to a more meaningful metric
-
 # Introduction
 
 > “Given this general importance of life history data and with the scientific ideals of transparency and repeatability in mind, one would assume that researchers have long since agreed upon life history definitions and are using reliable and accurate data stored in standardized repositories. However, while various databases exist, standards for data quality and specification are lacking.” (Borries et al. 2013)
@@ -300,6 +298,14 @@ scope_summary <- scope_df %>%
     within_scope_completeness = 1 - mean(prop_missing_within_scope, na.rm = TRUE),
     .groups = "drop"
   )
+```
+
+```{r}
+#| label: legacy missingness dataframe
+#| echo: false
+#| eval: false  
+
+# from old version of code, keeping just in case it becomes useful again
 
 ## this calculates the proportion of missing values for each life history trait
 ## and stores them in a "missigness" df that stores the trait, the source, 
@@ -316,19 +322,7 @@ missingness <- key_vals %>%
   group_by(source, trait) %>% 
   summarize(prop_missing = mean(is.na(value)), .groups = "drop")
 
-missingness_no_sex <- key_vals %>%
-  select(-any_of(c("body_mass_u", "body_mass_f", "body_mass_m", "age_at_maturity_u", "age_at_maturity_f", "age_at_maturity_m"))) %>% 
-  pivot_longer(cols = -c(species, source), 
-               names_to = "trait", 
-               values_to = "value") %>%
-  group_by(source, trait) %>% 
-  summarize(prop_missing = mean(is.na(value)), .groups = "drop")
-
-
 missingness <- missingness %>%
-  mutate(trait = dplyr::recode(trait, !!!trait_labels, .default = trait))
-
-missingness_no_sex <- missingness_no_sex %>%
   mutate(trait = dplyr::recode(trait, !!!trait_labels, .default = trait))
 
 ## extracts the number of distinct species represented by each source
@@ -397,45 +391,6 @@ perm_test <- function(df, n = 10000, seed = 1){
     n_non = n_non
   )
 }
-
-```
-
-```{r}
-#| label: completeness bar chart prep
-#| code-fold: true
-# Completeness Bar Chart Prep
-
-## makes a new df using prop_missing values from 
-## missingness df and averages them by source, then stores
-## in new df mean_missing
-mean_missing <- missingness %>% 
-  group_by(source) %>% 
-  summarise(
-    mean_missingness = mean(prop_missing)
-    )
-
-## takes the inverse proportion of the mean missingness
-## for each database to give mean completeness
-mean_complete <- mean_missing %>% 
-  mutate(mean_completeness = 1 - mean_missingness)
-
-## removing sexed variables
-mean_missing_no_sex <- missingness_no_sex %>% 
-  group_by(source) %>% 
-  summarise(
-    mean_missingness_no_sex = mean(prop_missing)
-  )
-
-## takes the inverse proportion of the mean missingness
-## for each database to give mean completeness
-mean_complete_no_sex <- mean_missing_no_sex %>% 
-  mutate(mean_completeness_no_sex = 1 - mean_missingness_no_sex)
-
-composite_completeness <- mean_complete %>% 
-  inner_join(mean_complete_no_sex, by = "source") %>% 
-  mutate(
-    cap = pmax(0, mean_completeness_no_sex - mean_completeness)
-  )
 ```
 
 ## Proportions of Missing Values
@@ -488,7 +443,11 @@ ggplot(scope_df, aes(x = source, y = trait)) +
 
 notes:
 
--   sex-reliant vars are most unreported
+-   recall: Ernest's IBI is derived from litters/year
+
+<!-- -->
+
+-   sex-stratified vars are most unreported
 
 -   age at maturity vars for females are more complete than male when both sexes are reported
 
@@ -515,7 +474,7 @@ scope_summary %>%
   gt::tab_caption(gt::md("**Table 3.** Scope coverage vs completeness (panel vs within-scope)."))
 ```
 
-I ran a one-tailed permutation test to compare the mean completeness of the databases using all of our key LH variables and the mean completeness when the sex-stratified variables are excluded:
+I ran a one-tailed permutation test to compare the mean completeness of the sex-stratified and non-sex-stratified variables to determine of sex-stratified traits are systematically less complete than non-stratified as a test of whether the stratified variables truly have worse completeness or if they are just under reported.
 
 -   began re-applying permutation test to sexed vs non sexed variable completeness
     -   this informs us about the completeness of sex stratified traits compared to non stratified and informs us if sex stratified traits are systematically less complete
@@ -556,57 +515,38 @@ perm_res %>%
 
 ```
 
-Removing the sex-dependent variables improves completeness across the board, but the difference from a null distribution was only "significant" at p \< 0.05 for Ernest (2003) (p = 0.013). However, because Ernest's database doesn't report these variables to begin with, we are essentially just making the comparison more fair by not including unrecorded data. A similar effect takes place in the Amniote (Myrhvold et al. 2015) and AnAge (de Magalhães & Costa 2009) databases, which both had suggestive increases in mean completeness at p \< 0.05 (0.052 and 0.069, respectively) when not testing for unreported sex-dependent variables. The variables that were the most complete across databases were also all non-stratified: weaning age, gestation length, and IBI. Lifespan and age at first reproduction have moderate completeness across all the databases except for AnAge, which doesn't report AFR, and the K&P dataset, which doesn't report lifespan.
+When completeness is evaluated only among traits that are in the scope of each database, sex-stratified variables are not uniformly less complete. In fact, for Ernest (2003), PanTHERIA (Jones et al. 2009), and Kappeler & Pereira (2003), sex-stratified traits show higher mean completeness than non-sex-stratified traits, reflected by negative observed differences. In contrast, AnAge and the Amniote database show higher completeness for non-sex-stratified traits, although differences are not statistically significant. These results suggest that the apparent incompleteness of sex-stratified variables observed in panel-based analyses is largely driven by scope differences rather than systematic data loss within sex-stratified traits.
 
 ```{r}
 #| label: layered bar chart
-#| fig-cap: "**Figure 2.** Mean completeness of each database using all key variables (solid color) and only non-sex-stratified key variables (subset, translucent color). Numeric p-values indicate results of one-tailed permutation tests comparing the observed difference in mean completeness to the null distribution generated by random subsets of equal size (n = 10,000)"
+#| fig-cap: "**Figure 2.** Trait scope coverage vs within scope completeness across primate life history databases. Scope coverage represents the proportion of our select key traits recorded by a given source and the within scope completeness represents the mean completeness calculated only for traits recorded by that database."
 #| echo: false
 
-#plot_pvals <- perm_res %>%
-#  mutate(
-#    label = paste0("p = ", format.pval(p_value, digits = 2, eps = 0.001)),
-#    y_pos = pmin(mean_completeness_no_sex + 0.04, 0.98)
-#  )
+scope_long <- scope_summary %>% 
+  pivot_longer(
+    cols = c(scope_coverage, within_scope_completeness),
+    names_to = "metric",
+    values_to = "value"
+  )
 
-#ggplot(composite_completeness, aes(x = source)) +
-#  geom_col(
-#    aes(y = mean_completeness_no_sex, fill = source, color = source),
-#    alpha = 0.4,
-#    width = 0.75,
-#    linewidth = 0.5,
-#    show.legend = FALSE
-#  ) +
-#  geom_col(
-#    aes(y = mean_completeness, fill = source),
-#    width = 0.75
-#  ) +
-#  geom_text(
-#    data = plot_pvals,
-#    aes(x = source, y = y_pos, label = label),
-#    inherit.aes = FALSE,
-#    size = 4
-#  ) +
-#  coord_cartesian(ylim = c(0, 1)) +
-#  scale_fill_viridis_d(option = "D", end = 0.9) +
-#  scale_color_viridis_d(option = "D", end = 0.9, guide = "none") +
-#  labs(
-#    x = "Source Database",
-#    y = "Mean Completeness",
-#    title = "Mean Completeness of Sexless vs All Key Traits"
-#  ) +
-#  theme_bw() +
-#  theme(
-#    legend.position = "none",
-#    axis.text.x = element_text(angle = 33, hjust = 1)
-#  )
+ggplot(scope_long, aes(x = source, y = value, fill = metric)) +
+  geom_col(position = "dodge", width = .7) +
+  coord_cartesian(ylim = c(0, 1)) +
+  scale_fill_manual(values = c(scope_coverage = "orange3", within_scope_completeness = "navyblue"),
+  labels = c(scope_coverage = "Trait scope coverage", within_scope_completeness = "Completeness (within scope)"
+  )) +
+  labs(
+    x = "Database",
+    y = "Proportion",
+    title = "Trait scope vs completeness across primate life history databases"
+  ) +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(angle = 33, hjust = 1)
+  )
 ```
 
-The PanTHERIA (blue) and Kappeler & Pereira (green) databases both had poor completeness scores across all variables. For select species with high representation, like humans or chimpanzees, the Kappeler & Pereira set seems like a good inclusion but it doesn't have much to offer in wide taxonomic comparisons. Ernest (dark blue) has the second highest mean completeness when only considering sex-independent variables but falls short in the number of primate species represented (only 156). Similarly, the AnAge database (purple) demonstrates high completeness for key variables but only contains data for 174 species of primates. PanTHERIA, while only having a mean completeness of 32% with sex-independent variables, boasts the greatest representation of primates with 376 species. In both representation and completeness, the Amniote database (yellow) is arguably the best. While only representing 365 primate species, its mean completeness is 61% for all variables and 76% for sex-independent variables.
-
-NOTE: AnAge cites all other databases in our analysis so how is its completeness and number of species represented lower? more rigorous standard for data?
-
-Considering the limited effect of including sex-dependent variables on the completeness of the PanTHERIA (Jones et al. 2009) and Kappeler & Pereira (2003) databases, and the significant improvement to completeness of the three databases which don't report sex-dependent variables for adult mass and age at maturity, it is my opinion that including these variables only serves to make comparisons between databases less meaningful and more complicated computationally. I remember us debating including body mass to begin with, but couldn't find in our notes whether we came to a conclusion. Age at maturity is irrefutably an important life history statistic, though, so the scarcity of sex-specific data can pose a problem to researchers. One alternative is age at first reproduction, which is a more definitive way of knowing that an individual has reached maturity but doesn't necessarily correlate to when they *reached* maturity, because first reproduction tends to occur later than when it is technically possible.
+When trait scope is taken into account, the apparent incompleteness of sex-stratified variables across databases is largely explained by differences in database design. Databases such as Ernest (2003), PanTHERIA (Jones et al. 2009), and Kappeler & Pereira (2003) do not uniformly report sex-specific measures of adult body mass or age at maturity, which inflates missingness when completeness is assessed across a fixed panel of traits. However, scope-aware analyses show that sex-stratified variables are not consistently less complete than non-sex-stratified variables, and in some cases are more complete. These findings highlight a central trade-off in comparative life-history analyses: sex-specific measures of traits such as age at sexual maturity are biologically informative, but their inconsistent inclusion across databases complicates broad taxonomic comparisons. In contexts where sex-specific maturity data are sparse or structurally unavailable, age at first reproduction may serve as a valid alternative, as it is more widely reported and unambiguously defined.
 
 Thoughts:
 
@@ -615,6 +555,10 @@ Thoughts:
 -   is it better to combine the sex classes for the sake of more data or to rely on the scant sex-specific data points?
 
 -   is AFR a sufficient proxy? or depending on the study AFR may be the preferred measure?
+
+    -   first reproduction typically occurs later than technical sexual maturity & is sensitive to many external factors, should it be treated as a distinct life-history measure or can it serve as a proxy for age at maturity?
+
+-   AnAge cites all other databases in our analysis so how is its completeness and number of species represented lower? more rigorous standard for data?
 
 ## other analysis?
 
