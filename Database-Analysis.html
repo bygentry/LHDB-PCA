@@ -112,7 +112,8 @@ window.Quarto = {
     <h2 id="toc-title">Contents</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#if-youre-reading-this-im-sorry-for-how-much-of-a-mess-this-doc-is-right-now-im-mid-overhaul-after-re-applying-the-permutation-test-to-a-more-meaningful-metric" id="toc-if-youre-reading-this-im-sorry-for-how-much-of-a-mess-this-doc-is-right-now-im-mid-overhaul-after-re-applying-the-permutation-test-to-a-more-meaningful-metric" class="nav-link active" data-scroll-target="#if-youre-reading-this-im-sorry-for-how-much-of-a-mess-this-doc-is-right-now-im-mid-overhaul-after-re-applying-the-permutation-test-to-a-more-meaningful-metric">if youre reading this im sorry for how much of a mess this doc is right now im mid overhaul after re-applying the permutation test to a more meaningful metric</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#database-analysis" id="toc-database-analysis" class="nav-link" data-scroll-target="#database-analysis">Database Analysis</a>
   <ul class="collapse">
   <li><a href="#preliminaries" id="toc-preliminaries" class="nav-link" data-scroll-target="#preliminaries">Preliminaries</a>
@@ -156,6 +157,9 @@ window.Quarto = {
 </header>
 
 
+<section id="if-youre-reading-this-im-sorry-for-how-much-of-a-mess-this-doc-is-right-now-im-mid-overhaul-after-re-applying-the-permutation-test-to-a-more-meaningful-metric" class="level2">
+<h2 class="anchored" data-anchor-id="if-youre-reading-this-im-sorry-for-how-much-of-a-mess-this-doc-is-right-now-im-mid-overhaul-after-re-applying-the-permutation-test-to-a-more-meaningful-metric">if youre reading this im sorry for how much of a mess this doc is right now im mid overhaul after re-applying the permutation test to a more meaningful metric</h2>
+</section>
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
 <blockquote class="blockquote">
@@ -408,64 +412,87 @@ window.Quarto = {
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="do">## combine values from key value dfs of each source into a single df "key_vals"</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>key_vals <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(amniote_s, AnAge_s, ernest_s, kp_s, pan_s)</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="do">## this calculates the proportion of missing values for each life history trait</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="do">## and stores them in a "missigness" df that stores the trait, the source, </span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="do">## and the % missingness in 3 steps</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="do">## (1) pivots columns except for species and source, </span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="do">##     assigns variable names to trait and values to value </span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="do">## (2) groups traits sourcewise</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="do">## (3) calculates the proportion of NAs to valid entries for each trait</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="do">##     in each source and stores them alongside the source and trait name</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>missingness <span class="ot">&lt;-</span> key_vals <span class="sc">%&gt;%</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="sc">-</span><span class="fu">c</span>(species, source), </span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"trait"</span>, </span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"value"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(source, trait) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">prop_missing =</span> <span class="fu">mean</span>(<span class="fu">is.na</span>(value)), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>missingness_no_sex <span class="ot">&lt;-</span> key_vals <span class="sc">%&gt;%</span></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">any_of</span>(<span class="fu">c</span>(<span class="st">"body_mass_u"</span>, <span class="st">"body_mass_f"</span>, <span class="st">"body_mass_m"</span>, <span class="st">"age_at_maturity_u"</span>, <span class="st">"age_at_maturity_f"</span>, <span class="st">"age_at_maturity_m"</span>))) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="sc">-</span><span class="fu">c</span>(species, source), </span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"trait"</span>, </span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"value"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(source, trait) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">prop_missing =</span> <span class="fu">mean</span>(<span class="fu">is.na</span>(value)), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="do">## renames traits to look pretty on graph</span></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>missingness <span class="ot">&lt;-</span> missingness <span class="sc">%&gt;%</span></span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">trait =</span> <span class="fu">case_when</span>(</span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    trait <span class="sc">==</span> <span class="st">"max_longevity"</span> <span class="sc">~</span> <span class="st">"Lifespan (Years)"</span>,</span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    trait <span class="sc">==</span> <span class="st">"IBI"</span> <span class="sc">~</span> <span class="st">"Interbirth Interval (Days)"</span>,</span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    trait <span class="sc">==</span> <span class="st">"AFR"</span> <span class="sc">~</span> <span class="st">"Age at First Reproduction (Days)"</span>,</span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    trait <span class="sc">==</span> <span class="st">"gest_len"</span> <span class="sc">~</span> <span class="st">"Gestation Length (Days)"</span>,</span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    trait <span class="sc">==</span> <span class="st">"weaning_age"</span> <span class="sc">~</span> <span class="st">"Weaning Age (Days)"</span>,</span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>    trait <span class="sc">==</span> <span class="st">"body_mass_u"</span> <span class="sc">~</span> <span class="st">"Adult Mass - Unspecified (g)"</span>,</span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>    trait <span class="sc">==</span> <span class="st">"body_mass_m"</span> <span class="sc">~</span> <span class="st">"Adult Mass - Male (g)"</span>,</span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>    trait <span class="sc">==</span> <span class="st">"body_mass_f"</span> <span class="sc">~</span> <span class="st">"Adult Mass - Female (g)"</span>,</span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>    trait <span class="sc">==</span> <span class="st">"age_at_maturity_u"</span> <span class="sc">~</span> <span class="st">"Sexual Maturity - Unspecified (Days)"</span>,</span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>    trait <span class="sc">==</span> <span class="st">"age_at_maturity_m"</span> <span class="sc">~</span> <span class="st">"Sexual Maturity - Male (Days)"</span>,</span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>    trait <span class="sc">==</span> <span class="st">"age_at_maturity_f"</span> <span class="sc">~</span> <span class="st">"Sexual Maturity - Female (Days)"</span>,</span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> trait  <span class="co"># keep other traits unchanged</span></span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>  ))</span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a><span class="do">## renames traits to look pretty on graph</span></span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>missingness_no_sex <span class="ot">&lt;-</span> missingness_no_sex <span class="sc">%&gt;%</span></span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">trait =</span> <span class="fu">case_when</span>(</span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>    trait <span class="sc">==</span> <span class="st">"max_longevity"</span> <span class="sc">~</span> <span class="st">"Lifespan (Years)"</span>,</span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>    trait <span class="sc">==</span> <span class="st">"IBI"</span> <span class="sc">~</span> <span class="st">"Interbirth Interval (Days)"</span>,</span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>    trait <span class="sc">==</span> <span class="st">"AFR"</span> <span class="sc">~</span> <span class="st">"Age at First Reproduction (Days)"</span>,</span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>    trait <span class="sc">==</span> <span class="st">"gest_len"</span> <span class="sc">~</span> <span class="st">"Gestation Length (Days)"</span>,</span>
-<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>    trait <span class="sc">==</span> <span class="st">"weaning_age"</span> <span class="sc">~</span> <span class="st">"Weaning Age (Days)"</span>,</span>
-<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> trait  <span class="co"># keep other traits unchanged</span></span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>  ))</span>
-<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a><span class="do">## extracts the number of distinct species represented by each source</span></span>
-<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a><span class="do">## then concatenates a label of the citation and number of primate species</span></span>
-<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>dataset_labels <span class="ot">&lt;-</span> key_vals <span class="sc">%&gt;%</span></span>
-<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(source) <span class="sc">%&gt;%</span></span>
-<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">n =</span> <span class="fu">n_distinct</span>(species), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">label =</span> <span class="fu">paste0</span>(source, <span class="st">"</span><span class="sc">\n</span><span class="st">(n = "</span>, n, <span class="st">")"</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>  { <span class="fu">setNames</span>(.<span class="sc">$</span>label, .<span class="sc">$</span>source) }</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>key_long <span class="ot">&lt;-</span> key_vals <span class="sc">%&gt;%</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="sc">-</span><span class="fu">c</span>(species, source),</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"trait_raw"</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"value"</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>trait_labels <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">max_longevity =</span> <span class="st">"Lifespan (Years)"</span>,</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">IBI =</span> <span class="st">"Interbirth Interval (Days)"</span>,</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">AFR =</span> <span class="st">"Age at First Reproduction (Days)"</span>,</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">gest_len =</span> <span class="st">"Gestation Length (Days)"</span>,</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">weaning_age =</span> <span class="st">"Weaning Age (Days)"</span>,</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">body_mass_u =</span> <span class="st">"Adult Mass - Unspecified (g)"</span>,</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">body_mass_m =</span> <span class="st">"Adult Mass - Male (g)"</span>,</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">body_mass_f =</span> <span class="st">"Adult Mass - Female (g)"</span>,</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">age_at_maturity_u =</span> <span class="st">"Sexual Maturity - Unspecified (Days)"</span>,</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">age_at_maturity_m =</span> <span class="st">"Sexual Maturity - Male (Days)"</span>,</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">age_at_maturity_f =</span> <span class="st">"Sexual Maturity - Female (Days)"</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>scope_df <span class="ot">&lt;-</span> key_long <span class="sc">%&gt;%</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(source, trait_raw) <span class="sc">%&gt;%</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_total =</span> <span class="fu">n</span>(),</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_nonmissing =</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(value)),</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">prop_missing_panel =</span> <span class="fu">mean</span>(<span class="fu">is.na</span>(value)),</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">in_scope =</span> (n_nonmissing <span class="sc">/</span> n_total) <span class="sc">&gt;=</span> <span class="fl">0.01</span>,</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">prop_missing_within_scope =</span> <span class="fu">if_else</span>(in_scope, prop_missing_panel, <span class="cn">NA_real_</span>),</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">trait =</span> <span class="fu">recode</span>(trait_raw, <span class="sc">!!!</span>trait_labels)</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>scope_summary <span class="ot">&lt;-</span> scope_df <span class="sc">%&gt;%</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(source) <span class="sc">%&gt;%</span></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">scope_coverage =</span> <span class="fu">mean</span>(in_scope),                              </span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel_completeness =</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">mean</span>(prop_missing_panel),            </span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">within_scope_completeness =</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">mean</span>(prop_missing_within_scope, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a><span class="do">## this calculates the proportion of missing values for each life history trait</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a><span class="do">## and stores them in a "missigness" df that stores the trait, the source, </span></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a><span class="do">## and the % missingness in 3 steps</span></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a><span class="do">## (1) pivots columns except for species and source, </span></span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a><span class="do">##     assigns variable names to trait and values to value </span></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a><span class="do">## (2) groups traits sourcewise</span></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a><span class="do">## (3) calculates the proportion of NAs to valid entries for each trait</span></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a><span class="do">##     in each source and stores them alongside the source and trait name</span></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>missingness <span class="ot">&lt;-</span> key_vals <span class="sc">%&gt;%</span></span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="sc">-</span><span class="fu">c</span>(species, source), </span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"trait"</span>, </span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"value"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(source, trait) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">prop_missing =</span> <span class="fu">mean</span>(<span class="fu">is.na</span>(value)), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>missingness_no_sex <span class="ot">&lt;-</span> key_vals <span class="sc">%&gt;%</span></span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">any_of</span>(<span class="fu">c</span>(<span class="st">"body_mass_u"</span>, <span class="st">"body_mass_f"</span>, <span class="st">"body_mass_m"</span>, <span class="st">"age_at_maturity_u"</span>, <span class="st">"age_at_maturity_f"</span>, <span class="st">"age_at_maturity_m"</span>))) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="sc">-</span><span class="fu">c</span>(species, source), </span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"trait"</span>, </span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"value"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(source, trait) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">prop_missing =</span> <span class="fu">mean</span>(<span class="fu">is.na</span>(value)), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>missingness <span class="ot">&lt;-</span> missingness <span class="sc">%&gt;%</span></span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">trait =</span> dplyr<span class="sc">::</span><span class="fu">recode</span>(trait, <span class="sc">!!!</span>trait_labels, <span class="at">.default =</span> trait))</span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>missingness_no_sex <span class="ot">&lt;-</span> missingness_no_sex <span class="sc">%&gt;%</span></span>
+<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">trait =</span> dplyr<span class="sc">::</span><span class="fu">recode</span>(trait, <span class="sc">!!!</span>trait_labels, <span class="at">.default =</span> trait))</span>
+<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a><span class="do">## extracts the number of distinct species represented by each source</span></span>
+<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a><span class="do">## then concatenates a label of the citation and number of primate species</span></span>
+<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a>dataset_labels <span class="ot">&lt;-</span> key_vals <span class="sc">%&gt;%</span></span>
+<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(source) <span class="sc">%&gt;%</span></span>
+<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">n =</span> <span class="fu">n_distinct</span>(species), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">label =</span> <span class="fu">paste0</span>(source, <span class="st">"</span><span class="sc">\n</span><span class="st">(n = "</span>, n, <span class="st">")"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a>  { <span class="fu">setNames</span>(.<span class="sc">$</span>label, .<span class="sc">$</span>source) }</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div class="cell">
@@ -473,55 +500,58 @@ window.Quarto = {
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># One-tailed Permutation Test</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># create list of sex dependent variable names for checking sex dependency</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># create list of sex dependent variable names for checking sex differentiation</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>sex_dep_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Sexual Maturity - Female (Days)"</span>, <span class="st">"Sexual Maturity - Male (Days)"</span>, <span class="st">"Sexual Maturity - Unspecified (Days)"</span>, <span class="st">"Adult Mass - Female (g)"</span>, <span class="st">"Adult Mass - Male (g)"</span>, <span class="st">"Adult Mass - Unspecified (g)"</span>)</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># create a new df for the permutation test</span></span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="do">## completeness - the inverse proportion of missing values</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="do">## is_sexless - a boolean representing a traits dependency on sex</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>perm_df <span class="ot">&lt;-</span> missingness <span class="sc">%&gt;%</span> </span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">source =</span> source,                          <span class="co"># the database citations</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">trait =</span> trait,                            <span class="co"># the names of the traits</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">completeness =</span> <span class="dv">1</span> <span class="sc">-</span> prop_missing,          <span class="co"># inverse proportion of missingness for each trait</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">is_sexless =</span> <span class="sc">!</span>(trait <span class="sc">%in%</span> sex_dep_vars)   <span class="co"># boolean: FALSE if variable is sex dependent, else TRUE </span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co"># creates a function for the permutation test to see if the improved completeness after removing sex dependent variables is significantly greater than 10,000 random selections of variables</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>perm_test <span class="ot">&lt;-</span> <span class="cf">function</span>(df, <span class="at">n =</span> <span class="dv">10000</span>, <span class="at">seed =</span> <span class="dv">1</span>){</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set.seed</span>(seed)</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> df<span class="sc">$</span>completeness                    <span class="co"># completeness of each trait</span></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  sexless <span class="ot">&lt;-</span> df<span class="sc">$</span>is_sexless                <span class="co"># boolean: FALSE if var is sex dependent</span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>  k <span class="ot">&lt;-</span> <span class="fu">sum</span>(sexless)                       <span class="co"># number of sex independent variables</span></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>  mu_all <span class="ot">&lt;-</span> <span class="fu">mean</span>(x)                       <span class="co"># mean completeness by database of all variables</span></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>  mu_no_sex <span class="ot">&lt;-</span> <span class="fu">mean</span>(x[df<span class="sc">$</span>is_sexless])     <span class="co"># mean completeness of only sex-independent variables</span></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>  obs <span class="ot">&lt;-</span> mu_no_sex <span class="sc">-</span> mu_all               <span class="co"># difference between both means</span></span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(k <span class="sc">==</span> <span class="dv">0</span>L <span class="sc">||</span> k <span class="sc">==</span> <span class="fu">length</span>(x)) {</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">tibble</span>(</span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>      <span class="at">mean_completeness =</span> mu_all,</span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>      <span class="at">mean_completeness_no_sex =</span> mu_no_sex,</span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>      <span class="at">obs_diff =</span> <span class="cn">NA_real_</span>,</span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>      <span class="at">p_value =</span> <span class="cn">NA_real_</span></span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    ))</span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>  perm_stats <span class="ot">&lt;-</span> <span class="fu">replicate</span>(n, {</span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>    idx <span class="ot">&lt;-</span> <span class="fu">sample.int</span>(<span class="fu">length</span>(x), k, <span class="at">replace =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mean</span>(x[idx]) <span class="sc">-</span> mu_all</span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">mean</span>(perm_stats <span class="sc">&gt;=</span> obs)</span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(</span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_completeness =</span> mu_all,</span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_completeness_no_sex =</span> mu_no_sex,</span>
-<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">obs_diff =</span> obs,</span>
-<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">p_value =</span> p</span>
-<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="do">## sexed - a boolean representing a trait is stratified by sex</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>perm_df <span class="ot">&lt;-</span> scope_df <span class="sc">%&gt;%</span> </span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(in_scope) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">completeness =</span> <span class="dv">1</span> <span class="sc">-</span> prop_missing_panel,        <span class="co"># inverse proportion of missingness for each trait</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">sexed =</span> trait <span class="sc">%in%</span> sex_dep_vars         <span class="co"># boolean: TRUE if variable is sex stratified, else FALSE </span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co"># creates a function for the permutation test</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>perm_test <span class="ot">&lt;-</span> <span class="cf">function</span>(df, <span class="at">n =</span> <span class="dv">10000</span>, <span class="at">seed =</span> <span class="dv">1</span>){</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set.seed</span>(seed)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> df<span class="sc">$</span>completeness</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  sexed <span class="ot">&lt;-</span> df<span class="sc">$</span>sexed</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>  n_sexed <span class="ot">&lt;-</span> <span class="fu">sum</span>(sexed)</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  n_non <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="sc">!</span>sexed)</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(n_sexed <span class="sc">==</span> <span class="dv">0</span> <span class="sc">||</span> n_non <span class="sc">==</span> <span class="dv">0</span>){</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">tibble</span>(</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>      <span class="at">mean_sexed =</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>      <span class="at">mean_non =</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>      <span class="at">obs_diff =</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>      <span class="at">p_value =</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>      <span class="at">n_sexed =</span> n_sexed,</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>      <span class="at">n_non =</span> n_non</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>    ))</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>  mu_sexed <span class="ot">&lt;-</span> <span class="fu">mean</span>(x[sexed])</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>  mu_non <span class="ot">&lt;-</span> <span class="fu">mean</span>(x[<span class="sc">!</span>sexed])</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>  obs <span class="ot">&lt;-</span> mu_non <span class="sc">-</span> mu_sexed</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>  perm_stats <span class="ot">&lt;-</span> <span class="fu">replicate</span>(n, {</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>    perm <span class="ot">&lt;-</span> <span class="fu">sample</span>(sexed)</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mean</span>(x[<span class="sc">!</span>perm]) <span class="sc">-</span> <span class="fu">mean</span>(x[perm])</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(</span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_sexed =</span> mu_sexed,</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_non =</span> mu_non,</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">obs_diff =</span> obs,</span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>    <span class="at">p_value =</span> <span class="fu">mean</span>(perm_stats <span class="sc">&gt;=</span> obs), </span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_sexed =</span> n_sexed,</span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_non =</span> n_non</span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div class="cell">
@@ -612,38 +642,52 @@ window.Quarto = {
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="Database-Analysis_files/figure-html/heatmap%20visualization%201-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption><strong>Figure 1.</strong> Heat map of missing values for key life history traits across all five databases. Low heat (yellow) signifies few missing values while high heat (red) signifies many missing values.</figcaption>
+<figcaption><strong>Figure 1.</strong> Heat map of missing values for key life history traits across all five databases. Low heat (yellow) signifies few missing values while high heat (red) signifies many missing values. Grey indicates that the trait was not recorded in a particular source.</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>notes:</p>
 <ul>
-<li><p>sex-reliant vars are most incomplete</p></li>
-<li><p>sex-reliant vars for females are more complete than male or unknown</p></li>
-<li><p>weaning age, IBI, and gestation length are the most complete across all data sets (lifespan is a close 4th but K&amp;P don’t report any values for it - same with AnAge )</p></li>
+<li><p>sex-reliant vars are most unreported</p></li>
+<li><p>age at maturity vars for females are more complete than male when both sexes are reported</p></li>
+<li><p>weaning age, IBI, and gestation length are the most complete across all data sets (lifespan is a close 4th but K&amp;P don’t report any values for it - same with AnAge and AFR )</p></li>
 <li><p><strong>all databases have at least one unreported variable of our key variable selection</strong></p></li>
 </ul>
-<p>Since it appears that the sex-dependent variables (“Sexual Maturity - Female (Days)”, “Sexual Maturity - Male (Days)”, “Sexual Maturity - Unspecified (Days)”, “Adult Mass - Female (g)”, “Adult Mass - Male (g)”, “Adult Mass - Unspecified (g)”) are the most incomplete across all of the databases, I ran a one-tailed permutation test to compare the mean completeness of the databases using all of our key LH variables and the mean completeness when the sex-dependent variables are excluded:</p>
+<p>Of our key life history traits, most databases only record data for around 60% of them (mostly just <strong>not</strong> the sex-stratified versions of body mass and age at maturity). When testing the mean completeness of the databases using all of the key traits versus only the ones they record, their completeness scores obviously improved. This may appear to call into question our selection of traits, but really the trait scope is under represented because the missing traits are the same measurement for different sex classes.</p>
 <div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>scope_summary <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">scope_coverage =</span> scales<span class="sc">::</span><span class="fu">percent</span>(scope_coverage, <span class="at">accuracy =</span> <span class="dv">1</span>),</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel_completeness =</span> <span class="fu">round</span>(panel_completeness, <span class="dv">3</span>),</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">within_scope_completeness =</span> <span class="fu">round</span>(within_scope_completeness, <span class="dv">3</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  gt<span class="sc">::</span><span class="fu">gt</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  gt<span class="sc">::</span><span class="fu">cols_label</span>(</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">source =</span> <span class="st">"Database"</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">scope_coverage =</span> <span class="st">"Trait scope coverage"</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">within_scope_completeness =</span> <span class="st">"Completeness (within scope)"</span>,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel_completeness =</span> <span class="st">"Completeness (full panel)"</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  gt<span class="sc">::</span><span class="fu">tab_caption</span>(gt<span class="sc">::</span><span class="fu">md</span>(<span class="st">"**Table 3.** Scope coverage vs completeness (panel vs within-scope)."</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<div id="mexkcvwsaj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#mexkcvwsaj table {
+<div id="modtripzdp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#modtripzdp table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#mexkcvwsaj thead, #mexkcvwsaj tbody, #mexkcvwsaj tfoot, #mexkcvwsaj tr, #mexkcvwsaj td, #mexkcvwsaj th {
+#modtripzdp thead, #modtripzdp tbody, #modtripzdp tfoot, #modtripzdp tr, #modtripzdp td, #modtripzdp th {
   border-style: none;
 }
 
-#mexkcvwsaj p {
+#modtripzdp p {
   margin: 0;
   padding: 0;
 }
 
-#mexkcvwsaj .gt_table {
+#modtripzdp .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -669,12 +713,12 @@ window.Quarto = {
   border-left-color: #D3D3D3;
 }
 
-#mexkcvwsaj .gt_caption {
+#modtripzdp .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#mexkcvwsaj .gt_title {
+#modtripzdp .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -686,7 +730,7 @@ window.Quarto = {
   border-bottom-width: 0;
 }
 
-#mexkcvwsaj .gt_subtitle {
+#modtripzdp .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -698,7 +742,7 @@ window.Quarto = {
   border-top-width: 0;
 }
 
-#mexkcvwsaj .gt_heading {
+#modtripzdp .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -710,13 +754,13 @@ window.Quarto = {
   border-right-color: #D3D3D3;
 }
 
-#mexkcvwsaj .gt_bottom_border {
+#modtripzdp .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#mexkcvwsaj .gt_col_headings {
+#modtripzdp .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -731,7 +775,7 @@ window.Quarto = {
   border-right-color: #D3D3D3;
 }
 
-#mexkcvwsaj .gt_col_heading {
+#modtripzdp .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -751,7 +795,7 @@ window.Quarto = {
   overflow-x: hidden;
 }
 
-#mexkcvwsaj .gt_column_spanner_outer {
+#modtripzdp .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -763,15 +807,15 @@ window.Quarto = {
   padding-right: 4px;
 }
 
-#mexkcvwsaj .gt_column_spanner_outer:first-child {
+#modtripzdp .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#mexkcvwsaj .gt_column_spanner_outer:last-child {
+#modtripzdp .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#mexkcvwsaj .gt_column_spanner {
+#modtripzdp .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -783,11 +827,11 @@ window.Quarto = {
   width: 100%;
 }
 
-#mexkcvwsaj .gt_spanner_row {
+#modtripzdp .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#mexkcvwsaj .gt_group_heading {
+#modtripzdp .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -813,7 +857,7 @@ window.Quarto = {
   text-align: left;
 }
 
-#mexkcvwsaj .gt_empty_group_heading {
+#modtripzdp .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -828,15 +872,15 @@ window.Quarto = {
   vertical-align: middle;
 }
 
-#mexkcvwsaj .gt_from_md > :first-child {
+#modtripzdp .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#mexkcvwsaj .gt_from_md > :last-child {
+#modtripzdp .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#mexkcvwsaj .gt_row {
+#modtripzdp .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -855,7 +899,7 @@ window.Quarto = {
   overflow-x: hidden;
 }
 
-#mexkcvwsaj .gt_stub {
+#modtripzdp .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -868,7 +912,7 @@ window.Quarto = {
   padding-right: 5px;
 }
 
-#mexkcvwsaj .gt_stub_row_group {
+#modtripzdp .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -882,15 +926,15 @@ window.Quarto = {
   vertical-align: top;
 }
 
-#mexkcvwsaj .gt_row_group_first td {
+#modtripzdp .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#mexkcvwsaj .gt_row_group_first th {
+#modtripzdp .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#mexkcvwsaj .gt_summary_row {
+#modtripzdp .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -900,16 +944,16 @@ window.Quarto = {
   padding-right: 5px;
 }
 
-#mexkcvwsaj .gt_first_summary_row {
+#modtripzdp .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#mexkcvwsaj .gt_first_summary_row.thick {
+#modtripzdp .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#mexkcvwsaj .gt_last_summary_row {
+#modtripzdp .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -919,7 +963,7 @@ window.Quarto = {
   border-bottom-color: #D3D3D3;
 }
 
-#mexkcvwsaj .gt_grand_summary_row {
+#modtripzdp .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -929,7 +973,7 @@ window.Quarto = {
   padding-right: 5px;
 }
 
-#mexkcvwsaj .gt_first_grand_summary_row {
+#modtripzdp .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -939,7 +983,7 @@ window.Quarto = {
   border-top-color: #D3D3D3;
 }
 
-#mexkcvwsaj .gt_last_grand_summary_row_top {
+#modtripzdp .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -949,11 +993,11 @@ window.Quarto = {
   border-bottom-color: #D3D3D3;
 }
 
-#mexkcvwsaj .gt_striped {
+#modtripzdp .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#mexkcvwsaj .gt_table_body {
+#modtripzdp .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -962,7 +1006,7 @@ window.Quarto = {
   border-bottom-color: #D3D3D3;
 }
 
-#mexkcvwsaj .gt_footnotes {
+#modtripzdp .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -976,7 +1020,7 @@ window.Quarto = {
   border-right-color: #D3D3D3;
 }
 
-#mexkcvwsaj .gt_footnote {
+#modtripzdp .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -985,7 +1029,7 @@ window.Quarto = {
   padding-right: 5px;
 }
 
-#mexkcvwsaj .gt_sourcenotes {
+#modtripzdp .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -999,7 +1043,7 @@ window.Quarto = {
   border-right-color: #D3D3D3;
 }
 
-#mexkcvwsaj .gt_sourcenote {
+#modtripzdp .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1007,134 +1051,116 @@ window.Quarto = {
   padding-right: 5px;
 }
 
-#mexkcvwsaj .gt_left {
+#modtripzdp .gt_left {
   text-align: left;
 }
 
-#mexkcvwsaj .gt_center {
+#modtripzdp .gt_center {
   text-align: center;
 }
 
-#mexkcvwsaj .gt_right {
+#modtripzdp .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#mexkcvwsaj .gt_font_normal {
+#modtripzdp .gt_font_normal {
   font-weight: normal;
 }
 
-#mexkcvwsaj .gt_font_bold {
+#modtripzdp .gt_font_bold {
   font-weight: bold;
 }
 
-#mexkcvwsaj .gt_font_italic {
+#modtripzdp .gt_font_italic {
   font-style: italic;
 }
 
-#mexkcvwsaj .gt_super {
+#modtripzdp .gt_super {
   font-size: 65%;
 }
 
-#mexkcvwsaj .gt_footnote_marks {
+#modtripzdp .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#mexkcvwsaj .gt_asterisk {
+#modtripzdp .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#mexkcvwsaj .gt_indent_1 {
+#modtripzdp .gt_indent_1 {
   text-indent: 5px;
 }
 
-#mexkcvwsaj .gt_indent_2 {
+#modtripzdp .gt_indent_2 {
   text-indent: 10px;
 }
 
-#mexkcvwsaj .gt_indent_3 {
+#modtripzdp .gt_indent_3 {
   text-indent: 15px;
 }
 
-#mexkcvwsaj .gt_indent_4 {
+#modtripzdp .gt_indent_4 {
   text-indent: 20px;
 }
 
-#mexkcvwsaj .gt_indent_5 {
+#modtripzdp .gt_indent_5 {
   text-indent: 25px;
 }
 
-#mexkcvwsaj .katex-display {
+#modtripzdp .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#mexkcvwsaj div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#modtripzdp div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
 
 <table class="gt_table caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
-<caption><strong>Table 3.</strong> Results from one-tailed permutation test (n = 10,000)</caption>
-<colgroup>
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-</colgroup>
+<caption><strong>Table 3.</strong> Scope coverage vs completeness (panel vs within-scope).</caption>
 <thead>
-<tr class="gt_col_headings gt_spanner_row header">
-<th rowspan="2" id="source" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">Database</th>
-<th colspan="2" id="Mean Completeness" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="colgroup"><div class="gt_column_spanner">
-Mean Completeness
-</div></th>
-<th rowspan="2" id="obs_diff" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Difference</th>
-<th rowspan="2" id="p_value" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">p-value</th>
-</tr>
-<tr class="gt_col_headings even">
-<th id="mean_completeness" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">All Vars</th>
-<th id="mean_completeness_no_sex" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Sexless Vars</th>
+<tr class="gt_col_headings header">
+<th id="source" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">Database</th>
+<th id="scope_coverage" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Trait scope coverage</th>
+<th id="panel_completeness" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Completeness (full panel)</th>
+<th id="within_scope_completeness" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Completeness (within scope)</th>
 </tr>
 </thead>
 <tbody class="gt_table_body">
 <tr class="odd">
 <td class="gt_row gt_center" headers="source">de Magalhães &amp; Costa 2009</td>
-<td class="gt_row gt_right" headers="mean_completeness">0.399</td>
-<td class="gt_row gt_right" headers="mean_completeness_no_sex">0.585</td>
-<td class="gt_row gt_right" headers="obs_diff">0.186</td>
-<td class="gt_row gt_right" headers="p_value">0.0686</td>
+<td class="gt_row gt_right" headers="scope_coverage">64%</td>
+<td class="gt_row gt_right" headers="panel_completeness">0.399</td>
+<td class="gt_row gt_right" headers="within_scope_completeness">0.626</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_center" headers="source">Ernest 2003</td>
-<td class="gt_row gt_right" headers="mean_completeness">0.378</td>
-<td class="gt_row gt_right" headers="mean_completeness_no_sex">0.635</td>
-<td class="gt_row gt_right" headers="obs_diff">0.256</td>
-<td class="gt_row gt_right" headers="p_value">0.0130</td>
+<td class="gt_row gt_right" headers="scope_coverage">55%</td>
+<td class="gt_row gt_right" headers="panel_completeness">0.378</td>
+<td class="gt_row gt_right" headers="within_scope_completeness">0.693</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_center" headers="source">Jones et al. 2009</td>
-<td class="gt_row gt_right" headers="mean_completeness">0.236</td>
-<td class="gt_row gt_right" headers="mean_completeness_no_sex">0.321</td>
-<td class="gt_row gt_right" headers="obs_diff">0.084</td>
-<td class="gt_row gt_right" headers="p_value">0.1840</td>
+<td class="gt_row gt_right" headers="scope_coverage">64%</td>
+<td class="gt_row gt_right" headers="panel_completeness">0.236</td>
+<td class="gt_row gt_right" headers="within_scope_completeness">0.372</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_center" headers="source">Kappeler &amp; Pereira 2003</td>
-<td class="gt_row gt_right" headers="mean_completeness">0.170</td>
-<td class="gt_row gt_right" headers="mean_completeness_no_sex">0.212</td>
-<td class="gt_row gt_right" headers="obs_diff">0.042</td>
-<td class="gt_row gt_right" headers="p_value">0.3700</td>
+<td class="gt_row gt_right" headers="scope_coverage">55%</td>
+<td class="gt_row gt_right" headers="panel_completeness">0.170</td>
+<td class="gt_row gt_right" headers="within_scope_completeness">0.312</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_center" headers="source">Myrhvold et al. 2015</td>
-<td class="gt_row gt_right" headers="mean_completeness">0.611</td>
-<td class="gt_row gt_right" headers="mean_completeness_no_sex">0.764</td>
-<td class="gt_row gt_right" headers="obs_diff">0.153</td>
-<td class="gt_row gt_right" headers="p_value">0.0519</td>
+<td class="gt_row gt_right" headers="scope_coverage">91%</td>
+<td class="gt_row gt_right" headers="panel_completeness">0.611</td>
+<td class="gt_row gt_right" headers="within_scope_completeness">0.672</td>
 </tr>
 </tbody>
 </table>
@@ -1142,29 +1168,541 @@ Mean Completeness
 </div>
 </div>
 </div>
-<p>Removing the sex-dependent variables improves completeness across the board, but the difference from a null distribution was only significant for Ernest (2003) (p = 0.013). However, because Ernest’s database doesn’t report these variables to begin with, we are essentially just making the comparison more fair by not including unreported variables. A similar effect takes place in the Amniote (Myrhvold et al.&nbsp;2015) and AnAge (de Magalhães &amp; Costa 2009) databases, which both had near-significant increases in completeness (0.052 and 0.069, respectively) when not testing for unreported sex-dependent variables. The variables that were the most complete across databases were also all sex-<em>independent</em>: weaning age, gestation length, and IBI. Lifespan and age at first reproduction have moderate completeness across all the databases except for AnAge, which doesn’t report AFR, and the K&amp;P dataset, which doesn’t report lifespan.</p>
+<p>I ran a one-tailed permutation test to compare the mean completeness of the databases using all of our key LH variables and the mean completeness when the sex-stratified variables are excluded:</p>
 <div class="cell">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="Database-Analysis_files/figure-html/layered%20bar%20chart-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption><strong>Figure 2.</strong> Mean completeness of each database using all key variables (solid color) and sex-independent key variables (subset, translucent color). Numeric p-values indicate results of one-tailed permutation tests comparing the observed difference in mean completeness to the null distribution generated by random subsets of equal size (n = 10,000)</figcaption>
-</figure>
+<div id="pltvmzgnzw" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#pltvmzgnzw table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#pltvmzgnzw thead, #pltvmzgnzw tbody, #pltvmzgnzw tfoot, #pltvmzgnzw tr, #pltvmzgnzw td, #pltvmzgnzw th {
+  border-style: none;
+}
+
+#pltvmzgnzw p {
+  margin: 0;
+  padding: 0;
+}
+
+#pltvmzgnzw .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#pltvmzgnzw .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#pltvmzgnzw .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#pltvmzgnzw .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#pltvmzgnzw .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#pltvmzgnzw .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#pltvmzgnzw .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#pltvmzgnzw .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#pltvmzgnzw .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#pltvmzgnzw .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#pltvmzgnzw .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#pltvmzgnzw .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#pltvmzgnzw .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#pltvmzgnzw .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#pltvmzgnzw .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#pltvmzgnzw .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#pltvmzgnzw .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#pltvmzgnzw .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#pltvmzgnzw .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#pltvmzgnzw .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#pltvmzgnzw .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#pltvmzgnzw .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#pltvmzgnzw .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#pltvmzgnzw .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#pltvmzgnzw .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#pltvmzgnzw .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#pltvmzgnzw .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#pltvmzgnzw .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#pltvmzgnzw .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#pltvmzgnzw .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#pltvmzgnzw .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#pltvmzgnzw .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#pltvmzgnzw .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#pltvmzgnzw .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#pltvmzgnzw .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#pltvmzgnzw .gt_left {
+  text-align: left;
+}
+
+#pltvmzgnzw .gt_center {
+  text-align: center;
+}
+
+#pltvmzgnzw .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#pltvmzgnzw .gt_font_normal {
+  font-weight: normal;
+}
+
+#pltvmzgnzw .gt_font_bold {
+  font-weight: bold;
+}
+
+#pltvmzgnzw .gt_font_italic {
+  font-style: italic;
+}
+
+#pltvmzgnzw .gt_super {
+  font-size: 65%;
+}
+
+#pltvmzgnzw .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#pltvmzgnzw .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#pltvmzgnzw .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#pltvmzgnzw .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#pltvmzgnzw .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#pltvmzgnzw .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#pltvmzgnzw .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#pltvmzgnzw .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#pltvmzgnzw div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
+<caption><strong>Table 4.</strong> Scope-aware permutation test comparing completeness of non-sex-stratified vs sex-stratified traits within each database’s in-scope trait set (n = 10,000 label permutations). One-tailed p tests whether non-sex-stratified traits are more complete.</caption>
+<colgroup>
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="gt_col_headings gt_spanner_row header">
+<th rowspan="2" id="source" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">Database</th>
+<th colspan="2" id="Mean completeness (within scope)" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="colgroup"><div class="gt_column_spanner">
+Mean completeness (within scope)
+</div></th>
+<th rowspan="2" id="obs_diff" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Δ completeness (non − sexed)</th>
+<th rowspan="2" id="p_value" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">p (one-tailed)</th>
+<th rowspan="2" id="n_sexed" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">k (sexed)</th>
+<th rowspan="2" id="n_non" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">k (non)</th>
+</tr>
+<tr class="gt_col_headings even">
+<th id="mean_non" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Non-sex-stratified traits</th>
+<th id="mean_sexed" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Sex-stratified traits</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_center" headers="source">de Magalhães &amp; Costa 2009</td>
+<td class="gt_row gt_right" headers="mean_non">0.731</td>
+<td class="gt_row gt_right" headers="mean_sexed">0.487</td>
+<td class="gt_row gt_right" headers="obs_diff">0.245</td>
+<td class="gt_row gt_right" headers="p_value">0.1100</td>
+<td class="gt_row gt_right" headers="n_sexed">3</td>
+<td class="gt_row gt_right" headers="n_non">4</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_center" headers="source">Ernest 2003</td>
+<td class="gt_row gt_right" headers="mean_non">0.635</td>
+<td class="gt_row gt_right" headers="mean_sexed">0.987</td>
+<td class="gt_row gt_right" headers="obs_diff">-0.353</td>
+<td class="gt_row gt_right" headers="p_value">1.0000</td>
+<td class="gt_row gt_right" headers="n_sexed">1</td>
+<td class="gt_row gt_right" headers="n_non">5</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_center" headers="source">Jones et al. 2009</td>
+<td class="gt_row gt_right" headers="mean_non">0.321</td>
+<td class="gt_row gt_right" headers="mean_sexed">0.499</td>
+<td class="gt_row gt_right" headers="obs_diff">-0.178</td>
+<td class="gt_row gt_right" headers="p_value">0.8540</td>
+<td class="gt_row gt_right" headers="n_sexed">2</td>
+<td class="gt_row gt_right" headers="n_non">5</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_center" headers="source">Kappeler &amp; Pereira 2003</td>
+<td class="gt_row gt_right" headers="mean_non">0.265</td>
+<td class="gt_row gt_right" headers="mean_sexed">0.406</td>
+<td class="gt_row gt_right" headers="obs_diff">-0.141</td>
+<td class="gt_row gt_right" headers="p_value">0.7280</td>
+<td class="gt_row gt_right" headers="n_sexed">2</td>
+<td class="gt_row gt_right" headers="n_non">4</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_center" headers="source">Myrhvold et al. 2015</td>
+<td class="gt_row gt_right" headers="mean_non">0.764</td>
+<td class="gt_row gt_right" headers="mean_sexed">0.580</td>
+<td class="gt_row gt_right" headers="obs_diff">0.184</td>
+<td class="gt_row gt_right" headers="p_value">0.0971</td>
+<td class="gt_row gt_right" headers="n_sexed">5</td>
+<td class="gt_row gt_right" headers="n_non">5</td>
+</tr>
+</tbody>
+</table>
+
 </div>
 </div>
 </div>
+<p>Removing the sex-dependent variables improves completeness across the board, but the difference from a null distribution was only “significant” at p &lt; 0.05 for Ernest (2003) (p = 0.013). However, because Ernest’s database doesn’t report these variables to begin with, we are essentially just making the comparison more fair by not including unrecorded data. A similar effect takes place in the Amniote (Myrhvold et al.&nbsp;2015) and AnAge (de Magalhães &amp; Costa 2009) databases, which both had suggestive increases in mean completeness at p &lt; 0.05 (0.052 and 0.069, respectively) when not testing for unreported sex-dependent variables. The variables that were the most complete across databases were also all non-stratified: weaning age, gestation length, and IBI. Lifespan and age at first reproduction have moderate completeness across all the databases except for AnAge, which doesn’t report AFR, and the K&amp;P dataset, which doesn’t report lifespan.</p>
 <p>The PanTHERIA (blue) and Kappeler &amp; Pereira (green) databases both had poor completeness scores across all variables. For select species with high representation, like humans or chimpanzees, the Kappeler &amp; Pereira set seems like a good inclusion but it doesn’t have much to offer in wide taxonomic comparisons. Ernest (dark blue) has the second highest mean completeness when only considering sex-independent variables but falls short in the number of primate species represented (only 156). Similarly, the AnAge database (purple) demonstrates high completeness for key variables but only contains data for 174 species of primates. PanTHERIA, while only having a mean completeness of 32% with sex-independent variables, boasts the greatest representation of primates with 376 species. In both representation and completeness, the Amniote database (yellow) is arguably the best. While only representing 365 primate species, its mean completeness is 61% for all variables and 76% for sex-independent variables.</p>
 <p>NOTE: AnAge cites all other databases in our analysis so how is its completeness and number of species represented lower? more rigorous standard for data?</p>
-<div class="cell">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="Database-Analysis_files/figure-html/heatmap%20visualization%202-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption><strong>Figure 3.</strong> Heat map of missing values for key, sex-independent life history traits across all five databases. Low heat (yellow) signifies few missing values while high heat (red) signifies many missing values.</figcaption>
-</figure>
-</div>
-</div>
-</div>
 <p>Considering the limited effect of including sex-dependent variables on the completeness of the PanTHERIA (Jones et al.&nbsp;2009) and Kappeler &amp; Pereira (2003) databases, and the significant improvement to completeness of the three databases which don’t report sex-dependent variables for adult mass and age at maturity, it is my opinion that including these variables only serves to make comparisons between databases less meaningful and more complicated computationally. I remember us debating including body mass to begin with, but couldn’t find in our notes whether we came to a conclusion. Age at maturity is irrefutably an important life history statistic, though, so the scarcity of sex-specific data can pose a problem to researchers. One alternative is age at first reproduction, which is a more definitive way of knowing that an individual has reached maturity but doesn’t necessarily correlate to when they <em>reached</em> maturity, because first reproduction tends to occur later than when it is technically possible.</p>
 <p>Thoughts:</p>
 <ul>
