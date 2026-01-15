@@ -12,7 +12,9 @@ format:
     theme: readable
 execute: 
   freeze: auto
+  warning: false
 editor: visual
+
 ---
 
 # Introduction
@@ -324,6 +326,11 @@ missingness <- key_vals %>%
 
 missingness <- missingness %>%
   mutate(trait = dplyr::recode(trait, !!!trait_labels, .default = trait))
+```
+
+```{r}
+#| label: dataset labels
+#| echo: false
 
 ## extracts the number of distinct species represented by each source
 ## then concatenates a label of the citation and number of primate species
@@ -420,7 +427,7 @@ ggplot(scope_df, aes(x = source, y = trait)) +
   geom_tile(aes(fill = prop_missing_within_scope), color = "snow") +
   geom_tile(
     data = dplyr::filter(scope_df, !in_scope),
-    fill = "grey85",
+    fill = "ivory3",
     color = "snow"
   ) +
   scale_fill_gradientn(
@@ -429,7 +436,7 @@ ggplot(scope_df, aes(x = source, y = trait)) +
     breaks = seq(0, 1, by = 0.25),
     labels = scales::label_percent(accuracy = 1),
     name = "% Missing\n(within scope)",
-    na.value = "grey85"
+    na.value = "ivory3"
   ) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
@@ -559,7 +566,262 @@ Thoughts:
 
 -   AnAge cites all other databases in our analysis so how is its completeness and number of species represented lower? more rigorous standard for data?
 
+    -   intention of authors?
+
+    -   AnAge living database, so why still fewer entries?
+
+## Species Representation
+
+for each database, what proportions of primates are represented?
+
+```{r}
+#| label: building taxonomy
+#| echo: false
+species_df <- key_vals %>% 
+  select(
+    species = species,
+    source = source
+  )
+species_df <- separate(species_df, 1, into = c("genus", "species"), sep = " ")
+
+IUCN_invalid <- c("Oreonax", "Bunopithecus", "Pseudopotto", "Leontocebus")
+
+family_lookup <- tribble(
+  ~genus, ~family,
+  # Platyrrhini
+  "Alouatta", "Atelidae",
+  "Ateles", "Atelidae",
+  "Brachyteles", "Atelidae",
+  "Lagothrix", "Atelidae",
+  "Oreonax", "Atelidae",
+  "Aotus", "Aotidae",
+  "Cacajao", "Pitheciidae",
+  "Callicebus", "Pitheciidae",
+  "Cheracebus", "Pitheciidae",
+  "Plecturocebus", "Pitheciidae",
+  "Chiropotes", "Pitheciidae",
+  "Pithecia", "Pitheciidae",
+  "Callimico", "Callitrichidae",
+  "Callithrix", "Callitrichidae",
+  "Cebuella", "Callitrichidae",
+  "Leontopithecus", "Callitrichidae",
+  "Mico", "Callitrichidae",
+  "Saguinus", "Callitrichidae",
+  "Leontocebus", "Callitrichidae",
+  "Saimiri", "Cebidae",
+  "Cebus", "Cebidae",
+  "Sapajus", "Cebidae",
+
+  # Cercopithecoidea
+  "Macaca", "Cercopithecidae",
+  "Papio", "Cercopithecidae",
+  "Chlorocebus", "Cercopithecidae",
+  "Cercopithecus", "Cercopithecidae",
+  "Cercocebus", "Cercopithecidae",
+  "Mandrillus", "Cercopithecidae",
+  "Lophocebus", "Cercopithecidae",
+  "Allenopithecus", "Cercopithecidae",
+  "Miopithecus", "Cercopithecidae",
+  "Theropithecus", "Cercopithecidae",
+  "Rungwecebus", "Cercopithecidae",
+  "Allochrocebus", "Cercopithecidae",
+  "Erythrocebus", "Cercopithecidae",
+  
+  "Colobus", "Colobinae",
+  "Piliocolobus", "Colobinae",
+  "Procolobus", "Colobinae",
+  "Presbytis", "Colobinae",
+  "Nasalis", "Colobinae",
+  "Trachypithecus", "Colobinae",
+  "Semnopithecus", "Colobinae",
+  "Pygathrix", "Colobinae",
+  "Rhinopithecus", "Colobinae",
+  "Simias", "Colobinae",
+
+  # Hominoidea
+  "Homo", "Hominidae",
+  "Pan", "Hominidae",
+  "Gorilla", "Hominidae",
+  "Pongo", "Hominidae",
+  "Hylobates", "Hylobatidae",
+  "Hoolock", "Hylobatidae",
+  "Nomascus", "Hylobatidae",
+  "Symphalangus", "Hylobatidae",
+  "Bunopithecus", "Hylobatidae",
+
+  # Strepsirrhini
+  "Lemur", "Lemuridae",
+  "Eulemur", "Lemuridae",
+  "Varecia", "Lemuridae",
+  "Hapalemur", "Lemuridae",
+  "Prolemur", "Lemuridae",
+  "Lepilemur", "Lepilemuridae",
+  "Indri", "Indriidae",
+  "Propithecus", "Indriidae",
+  "Avahi", "Indriidae",
+  "Microcebus", "Cheirogaleidae",
+  "Cheirogaleus", "Cheirogaleidae",
+  "Mirza", "Cheirogaleidae",
+  "Phaner", "Cheirogaleidae",
+  "Allocebus", "Cheirogaleidae",
+  "Daubentonia", "Daubentoniidae",
+  "Loris", "Lorisidae",
+  "Nycticebus", "Lorisidae",
+  "Perodicticus", "Lorisidae",
+  "Arctocebus", "Lorisidae",
+  "Pseudopotto", "Lorisidae",
+  "Galago", "Galagidae",
+  "Galagoides", "Galagidae",
+  "Otolemur", "Galagidae",
+  "Euoticus", "Galagidae",
+  "Paragalago", "Galagidae",
+  "Sciurocheirus", "Galagidae",
+
+  # Tarsiers
+  "Tarsius", "Tarsiidae",
+  "Carlito", "Tarsiidae",
+  "Cephalopachus", "Tarsiidae"
+)
+
+taxonomy_df <- tibble(
+  genus = sort(unique(species_df$genus))
+) %>%
+  mutate(
+    genus_status = if_else(genus %in% IUCN_invalid, "deprecated", "valid")
+  ) %>%
+  left_join(family_lookup, by = "genus") %>% 
+  mutate(
+    family = as.character(family)
+  )
+
+taxonomy_df <- taxonomy_df %>%
+  mutate(
+    clade = case_when(
+      family %in% c("Atelidae", "Aotidae", "Pitheciidae", "Callitrichidae", "Cebidae") ~ "Platyrrhini",
+      family %in% c("Cercopithecidae", "Colobinae") ~ "Cercopithecoidea",
+      family %in% c("Hominidae", "Hylobatidae") ~ "Hominoidea",
+      family %in% c(
+        "Lemuridae", "Lepilemuridae", "Indriidae",
+        "Cheirogaleidae", "Daubentoniidae",
+        "Lorisidae", "Galagidae"
+      ) ~ "Strepsirrhini",
+      family == "Tarsiidae" ~ "Tarsiiformes",
+      TRUE ~ NA_character_
+    )
+  )
+```
+
+```{r}
+#| label: genus database coverage
+#| echo: false
+
+genus_db_coverage <- species_df %>%
+  distinct(source, genus, species) %>%
+  count(source, genus, name = "n_species") %>%
+  right_join(taxonomy_df, by = "genus") %>%
+  mutate(
+    n_species = replace_na(n_species, 0),
+    present = n_species > 0,
+    clade = factor(clade, levels = c("Cercopithecoidea", "Hominoidea", "Platyrrhini", "Tarsiiformes", "Strepsirrhini"))
+  )
+
+genus_db_coverage <- genus_db_coverage %>% 
+  mutate(
+    catarrhini = if_else(clade %in% c("Cercopithecoidea", "Hominoidea"), "Catarrhini", NA_character_),
+    simiiformes = if_else(clade %in% c("Platyrrhini", "Catarrhini"), "Simiiformes", NA_character_),
+    haplorhini = if_else(clade %in% c("Simiiformes", "Tarsiiformes"), "Catarrhini", NA_character_)
+  )
+```
+
+```{r}
+#| label: genus coverage heatmap
+#| fig-cap: "**Figure 3.** Genus-level representation of primates across databases. Tile color indicates the number of species per genus recorded in each database."
+#| echo: false
+#| fig-width: 8
+#| fig-height: 12
+
+ggplot(genus_db_coverage,
+       aes(x = source, y = genus)) +
+  geom_tile(aes(fill = n_species), color = "snow") +
+  scale_fill_gradientn(
+    colors = rev(colorspace::heat_hcl(100)),
+    name = "Number of species"
+  ) +
+  facet_grid(
+    clade ~ .,
+    scales = "free_y",
+    space = "free_y",
+    switch = "y"
+  ) +
+  scale_x_discrete(labels = function(x) sapply(x, function(s) paste(strwrap(s, width = 10), collapse = "\n"))) +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(hjust = 0.5, vjust = 1, size = 9),
+    strip.text.y = element_text(margin = margin(t = 0, r = 6, b = 0, l = 6)),
+    strip.placement = "outside",
+    plot.margin = margin(5.5, 30, 5.5, 5.5),
+    panel.spacing.y = unit(0.4, "lines")
+  ) +
+  labs(
+    x = "Database",
+    y = "Genus",
+    title = "Genus-level taxonomic coverage"
+  ) +
+  scale_y_discrete(position = "right")
+
+```
+
+
+```{r}
+#| label: superfamily heatmaps
+#| code-fold: true
+
+plot_clade_heatmap <- function(grp) {
+  genus_db_coverage %>%
+    filter(clade == grp) %>%
+    ggplot(aes(x = source, y = genus)) +
+    geom_tile(aes(fill = n_species), color = "snow") +
+    scale_fill_gradientn(
+      colors = rev(colorspace::heat_hcl(100)),
+      name = "Number of species"
+    ) +
+    scale_x_discrete(labels = dataset_labels) +
+    theme_bw() +
+    theme(
+      axis.text.x = element_text(angle = 30, hjust = 1)
+    ) +
+    labs(
+      title = paste("Genus-level coverage:", grp),
+      x = "Database",
+      y = "Genus"
+    )
+}
+
+clade_plots <- taxonomy_df %>%
+  distinct(clade) %>%
+  drop_na() %>%
+  arrange(clade) %>%
+  pull(clade) %>%
+  lapply(plot_clade_heatmap)
+
+clade_plots
+```
+
 ## other analysis?
+
+-   what mix of primate types are in the databses? stacked bar chart
+
+-   verify naming conventions - different years/different species
+
+-   check degree of dimorphism for sex-stratified traits and compare to known dimorphic traits ex: body mass vs age at maturity
+
+-   quality check: how many AFR are mismatched with their specific age at maturity
+
+-   distances from mean for common vars: any consistently farthest from mean?
+
+-   poster:
+
+    -   bullet abstract describe what doing
 
 ```{r}
 

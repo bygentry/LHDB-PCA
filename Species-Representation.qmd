@@ -1,0 +1,322 @@
+---
+title: "Species Representation Across Primate Life History Databases"
+author: "Gentry Miller"
+format: 
+  html:
+    code-overflow: wrap
+    toc: true
+    toc-location: left
+    toc-depth: 3
+    toc-title: Contents
+    df-print: kable
+    theme: readable
+execute: 
+  freeze: auto
+  warning: false
+  echo: false
+editor: visual
+---
+```{r}
+#| label: data import script
+
+source("https://raw.githubusercontent.com/bygentry/LHDB-PCA/refs/heads/main/setup.R")
+```
+
+```{r}
+#| label: building species_df
+
+sources = as.factor(c("Myrhvold et al. 2015", "de Magalhães & Costa 2009", "Ernest 2003", "Jones et al. 2009", "Kappeler & Pereira 2003"))
+
+## selecting vars for cross-database comparison
+amniote_s <- amniote %>% 
+  transmute(
+    species = paste(genus, species),
+    body_mass_u = adult_body_mass_g,
+    body_mass_f = female_body_mass_g,
+    body_mass_m = male_body_mass_g,
+    AFR = female_maturity_d,
+    gest_len = gestation_d,
+    IBI = inter_litter_or_interbirth_interval_y,
+    max_longevity = maximum_longevity_y,
+    age_at_maturity_u = NA,
+    age_at_maturity_f = female_maturity_d,
+    age_at_maturity_m = male_maturity_d,
+    weaning_age = weaning_d,
+    source = sources[1]
+  )
+
+AnAge_s <- AnAge %>% 
+  transmute(
+    species = paste(Genus, Species),
+    body_mass_u = `Body mass (g)`,
+    body_mass_f = NA,
+    body_mass_m = NA,
+    AFR = NA,
+    gest_len = `Gestation/Incubation (days)`,
+    IBI = `Inter-litter/Interbirth interval`,
+    max_longevity = `Maximum longevity (yrs)`,
+    age_at_maturity_u = NA,
+    age_at_maturity_f = `Female maturity (days)`,
+    age_at_maturity_m = `Male maturity (days)`,
+    weaning_age = `Weaning (days)`,
+    source = sources[2]
+  )
+
+ernest_s <- ernest %>% 
+  transmute(
+    species = paste(Genus, species),
+    body_mass_u = NA,
+    body_mass_f = `mass(g)`,
+    body_mass_m = NA,
+    AFR = `AFR(mo)`,
+    gest_len = `gestation(mo)`,
+    IBI = `litters/year`,
+    max_longevity = `max. life(mo)`,
+    age_at_maturity_u = NA,
+    age_at_maturity_f = NA,
+    age_at_maturity_m = NA,
+    weaning_age = `weaning(mo)`,
+    source = sources[3]
+  )
+
+pan_s <- pan %>% 
+  transmute(
+    species = paste(MSW05_Genus, MSW05_Species),
+    body_mass_u = `5-1_AdultBodyMass_g`,
+    body_mass_f = NA,
+    body_mass_m = NA,
+    AFR = `3-1_AgeatFirstBirth_d`,
+    gest_len = `9-1_GestationLen_d`,
+    IBI = `14-1_InterbirthInterval_d`,
+    max_longevity = `17-1_MaxLongevity_m`,
+    age_at_maturity_u = `23-1_SexualMaturityAge_d`,
+    age_at_maturity_f = NA,
+    age_at_maturity_m = NA,
+    weaning_age = `25-1_WeaningAge_d`,
+    source = sources[4]
+  )
+
+kp_s <- kp %>% 
+  transmute(
+    species = paste(Genus, Species),
+    body_mass_u = BM.U,
+    body_mass_f = BM.F,
+    body_mass_m = NA,
+    AFR = AFR,
+    gest_len = GL,
+    IBI = IBI,
+    max_longevity = NA,
+    age_at_maturity_u = NA,
+    age_at_maturity_f = NA,
+    age_at_maturity_m = NA,
+    weaning_age = WA,
+    source = sources[5]
+  )
+
+
+## combine values from key value dfs of each source into a single df "key_vals"
+key_vals <- bind_rows(amniote_s, AnAge_s, ernest_s, kp_s, pan_s)
+
+species_df <- key_vals %>% 
+  select(
+    species = species,
+    source = source
+  )
+species_df <- separate(species_df, 1, into = c("genus", "species"), sep = " ")
+
+IUCN_invalid <- c("Oreonax", "Bunopithecus", "Pseudopotto", "Leontocebus")
+```
+
+```{r}
+#| label: taxonomy
+
+family_lookup <- tribble(
+  ~genus, ~family,
+  # Platyrrhini
+  "Alouatta", "Atelidae",
+  "Ateles", "Atelidae",
+  "Brachyteles", "Atelidae",
+  "Lagothrix", "Atelidae",
+  "Oreonax", "Atelidae",
+  "Aotus", "Aotidae",
+  "Cacajao", "Pitheciidae",
+  "Callicebus", "Pitheciidae",
+  "Cheracebus", "Pitheciidae",
+  "Plecturocebus", "Pitheciidae",
+  "Chiropotes", "Pitheciidae",
+  "Pithecia", "Pitheciidae",
+  "Callimico", "Callitrichidae",
+  "Callithrix", "Callitrichidae",
+  "Cebuella", "Callitrichidae",
+  "Leontopithecus", "Callitrichidae",
+  "Mico", "Callitrichidae",
+  "Saguinus", "Callitrichidae",
+  "Leontocebus", "Callitrichidae",
+  "Saimiri", "Cebidae",
+  "Cebus", "Cebidae",
+  "Sapajus", "Cebidae",
+
+  # Cercopithecoidea
+  "Macaca", "Cercopithecidae",
+  "Papio", "Cercopithecidae",
+  "Chlorocebus", "Cercopithecidae",
+  "Cercopithecus", "Cercopithecidae",
+  "Cercocebus", "Cercopithecidae",
+  "Mandrillus", "Cercopithecidae",
+  "Lophocebus", "Cercopithecidae",
+  "Allenopithecus", "Cercopithecidae",
+  "Miopithecus", "Cercopithecidae",
+  "Theropithecus", "Cercopithecidae",
+  "Rungwecebus", "Cercopithecidae",
+  "Allochrocebus", "Cercopithecidae",
+  "Erythrocebus", "Cercopithecidae",
+  
+  "Colobus", "Colobinae",
+  "Piliocolobus", "Colobinae",
+  "Procolobus", "Colobinae",
+  "Presbytis", "Colobinae",
+  "Nasalis", "Colobinae",
+  "Trachypithecus", "Colobinae",
+  "Semnopithecus", "Colobinae",
+  "Pygathrix", "Colobinae",
+  "Rhinopithecus", "Colobinae",
+  "Simias", "Colobinae",
+
+  # Hominoidea
+  "Homo", "Hominidae",
+  "Pan", "Hominidae",
+  "Gorilla", "Hominidae",
+  "Pongo", "Hominidae",
+  "Hylobates", "Hylobatidae",
+  "Hoolock", "Hylobatidae",
+  "Nomascus", "Hylobatidae",
+  "Symphalangus", "Hylobatidae",
+  "Bunopithecus", "Hylobatidae",
+
+  # Strepsirrhini
+  "Lemur", "Lemuridae",
+  "Eulemur", "Lemuridae",
+  "Varecia", "Lemuridae",
+  "Hapalemur", "Lemuridae",
+  "Prolemur", "Lemuridae",
+  "Lepilemur", "Lepilemuridae",
+  "Indri", "Indriidae",
+  "Propithecus", "Indriidae",
+  "Avahi", "Indriidae",
+  "Microcebus", "Cheirogaleidae",
+  "Cheirogaleus", "Cheirogaleidae",
+  "Mirza", "Cheirogaleidae",
+  "Phaner", "Cheirogaleidae",
+  "Allocebus", "Cheirogaleidae",
+  "Daubentonia", "Daubentoniidae",
+  "Loris", "Lorisidae",
+  "Nycticebus", "Lorisidae",
+  "Perodicticus", "Lorisidae",
+  "Arctocebus", "Lorisidae",
+  "Pseudopotto", "Lorisidae",
+  "Galago", "Galagidae",
+  "Galagoides", "Galagidae",
+  "Otolemur", "Galagidae",
+  "Euoticus", "Galagidae",
+  "Paragalago", "Galagidae",
+  "Sciurocheirus", "Galagidae",
+
+  # Tarsiers
+  "Tarsius", "Tarsiidae",
+  "Carlito", "Tarsiidae",
+  "Cephalopachus", "Tarsiidae"
+)
+```
+
+```{r}
+#| label: dataset labels
+
+## extracts the number of distinct species represented by each source
+## then concatenates a label of the citation and number of primate species
+dataset_labels <- key_vals %>%
+  group_by(source) %>%
+  summarize(n = n_distinct(species), .groups = "drop") %>%
+  mutate(label = paste0(source, "\n(n = ", n, ")")) %>% 
+  { setNames(.$label, .$source) }
+```
+
+```{r}
+#| label: taxonomy df
+
+taxonomy_df <- tibble(
+  genus = sort(unique(species_df$genus))
+) %>%
+  mutate(
+    genus_status = if_else(genus %in% IUCN_invalid, "deprecated", "valid")
+  ) %>%
+  left_join(family_lookup, by = "genus") %>% 
+  mutate(
+    family = as.character(family)
+  )
+
+taxonomy_df <- taxonomy_df %>%
+  mutate(
+    clade = case_when(
+      family %in% c("Atelidae", "Aotidae", "Pitheciidae", "Callitrichidae", "Cebidae") ~ "Platyrrhini",
+      family %in% c("Cercopithecidae", "Colobinae") ~ "Cercopithecoidea",
+      family %in% c("Hominidae", "Hylobatidae") ~ "Hominoidea",
+      family %in% c(
+        "Lemuridae", "Lepilemuridae", "Indriidae",
+        "Cheirogaleidae", "Daubentoniidae",
+        "Lorisidae", "Galagidae"
+      ) ~ "Strepsirrhini",
+      family == "Tarsiidae" ~ "Tarsiiformes",
+      TRUE ~ NA_character_
+    )
+  )
+```
+
+```{r}
+#| label: heatmaps
+
+genus_db_coverage <- species_df %>%
+  distinct(source, genus, species) %>%
+  count(source, genus, name = "n_species") %>%
+  right_join(taxonomy_df, by = "genus") %>%
+  mutate(
+    n_species = replace_na(n_species, 0),
+    present = n_species > 0,
+    clade = factor(clade, levels = c("Cercopithecoidea", "Hominoidea", "Platyrrhini", "Tarsiiformes", "Strepsirrhini"))
+  )
+
+genus_db_coverage <- genus_db_coverage %>% 
+  mutate(
+    catarrhini = if_else(clade %in% c("Cercopithecoidea", "Hominoidea"), "Catarrhini", NA_character_),
+    simiiformes = if_else(clade %in% c("Platyrrhini", "Catarrhini"), "Simiiformes", NA_character_),
+    haplorhini = if_else(clade %in% c("Simiiformes", "Tarsiiformes"), "Catarrhini", NA_character_)
+  )
+
+plot_clade_heatmap <- function(grp) {
+  genus_db_coverage %>%
+    filter(clade == grp) %>%
+    ggplot(aes(x = source, y = genus)) +
+    geom_tile(aes(fill = n_species), color = "snow") +
+    scale_fill_gradientn(
+      colors = rev(colorspace::heat_hcl(100)),
+      name = "Number of species"
+    ) +
+    scale_x_discrete(labels = dataset_labels) +
+    theme_bw() +
+    theme(
+      axis.text.x = element_text(angle = 30, hjust = 1)
+    ) +
+    labs(
+      title = paste("Genus-level coverage:", grp),
+      x = "Database",
+      y = "Genus"
+    )
+}
+
+clade_plots <- taxonomy_df %>%
+  distinct(clade) %>%
+  drop_na() %>%
+  arrange(clade) %>%
+  pull(clade) %>%
+  lapply(plot_clade_heatmap)
+
+```
