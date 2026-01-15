@@ -812,7 +812,11 @@ Task: for each species, check both:
 
 Task: for the 3 truly common traits, find the mean and then map the distances of each db - check for any that are consistently farthest from the mean
 
-## other analysis?
+## other?
+
+-   update IUCN citation to latest edition
+
+<!-- -->
 
 -   poster:
 
@@ -822,7 +826,7 @@ Task: for the 3 truly common traits, find the mean and then map the distances of
 
 ```
 
-## Sources
+# Sources
 
 1.  Borries, C., Gordon, A. D., & Koenig, A. (2013). Beware of Primate Life History Data: A Plea for Data Standards and a Repository. PLOS ONE, 8(6), e67200. <https://doi.org/10.1371/journal.pone.0067200>
 
