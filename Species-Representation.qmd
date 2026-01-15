@@ -16,6 +16,7 @@ execute:
   echo: false
 editor: visual
 ---
+
 ```{r}
 #| label: data import script
 
@@ -318,5 +319,5 @@ clade_plots <- taxonomy_df %>%
   arrange(clade) %>%
   pull(clade) %>%
   lapply(plot_clade_heatmap)
-
+clade_plots
 ```
