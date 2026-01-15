@@ -14,7 +14,6 @@ execute:
   freeze: auto
   warning: false
 editor: visual
-
 ---
 
 # Introduction
@@ -771,6 +770,7 @@ ggplot(genus_db_coverage,
 
 ```
 
+> Use [this page](https://bygentry.github.io/LHDB-PCA/Species-Representation.html) to see the same visualization at higher resolution
 
 ## other analysis?
 
