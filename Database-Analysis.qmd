@@ -571,7 +571,13 @@ Thoughts:
 
 ## Species Representation
 
-for each database, what proportions of primates are represented?
+### Proportions of Primates
+
+Another important measure of completeness is the proportion of primates represented in each database. To check this I use a faceted heat map to divide the list of primate genera recognized by the IUCN into a series of higher taxonomic groupings. The idea is to imitate the structure of a phylogeny:
+
+![**Figure 3.** Example primate phylogeny with visualized taxonomic groups at the end of branches](https://raw.githubusercontent.com/bygentry/LHDB-PCA/refs/heads/main/Database-Analysis_files/figure-html/example-phylogeny.png)
+
+> **Note:** Oreonax, Bunopithecus, Pseudopotto, and Leontocebus are deprecated genera according to the IUCN's species recognition. However, since some of the databases contain an entry for at least one of these genera, they have been included in this analysis.
 
 ```{r}
 #| label: building taxonomy
@@ -734,7 +740,7 @@ genus_db_coverage <- genus_db_coverage %>%
 
 ```{r}
 #| label: genus coverage heatmap
-#| fig-cap: "**Figure 3.** Genus-level representation of primates across databases. Tile color indicates the number of species per genus recorded in each database."
+#| fig-cap: "**Figure 4.** Genus-level representation of primates across databases. Tile color indicates the number of species per genus recorded in each database."
 #| echo: false
 #| fig-width: 8
 #| fig-height: 12
@@ -772,17 +778,41 @@ ggplot(genus_db_coverage,
 
 > Use [this page](https://bygentry.github.io/LHDB-PCA/Species-Representation.html) to see the same visualization at higher resolution
 
+### Database Coverage Biases
+
+Task: build a stacked bar chart showing the relative weights of taxonomic groups:
+
+-   strepsirrhines vs haplorhines
+
+-   within strepsirrhines: lemuriformes vs lorisiformes
+
+-   within haplorhines: tarsiiformes vs simiiformes
+
+-   within simiiformes: platyrrhines vs catarrhines
+
+-   within catarrhines: hominoids vs cercopithecoids
+
+-   within hominoids: hominids vs hylobatids
+
+## Verifying Trait Dimorphism
+
+Task: for sex stratified traits, check degree of dimorphism
+
+ex: degree of sexual dimorphism for body mass = ((M_m - M_f) / M_f) \* 100 (males are x% larger than females)
+
+## Quality Check: Age at First Reproduction vs Age of Sexual Maturity
+
+Task: for each species, check both:
+
+-   the mean of AFR - mean of ASM (using all dbs)
+
+-   for each database, AFR - ASM (means if applicable) for each species
+
+## Distances from the Mean for Truly Common Variables
+
+Task: for the 3 truly common traits, find the mean and then map the distances of each db - check for any that are consistently farthest from the mean
+
 ## other analysis?
-
--   what mix of primate types are in the databses? stacked bar chart
-
--   verify naming conventions - different years/different species
-
--   check degree of dimorphism for sex-stratified traits and compare to known dimorphic traits ex: body mass vs age at maturity
-
--   quality check: how many AFR are mismatched with their specific age at maturity
-
--   distances from mean for common vars: any consistently farthest from mean?
 
 -   poster:
 
