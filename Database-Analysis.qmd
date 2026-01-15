@@ -772,41 +772,6 @@ ggplot(genus_db_coverage,
 ```
 
 
-```{r}
-#| label: superfamily heatmaps
-#| code-fold: true
-
-plot_clade_heatmap <- function(grp) {
-  genus_db_coverage %>%
-    filter(clade == grp) %>%
-    ggplot(aes(x = source, y = genus)) +
-    geom_tile(aes(fill = n_species), color = "snow") +
-    scale_fill_gradientn(
-      colors = rev(colorspace::heat_hcl(100)),
-      name = "Number of species"
-    ) +
-    scale_x_discrete(labels = dataset_labels) +
-    theme_bw() +
-    theme(
-      axis.text.x = element_text(angle = 30, hjust = 1)
-    ) +
-    labs(
-      title = paste("Genus-level coverage:", grp),
-      x = "Database",
-      y = "Genus"
-    )
-}
-
-clade_plots <- taxonomy_df %>%
-  distinct(clade) %>%
-  drop_na() %>%
-  arrange(clade) %>%
-  pull(clade) %>%
-  lapply(plot_clade_heatmap)
-
-clade_plots
-```
-
 ## other analysis?
 
 -   what mix of primate types are in the databses? stacked bar chart
