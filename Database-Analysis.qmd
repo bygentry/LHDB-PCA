@@ -450,15 +450,9 @@ ggplot(scope_df, aes(x = source, y = trait)) +
 notes:
 
 -   recall: Ernest's IBI is derived from litters/year
-
-<!-- -->
-
 -   sex-stratified vars are most unreported
-
 -   age at maturity vars for females are more complete than male when both sexes are reported
-
 -   weaning age, IBI, and gestation length are the most complete across all data sets (lifespan is a close 4th but K&P don't report any values for it - same with AnAge and AFR )
-
 -   **all databases have at least one unreported variable of our key variable selection**
 
 Of our key life history traits, most databases only record data for around 60% of them (mostly just **not** the sex-stratified versions of body mass and age at maturity). When testing the mean completeness of the databases using all of the key traits versus only the ones they record, their completeness scores obviously improved. This may appear to call into question our selection of traits, but really the trait scope is under represented because the missing traits are the same measurement for different sex classes.
@@ -573,7 +567,7 @@ Thoughts:
 
 ### Proportions of Primates
 
-Another important measure of completeness is the proportion of primates represented in each database. To check this I use a faceted heat map to divide the list of primate genera recognized by the IUCN into a series of higher taxonomic groupings. The idea is to imitate the structure of a phylogeny:
+Another important measure of completeness is the proportion of primates represented in each database. To check this I use a faceted heat map to divide the list of primate genera recognized by the IUCN into a series of higher taxonomic groupings. The idea is to imitate the structure of this phylogeny:
 
 ![**Figure 3.** Example primate phylogeny with visualized taxonomic groups at the end of branches](https://raw.githubusercontent.com/bygentry/LHDB-PCA/refs/heads/main/Database-Analysis_files/figure-html/example-phylogeny.png)
 
@@ -582,14 +576,14 @@ Another important measure of completeness is the proportion of primates represen
 ```{r}
 #| label: building taxonomy
 #| echo: false
+#| warning: false
+
 species_df <- key_vals %>% 
   select(
     species = species,
     source = source
   )
 species_df <- separate(species_df, 1, into = c("genus", "species"), sep = " ")
-
-IUCN_invalid <- c("Oreonax", "Bunopithecus", "Pseudopotto", "Leontocebus")
 
 family_lookup <- tribble(
   ~genus, ~family,
@@ -691,9 +685,6 @@ family_lookup <- tribble(
 taxonomy_df <- tibble(
   genus = sort(unique(species_df$genus))
 ) %>%
-  mutate(
-    genus_status = if_else(genus %in% IUCN_invalid, "deprecated", "valid")
-  ) %>%
   left_join(family_lookup, by = "genus") %>% 
   mutate(
     family = as.character(family)
@@ -712,6 +703,21 @@ taxonomy_df <- taxonomy_df %>%
       ) ~ "Strepsirrhini",
       family == "Tarsiidae" ~ "Tarsiiformes",
       TRUE ~ NA_character_
+    ),
+    p_order = case_when(
+      clade == "Platyrrhini" ~ "Platyrrhini",
+      clade %in% c("Cercopithecoidea", "Hominoidea") ~ "Catarrhini",
+      TRUE ~ NA_character_
+    ),
+    i_order = case_when(
+      clade == "Tarsiiformes" ~ "Tarsiiformes",
+      clade %in% c("Platyrrhini", "Hominoidea", "Cercopithecoidea") ~ "Simiiformes",
+      TRUE ~ NA_character_
+    ),
+    s_order = case_when(
+      clade == "Strepsirrhini" ~ "Strepsirrhini",
+      clade %in% c("Platyrrhini", "Hominoidea", "Cercopithecoidea", "Tarsiiformes") ~ "Haplorhini",
+      TRUE ~ NA_character_
     )
   )
 ```
@@ -726,15 +732,7 @@ genus_db_coverage <- species_df %>%
   right_join(taxonomy_df, by = "genus") %>%
   mutate(
     n_species = replace_na(n_species, 0),
-    present = n_species > 0,
     clade = factor(clade, levels = c("Cercopithecoidea", "Hominoidea", "Platyrrhini", "Tarsiiformes", "Strepsirrhini"))
-  )
-
-genus_db_coverage <- genus_db_coverage %>% 
-  mutate(
-    catarrhini = if_else(clade %in% c("Cercopithecoidea", "Hominoidea"), "Catarrhini", NA_character_),
-    simiiformes = if_else(clade %in% c("Platyrrhini", "Catarrhini"), "Simiiformes", NA_character_),
-    haplorhini = if_else(clade %in% c("Simiiformes", "Tarsiiformes"), "Catarrhini", NA_character_)
   )
 ```
 
@@ -780,19 +778,86 @@ ggplot(genus_db_coverage,
 
 ### Database Coverage Biases
 
-Task: build a stacked bar chart showing the relative weights of taxonomic groups:
+```{r}
+#| label: primate-proportions
+#| echo: false
 
--   strepsirrhines vs haplorhines
+make_split_plot <- function(df, group_var, title, filter_expr = TRUE, drop_na_groups = TRUE){
+  dat <- df %>% filter({{ filter_expr }}) %>% 
+    mutate(group = .data[[group_var]]) %>% { 
+      if(drop_na_groups) filter(., !is.na(group)) 
+      else . } %>% 
+    group_by(source, group) %>% 
+    summarise(n = sum(n_species, na.rm = TRUE), .groups = "drop") %>% 
+    group_by(source) %>% 
+    mutate(prop = n / sum(n)) %>% 
+    ungroup() 
+  ggplot(dat, aes(x = source, y = prop, fill = group)) + 
+    geom_col(width = 0.85) + 
+    scale_x_discrete(labels = function(x) sapply(x, function(s) paste(strwrap(s, width = 10), collapse = "\n"))) +
+    scale_y_continuous(labels = percent_format(accuracy = 1)) + 
+    labs(x = NULL, y = NULL, fill = NULL, title = title) + 
+    theme_bw() + 
+    theme( 
+      axis.text.x = element_text(hjust = 0.5, vjust = 1, size = 9),
+      plot.title = element_text(face = "bold", size = 11),
+      legend.position = "right" )
+  }
 
--   within strepsirrhines: lemuriformes vs lorisiformes
+# Strepsirrhini vs Haplorhini 
+svh <- make_split_plot( 
+  genus_db_coverage, group_var = "s_order",
+  title = "Strepsirrhini vs Haplorhini" 
+  ) 
 
--   within haplorhines: tarsiiformes vs simiiformes
+# Within Haplorhini: Tarsiiformes vs Simiiformes 
+tvs <- make_split_plot(
+  genus_db_coverage,
+  group_var = "i_order",
+  title = "Within Haplorhini: Tarsiiformes vs Simiiformes",
+  filter_expr = s_order == "Haplorhini" 
+  ) 
 
--   within simiiformes: platyrrhines vs catarrhines
+# Within Simiiformes: Platyrrhini vs Catarrhini 
+pvc <- make_split_plot( 
+  genus_db_coverage, 
+  group_var = "p_order",
+  title = "Within Simiiformes: Platyrrhini vs Catarrhini",
+  filter_expr = i_order == "Simiiformes"
+  )
 
--   within catarrhines: hominoids vs cercopithecoids
+# Within Catarrhini: Hominoidea vs Cercopithecoidea 
+hvc <- make_split_plot( 
+  genus_db_coverage, 
+  group_var = "clade", 
+  title = "Within Catarrhini: Hominoidea vs Cercopithecoidea",
+  filter_expr = p_order == "Catarrhini" & clade %in% c("Hominoidea", "Cercopithecoidea") 
+  ) 
 
--   within hominoids: hominids vs hylobatids
+# Within Hominoidea: Hominidae vs Hylobatidae 
+hvh <- make_split_plot(
+  genus_db_coverage, 
+  group_var = "family", 
+  title = "Within Hominoidea: Hominidae vs Hylobatidae", 
+  filter_expr = clade == "Hominoidea" & family %in% c("Hominidae", "Hylobatidae")
+  )
+
+svh; tvs; pvc; hvc; hvh
+```
+
+notes:
+
+-   add description of what these bar charts mean
+
+-   fix typo in prop missing vlaues between perm test results and scope coverage tables
+
+    -   "to determine of sex stratified traits" -\> "to determine **if** sex stratified traits"
+
+-   summarize heat map results
+
+```{r}
+
+```
 
 ## Verifying Trait Dimorphism
 
