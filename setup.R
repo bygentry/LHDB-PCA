@@ -2,7 +2,7 @@ options(repos = "https://cran.us.r-project.org")
 
 # loads necessary packages
 pacman::p_load(
-  curl, ggpubr, gratia, gridExtra, gt, lme4, lubridate, mice, psych, rlang, tidyverse, VIM, XML, yaml
+  curl, ggpubr, gratia, gridExtra, gt, lme4, lubridate, mice, psych, rlang, scales, tidyverse, VIM, XML, yaml
 )
 
 # loads data files 
