@@ -477,7 +477,7 @@ scope_summary %>%
   gt::tab_caption(gt::md("**Table 3.** Scope coverage vs completeness (panel vs within-scope)."))
 ```
 
-I ran a one-tailed permutation test to compare the mean completeness of the sex-stratified and non-sex-stratified variables to determine of sex-stratified traits are systematically less complete than non-stratified as a test of whether the stratified variables truly have worse completeness or if they are just under reported.
+I ran a one-tailed permutation test to compare the mean completeness of the sex-stratified and non-sex-stratified variables to determine if sex-stratified traits systematically have lower completeness scores than non-stratified traits. This test informs us whether the stratified variables truly have worse completeness or if they are just under reported.
 
 ```{r}
 #| label: permutation test results
@@ -872,6 +872,107 @@ Task: for each species, check both:
 -   the mean of AFR - mean of ASM (using all dbs)
 
 -   for each database, AFR - ASM (means if applicable) for each species
+
+```{r}
+#| echo: false
+#| label: quality check AFR vs ASM 1
+
+tmp1 <- key_vals %>% 
+  group_by(species) %>% 
+  summarise(
+    n_AFR = sum(!is.na(AFR)),
+    n_ASM = sum(!is.na(age_at_maturity_f)),
+    mean_AFR = mean(AFR, na.rm = TRUE),
+    mean_ASM = mean(age_at_maturity_f, na.rm = TRUE),
+    diff = mean_AFR - mean_ASM,
+    .groups = "drop"
+  )
+
+tmp2 <- key_vals %>% 
+  group_by(species, source) %>% 
+  summarise(
+    n_AFR = sum(!is.na(AFR)),
+    n_ASM = sum(!is.na(age_at_maturity_f)),
+    mean_AFR = mean(AFR, na.rm = TRUE),
+    mean_ASM = mean(age_at_maturity_f, na.rm = TRUE),
+    diff = mean_AFR - mean_ASM,
+    .groups = "drop"
+  )
+
+diff_wide <- tmp2 %>%
+  select(species, source, diff) %>%
+  pivot_wider(
+    names_from = source,
+    values_from = diff,
+    names_prefix = "diff_"
+  )
+
+qc_table <- tmp1 %>%
+  left_join(diff_wide, by = "species") %>%
+  arrange(desc(tmp1))
+    
+```
+
+```{r}
+#| label: quality check AFR vs ASM 2 
+#| echo: false
+
+sign1 <- tmp1 %>%
+  mutate(
+    sign = case_when(
+      n_AFR == 0 | n_ASM == 0 ~ "NA (insufficient data)",
+      diff < 0 ~ "Negative (AFR < ASM)",
+      diff > 0 ~ "Positive (AFR > ASM)",
+      TRUE     ~ "Zero (AFR = ASM)"
+    ),
+    sign = factor(
+      sign,
+      levels = c("Negative (AFR < ASM)", "Zero (AFR = ASM)", "Positive (AFR > ASM)", "NA (insufficient data)")
+    )
+  )
+
+overall_counts <- sign1 %>%
+  count(sign)
+
+ggplot(overall_counts, aes(x = "All databases", y = n, fill = sign)) +
+  geom_col(width = 0.7) +
+  labs(x = NULL, y = "Number of species", fill = NULL,
+       title = "AFR − ASM sign across species (all databases combined)") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 0, hjust = 0.5))
+
+```
+```{r}
+#| label: quality check AFR vs ASM 3
+#| echo: false
+#| fig-cap: "I'm still working out this kinks for this one"
+sign2 <- tmp2 %>%
+  mutate(
+    sign = case_when(
+      n_AFR == 0 | n_ASM == 0 ~ "NA (insufficient data)",
+      diff < 0 ~ "Negative (AFR < ASM)",
+      diff > 0 ~ "Positive (AFR > ASM)",
+      TRUE     ~ "Zero (AFR = ASM)"
+    ),
+    sign = factor(
+      sign,
+      levels = c("Negative (AFR < ASM)", "Zero (AFR = ASM)", "Positive (AFR > ASM)", "NA (insufficient data)")
+    )
+  )
+
+db_counts <- sign2 %>%
+  count(source, sign)
+
+ggplot(db_counts, aes(x = source, y = n, fill = sign)) +
+  geom_col(width = 0.85) +
+  labs(x = NULL, y = "Number of species", fill = NULL,
+       title = "AFR − ASM sign by database",
+       subtitle = "NA = missing AFR or ASM for that species in that database") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+
+```
+
 
 ## Distances from the Mean for Truly Common Variables
 
