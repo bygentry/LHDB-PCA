@@ -776,10 +776,15 @@ ggplot(genus_db_coverage,
 
 > Use [this page](https://bygentry.github.io/LHDB-PCA/Species-Representation.html) to see the same visualization at higher resolution
 
+notes:
+
+-   
+
 ### Database Coverage Biases
 
 ```{r}
-#| label: primate-proportions
+#| label: legacy-primate-proportions
+#| eval: false
 #| echo: false
 
 make_split_plot <- function(df, group_var, title, filter_expr = TRUE, drop_na_groups = TRUE){
@@ -845,19 +850,77 @@ hvh <- make_split_plot(
 svh; tvs; pvc; hvc; hvh
 ```
 
-notes:
-
--   add description of what these bar charts mean
-
--   fix typo in prop missing vlaues between perm test results and scope coverage tables
-
-    -   "to determine of sex stratified traits" -\> "to determine **if** sex stratified traits"
-
--   summarize heat map results
-
 ```{r}
+#| label: primate-proportions-single
+#| echo: false
+
+dat_onebar <- genus_db_coverage %>%
+  mutate(
+    terminal_group = case_when(
+      s_order == "Strepsirrhini" ~ "Strepsirrhini",
+
+      s_order == "Haplorhini" & i_order == "Tarsiiformes" ~ "Tarsiiformes",
+      s_order == "Haplorhini" & i_order == "Simiiformes" & p_order == "Platyrrhini" ~ "Platyrrhini",
+
+      s_order == "Haplorhini" & i_order == "Simiiformes" & p_order == "Catarrhini" & clade == "Cercopithecoidea" ~ "Cercopithecoidea",
+
+      s_order == "Haplorhini" & i_order == "Simiiformes" & p_order == "Catarrhini" & clade == "Hominoidea" & family == "Hylobatidae" ~ "Hylobatidae",
+      s_order == "Haplorhini" & i_order == "Simiiformes" & p_order == "Catarrhini" & clade == "Hominoidea" & family == "Hominidae" ~ "Hominidae",
+
+      s_order == "Haplorhini" ~ "Other Haplorhini",
+      TRUE ~ "Other/Unknown"
+    )
+  ) %>%
+  group_by(source, terminal_group) %>%
+  summarise(n = sum(n_species, na.rm = TRUE), .groups = "drop") %>%
+  group_by(source) %>%
+  mutate(prop = n / sum(n)) %>%
+  ungroup()
+
+lvl <- c(
+  "Strepsirrhini",
+  "Tarsiiformes",
+  "Platyrrhini",
+  "Cercopithecoidea",
+  "Hylobatidae",
+  "Hominidae",
+  "Other Haplorhini",
+  "Other/Unknown"
+)
+
+dat_onebar <- dat_onebar %>%
+  mutate(terminal_group = factor(terminal_group, levels = lvl))
+
+tax_colors <- c(
+  "Strepsirrhini"      = "red2", 
+  "Tarsiiformes"       = "dodgerblue",
+  "Platyrrhini"        = "darkviolet",
+  "Cercopithecoidea"   = "mediumpurple2",
+  "Hylobatidae"        = "plum1",
+  "Hominidae"          = "orchid"
+)
+
+ggplot(dat_onebar, aes(x = source, y = prop, fill = terminal_group)) +
+  geom_col(width = 0.85) +
+  scale_x_discrete(labels = function(x) sapply(x, function(s) paste(strwrap(s, width = 10), collapse = "\n"))) +
+  scale_y_continuous(labels = percent_format(accuracy = 1)) +
+  scale_fill_manual(values = tax_colors, drop = FALSE) +
+  labs(
+    x = NULL, y = NULL, fill = NULL,
+    title = "Primate taxonomic composition by database"
+  ) +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(hjust = 0.5, vjust = 1, size = 9),
+    plot.title  = element_text(face = "bold", size = 11),
+    legend.position = "right"
+  )
 
 ```
+
+notes:
+
+-   despite drastic differences in number of species reported, the relative frequencies of taxonomic groupings is fairly constant
 
 ## Verifying Trait Dimorphism
 
@@ -865,9 +928,180 @@ Task: for sex stratified traits, check degree of dimorphism
 
 ex: degree of sexual dimorphism for body mass = ((M_m - M_f) / M_f) \* 100 (males are x% larger than females)
 
+```{r}
+#| label: verifying-trait-dimorphism
+#| echo: false
+
+dimo <- key_vals %>% 
+  group_by(source, species) %>% 
+  summarise(
+    body_mass_f = mean(body_mass_f, na.rm = TRUE),
+    body_mass_m = mean(body_mass_m, na.rm = TRUE),
+    age_at_maturity_f = mean(age_at_maturity_f, na.rm = TRUE),
+    age_at_maturity_m = mean(age_at_maturity_m, na.rm = TRUE),
+    bm_deg  = (body_mass_m - body_mass_f) / body_mass_f,
+    asm_deg = (age_at_maturity_m - age_at_maturity_f) / age_at_maturity_f,
+    .groups = "drop"
+  ) %>% 
+  filter(is.finite(bm_deg), is.finite(asm_deg))
+
+
+dimo %>%
+  summarise(
+    bm_median = median(abs(bm_deg), na.rm = TRUE),
+    asm_median = median(abs(asm_deg), na.rm = TRUE),
+    bm_IQR = IQR(abs(bm_deg), na.rm = TRUE),
+    asm_IQR = IQR(abs(asm_deg), na.rm = TRUE)
+  )
+
+dimo_long <- dimo %>% 
+  pivot_longer(
+    cols = c(bm_deg, asm_deg),
+    names_to = "trait",
+    values_to = "dimorphism"
+  )
+
+ggplot(dimo_long, aes(x = trait, y = abs(dimorphism))) +
+  geom_boxplot(outlier.alpha = 0.3) +
+  scale_x_discrete(
+    labels = c(
+      bm_deg = "Body Mass",
+      asm_deg = "Age at Sexual Maturity"
+    )
+  ) +
+  labs(
+    y = "Absolute sexual dimorphism (proportion)",
+    x = NULL
+  ) +
+  theme_bw()
+
+```
+
+notes:
+
+-   body mass exhibits greater dimorphism across species
+
+-   asm shows consistently lower sex differences, but is skewed right by some relatively extreme values.
+
+    -   spot check values
+
+-   splitting ASM contributes little extra info... how much does it harm trait completeness
+
+```{r}
+#| label: dimorphism-wilcox-tests
+#| echo: false
+
+wilcox.test(
+  abs(dimo$bm_deg),
+  abs(dimo$asm_deg),
+  paired = FALSE
+)
+
+paired <- dimo %>% 
+  filter(!is.na(bm_deg), !is.na(asm_deg))
+
+wilcox.test(
+  abs(paired$bm_deg),
+  abs(paired$asm_deg),
+  paired = TRUE
+)
+```
+
+unpaired:
+
+-   distribution of absolute dimorphism for BM very different than ASM, across all species degree of dimorphism for bm is significantly greater than asm
+
+paired:
+
+-   within species, body mass dimporphism is consitently larger (controlling for taxonomy) and the trend holds
+
+```{r}
+#| label: asm-stratification-tradeoff
+#| echo: false
+
+asm_pairs <- key_vals %>%
+  group_by(source, species) %>%
+  summarise(
+    asm_f = mean(age_at_maturity_f, na.rm = TRUE),
+    asm_m = mean(age_at_maturity_m, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    asm_deg = if_else(
+      is.finite(asm_f) & is.finite(asm_m) & asm_f > 0,
+      (asm_m - asm_f) / asm_f,
+      NA_real_
+    )
+  )
+
+asm_dimorphism_summary <- asm_pairs %>%
+  group_by(source) %>%
+  summarise(
+    n_species_any = n(),
+    n_species_paired = sum(!is.na(asm_deg)),        
+    paired_rate = n_species_paired / n_species_any,
+    median_abs_dimorphism = median(abs(asm_deg), na.rm = TRUE),
+    iqr_abs_dimorphism = IQR(abs(asm_deg), na.rm = TRUE),
+    .groups = "drop"
+  )
+
+asm_presence <- key_vals %>%
+  group_by(source, species) %>%
+  summarise(
+    has_f = any(!is.na(age_at_maturity_f)),
+    has_m = any(!is.na(age_at_maturity_m)),
+    has_any = has_f | has_m,
+    has_both = has_f & has_m,
+    .groups = "drop"
+  ) %>%
+  mutate(
+    complete_sexed = as.integer(has_both),
+    complete_pooled = as.integer(has_any)
+  )
+
+asm_completeness_by_source <- asm_presence %>%
+  group_by(source) %>%
+  summarise(
+    n_species = n(),
+    prop_complete_sexed = mean(complete_sexed),
+    prop_complete_pooled = mean(complete_pooled),
+    completeness_gain_pooled = prop_complete_pooled - prop_complete_sexed,
+    .groups = "drop"
+  )
+
+asm_tradeoff <- asm_completeness_by_source %>%
+  left_join(asm_dimorphism_summary, by = "source") %>%
+  mutate(
+    median_abs_dimorphism_pct = 100 * median_abs_dimorphism,
+    completeness_gain_pctpts = 100 * completeness_gain_pooled,
+    prop_complete_sexed_pct = 100 * prop_complete_sexed,
+    prop_complete_pooled_pct = 100 * prop_complete_pooled
+  ) %>%
+  select(
+    source,
+    n_species,
+    prop_complete_sexed_pct,
+    prop_complete_pooled_pct,
+    completeness_gain_pctpts,
+    n_species_paired,
+    paired_rate,
+    median_abs_dimorphism_pct,
+    iqr_abs_dimorphism
+  )
+
+asm_tradeoff
+
+```
+
+notes:
+
+-   pooling sex classes for ASM greatly improves their completeness scores
+
+-   considering the low degree of dimorphism and the high cost to completeness of stratifying asm, i think it should NOT be a stratified variable or at least come with a caveat that combining the values is not unreasonable
+
 ## Quality Check: Age at First Reproduction vs Age of Sexual Maturity
 
-**none of the databases report both AFR and ASM
+**none of the databases report both AFR and ASM**
 
 Task: for each species, check both:
 
@@ -877,7 +1111,7 @@ Task: for each species, check both:
 
 ```{r}
 #| echo: false
-#| label: quality check AFR vs ASM 1
+#| label: quality-check-afr-vs-asm 
 
 tmp1 <- key_vals %>% 
   group_by(species) %>% 
@@ -889,35 +1123,6 @@ tmp1 <- key_vals %>%
     diff = mean_AFR - mean_ASM,
     .groups = "drop"
   )
-
-tmp2 <- key_vals %>% 
-  group_by(species, source) %>% 
-  summarise(
-    n_AFR = sum(!is.na(AFR)),
-    n_ASM = sum(!is.na(age_at_maturity_f)),
-    mean_AFR = mean(AFR, na.rm = TRUE),
-    mean_ASM = mean(age_at_maturity_f, na.rm = TRUE),
-    diff = mean_AFR - mean_ASM,
-    .groups = "drop"
-  )
-
-diff_wide <- tmp2 %>%
-  select(species, source, diff) %>%
-  pivot_wider(
-    names_from = source,
-    values_from = diff,
-    names_prefix = "diff_"
-  )
-
-qc_table <- tmp1 %>%
-  left_join(diff_wide, by = "species") %>%
-  arrange(desc(tmp1))
-    
-```
-
-```{r}
-#| label: quality check AFR vs ASM 2 
-#| echo: false
 
 sign1 <- tmp1 %>%
   mutate(
@@ -943,26 +1148,127 @@ ggplot(overall_counts, aes(x = "All databases", y = n, fill = sign)) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 0, hjust = 0.5))
 
+tmp1 <- overall_counts %>% 
+  transmute(
+    sign = sign,
+    p = round(n/sum(n), 2)
+  )
+
+tmp1
 ```
 
 note:
 
--   neg: 22.6%
+-   when all databases are combined,
+    -   for 74.3% of species, only one or fewer of ASM and AFR reported (insufficient data)
+    -   for 5% of species, afr \> asm
+        -   this is expected as individuals tend to become pregnant later than is technically possible
+    -   for 21% of species, afr \< asm
+        -   this should not be this common or really even possible
 
--   0: 32.0%
-
--   pos: 8.1%
-
--   NA: 37.3%
-
+now checking if pooling asm sex classes harms data integrity:
 
 ```{r}
-tmp2 <- amniote_s %>% 
-  group_by(species) %>% 
+#| label: quality-check-asm-pooled-vs-afr
+#| echo: false
+
+asm_defs <- key_vals %>%
+  group_by(source, species) %>%
   summarise(
-    
-  )  
+    AFR = mean(AFR, na.rm = TRUE),
+    ASM_u = mean(age_at_maturity_u, na.rm = TRUE),
+    ASM_f = mean(age_at_maturity_f, na.rm = TRUE),
+    ASM_m = mean(age_at_maturity_m, na.rm = TRUE),
+    ASM_pooled = mean(
+      c(age_at_maturity_f, age_at_maturity_m, age_at_maturity_u),
+      na.rm = TRUE
+      ),
+    .groups = "drop"
+  )
+
+tmp_pooled <- asm_defs %>%
+  group_by(species) %>%
+  summarise(
+    n_AFR = sum(!is.na(AFR)),
+    n_ASM = sum(!is.na(ASM_pooled)),
+    mean_AFR = mean(AFR, na.rm = TRUE),
+    mean_ASM = mean(ASM_pooled, na.rm = TRUE),
+    diff = mean_AFR - mean_ASM,
+    .groups = "drop"
+  )
+
+tmp_split <- asm_defs %>%
+  group_by(species) %>%
+  summarise(
+    n_AFR = sum(!is.na(AFR)),
+    n_ASM = sum(!is.na(ASM_f)),
+    mean_AFR = mean(AFR, na.rm = TRUE),
+    mean_ASM = mean(ASM_f, na.rm = TRUE),
+    diff = mean_AFR - mean_ASM,
+    .groups = "drop"
+  )
+
+assign_sign <- function(df) {
+  df %>%
+    mutate(
+      sign = case_when(
+        n_AFR == 0 | n_ASM == 0 ~ "NA (insufficient data)",
+        diff < 0 ~ "Negative (AFR < ASM)",
+        diff > 0 ~ "Positive (AFR > ASM)",
+        TRUE     ~ "Zero (AFR = ASM)"
+      ),
+      sign = factor(
+        sign,
+        levels = c(
+          "Negative (AFR < ASM)",
+          "Zero (AFR = ASM)",
+          "Positive (AFR > ASM)",
+          "NA (insufficient data)"
+        )
+      )
+    )
+}
+
+sign_pooled <- assign_sign(tmp_pooled)
+sign_split  <- assign_sign(tmp_split)
+
+compare_counts <- bind_rows(
+  sign_split  %>% mutate(method = "Sex-split ASM"),
+  sign_pooled %>% mutate(method = "Pooled ASM")
+) %>%
+  count(method, sign)
+
+ggplot(compare_counts, aes(x = method, y = n, fill = sign)) +
+  geom_col(width = 0.7) +
+  labs(
+    x = NULL,
+    y = "Number of species",
+    fill = NULL,
+    title = "AFR − ASM sign by ASM treatment"
+  ) +
+  theme_bw()
+
+tmp1 <- compare_counts %>%
+  group_by(method) %>%
+  mutate(
+    p = round(n / sum(n), 2)
+  ) %>%
+  ungroup() %>%
+  select(method, sign, n, p) %>%
+  arrange(method, sign)
+
+tmp1
 ```
+
+notes:
+
+-   for four species, the sign flipped from positive (expected) to negative (first reproduction younger than sexual maturity).
+
+-   pooling sex classes for asm greatly improves completeness but results in a few contradictions when comparing AFR and ASM.
+
+    -   it is important to note, though, that again NO databases report both ASM and AFR - they are essentially standins for each other.
+
+    -   to me this does not invalidate pooling sex classes for minorly dimorphic traits.
 
 ## Distances from the Mean for Truly Common Variables
 
