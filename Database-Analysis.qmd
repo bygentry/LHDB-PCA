@@ -80,7 +80,7 @@ amniote_s <- amniote %>%
     body_mass_u = adult_body_mass_g,
     body_mass_f = female_body_mass_g,
     body_mass_m = male_body_mass_g,
-    AFR = female_maturity_d,
+    AFR = NA,
     gest_len = gestation_d,
     IBI = inter_litter_or_interbirth_interval_y,
     max_longevity = maximum_longevity_y,
@@ -867,6 +867,8 @@ ex: degree of sexual dimorphism for body mass = ((M_m - M_f) / M_f) \* 100 (male
 
 ## Quality Check: Age at First Reproduction vs Age of Sexual Maturity
 
+**none of the databases report both AFR and ASM
+
 Task: for each species, check both:
 
 -   the mean of AFR - mean of ASM (using all dbs)
@@ -942,51 +944,60 @@ ggplot(overall_counts, aes(x = "All databases", y = n, fill = sign)) +
   theme(axis.text.x = element_text(angle = 0, hjust = 0.5))
 
 ```
+
+note:
+
+-   neg: 22.6%
+
+-   0: 32.0%
+
+-   pos: 8.1%
+
+-   NA: 37.3%
+
+
 ```{r}
-#| label: quality check AFR vs ASM 3
-#| echo: false
-#| fig-cap: "I'm still working out this kinks for this one"
-sign2 <- tmp2 %>%
-  mutate(
-    sign = case_when(
-      n_AFR == 0 | n_ASM == 0 ~ "NA (insufficient data)",
-      diff < 0 ~ "Negative (AFR < ASM)",
-      diff > 0 ~ "Positive (AFR > ASM)",
-      TRUE     ~ "Zero (AFR = ASM)"
-    ),
-    sign = factor(
-      sign,
-      levels = c("Negative (AFR < ASM)", "Zero (AFR = ASM)", "Positive (AFR > ASM)", "NA (insufficient data)")
-    )
-  )
-
-db_counts <- sign2 %>%
-  count(source, sign)
-
-ggplot(db_counts, aes(x = source, y = n, fill = sign)) +
-  geom_col(width = 0.85) +
-  labs(x = NULL, y = "Number of species", fill = NULL,
-       title = "AFR − ASM sign by database",
-       subtitle = "NA = missing AFR or ASM for that species in that database") +
-  theme_bw() +
-  theme(axis.text.x = element_text(angle = 30, hjust = 1))
-
+tmp2 <- amniote_s %>% 
+  group_by(species) %>% 
+  summarise(
+    
+  )  
 ```
-
 
 ## Distances from the Mean for Truly Common Variables
 
 Task: for the 3 truly common traits, find the mean and then map the distances of each db - check for any that are consistently farthest from the mean
 
+## Metadata
+
+Borries et al (2013) found that when testing the effect of body mass on gestation length, primate life history databases struggled to model the known effect of body mass when nutrition (provisioned/unprovisioned) was not considered. When controlling for nutrition type, the explanatory power of body mass matched predictions. This highlights the importance of detailed metadata regarding data provenience both in recording data and considering what data to include in analyses.
+
+-   gest len & ibi: live offspring or includes prenatal death?
+    -   gest:
+        -   myrhvold: doesnt specify
+        -   pantheria: doesnt specify
+        -   ernest: live offspring
+        -   anage: no description available?
+        -   KP: doesnt specify
+    -   ibi:
+        -   myrhvold: live offspring
+        -   pantheria: live offspring, all population types
+        -   ernest: does not record IBI
+        -   anage: no description available
+        -   KP: doesnt specify
+-   population provisioned?
+    -   pantheria notes population type for certain variables
+    -   anage notes population type for certain variables (incl longevity)
+
 ## other?
 
 -   update IUCN citation to latest edition
-
-<!-- -->
-
+-   
 -   poster:
-
     -   bullet abstract describe what doing
+    -   lock dimensions in powerpoint
+    -   look into cost help
+    -   text claire (maybe jimmy?) about AABA abnb
 
 ```{r}
 

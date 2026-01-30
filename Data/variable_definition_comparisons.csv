@@ -1,41 +1,41 @@
 Variable,Database,Unit,Description,Notes
-Adult Mass (F),AnAge,-,-,not reported
-Adult Mass (M),AnAge,-,-,not reported
+Adult Mass (F),AnAge,-,-,
+Adult Mass (M),AnAge,-,-,
 Adult Mass (Unspecified),AnAge,grams,-,
-Age @ First Reproductoin,AnAge,-,- ,not reported
+Age @ First Reproductoin,AnAge,-,- ,
 Gestation Length,AnAge,days,- ,
 Interbirth Interval,AnAge,days,-,
 Lifespan ,AnAge,years,-,
 Sexual Maturity (F),AnAge,days,-,
 Sexual Maturity (M),AnAge,days,,
-Sexual Maturity (Unspecified),AnAge,-,,not reported
+Sexual Maturity (Unspecified),AnAge,-,,
 Weaning Age,AnAge,days,,
 Adult Mass (F),Ernest,grams,average mass of a non-pregnant adult F,
-Adult Mass (M),Ernest,-,-,not reported
-Adult Mass (Unspecified),Ernest,-,- ,not reported
+Adult Mass (M),Ernest,-,-,
+Adult Mass (Unspecified),Ernest,-,- ,
 Age @ First Reproductoin,Ernest,months,average age of first conception,
 Gestation Length,Ernest,months,Average length of time for the gestation of a live offspring. Delayed implantation not included in gestation length,
 Interbirth Interval,Ernest,-,-,"Ernest reports litters/year, kind of reciprocal of IBI? Also reported by Myrhvold & PanTHERIA"
 Lifespan ,Ernest,months,Maximum recorded lifespan of either sex,
-Sexual Maturity (F),Ernest,-,-,not reported
-Sexual Maturity (M),Ernest,-,-,not reported
-Sexual Maturity (Unspecified),Ernest,-,-,not reported
+Sexual Maturity (F),Ernest,-,-,
+Sexual Maturity (M),Ernest,-,-,
+Sexual Maturity (Unspecified),Ernest,-,-,
 Weaning Age,Ernest,months,The time from brith to when offspring begins eating solid food,
 Adult Mass (F),Kappeler & Pereira,grams,mean body mass of wild adult females,
-Adult Mass (M),Kappeler & Pereira,-,-,not reported
+Adult Mass (M),Kappeler & Pereira,-,-,
 Adult Mass (Unspecified),Kappeler & Pereira,grams,mean body mass of wild adults of unknown sex,description my own - original reports female and unknown sex within a single variable wherein unknown sex values are denoted by ~x where x is the mass in grams
 Age @ First Reproductoin,Kappeler & Pereira,years,mean age of first female reproduction,
 Gestation Length,Kappeler & Pereira,days,mean gestation length,
 Interbirth Interval,Kappeler & Pereira,months,mean interbirth interval,
-Lifespan ,Kappeler & Pereira,-,-,not reported
+Lifespan ,Kappeler & Pereira,-,-,
 Sexual Maturity (F),Kappeler & Pereira,-,-,"reports duration of juvenile period in years, weaning age + duration of juvenile = age at maturity?"
-Sexual Maturity (M),Kappeler & Pereira,-,-,not reported
-Sexual Maturity (Unspecified),Kappeler & Pereira,-,-,not reported
+Sexual Maturity (M),Kappeler & Pereira,-,-,
+Sexual Maturity (Unspecified),Kappeler & Pereira,-,-,
 Weaning Age,Kappeler & Pereira,days,mean age at weaning,
 Adult Mass (F),Myrhvold et al,grams,"""the body mass of a female in grams""",
 Adult Mass (M),Myrhvold et al,grams,"""the body mass of a male individual in grams""",
 Adult Mass (Unspecified),Myrhvold et al,grams,"""the body mass of an adult individual in grams""",
-Age @ First Reproductoin,Myrhvold et al,days,mean age at conception,"reports female, male, and unknown sex maturity values - i included the female description bc its the closest to AFR"
+Age @ First Reproductoin,Myrhvold et al,-,-,
 Gestation Length,Myrhvold et al,days,"""the time between conception and birth in days""",
 Interbirth Interval,Myrhvold et al,years,"""the time between the reproduction cycles in years""",
 Lifespan ,Myrhvold et al,years,"Maximum_longevity_y: ""the longest lifespan reported of the species in years"" / longevity_y: ""the lifespan of an individual in years""",
@@ -43,8 +43,8 @@ Sexual Maturity (F),Myrhvold et al,days,"""the amount of time it takes for a fem
 Sexual Maturity (M),Myrhvold et al,days,"""The amount of time it takes for a male individual to reach maturity in days""",
 Sexual Maturity (Unspecified),Myrhvold et al,days,"""the amount of time it takes for an individual of unreported sex to reach maturity in days""",
 Weaning Age,Myrhvold et al,days,"""The amount of time it takes to wean the offspring in days""",
-Adult Mass (F),PanTHERIA,-,-,not reported
-Adult Mass (M),PanTHERIA,-,-,not reported
+Adult Mass (F),PanTHERIA,-,-,
+Adult Mass (M),PanTHERIA,-,-,
 Adult Mass (Unspecified),PanTHERIA,grams,Mass of non pregnant adult specimens of all population types and sex classes,
 Age @ First Reproductoin,PanTHERIA,-,- ,See Sexual Maturity (Unspecified)
 Gestation Length,PanTHERIA,days,"Length of time of non-inactive fetal growth; measured between start points (conception, fertiliization, first observed copulatoin, implantation, palpably pregnant, capture, or unspecified) and birth",
