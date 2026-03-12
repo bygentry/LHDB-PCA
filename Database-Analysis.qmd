@@ -734,6 +734,15 @@ genus_db_coverage <- species_df %>%
     n_species = replace_na(n_species, 0),
     clade = factor(clade, levels = c("Cercopithecoidea", "Hominoidea", "Platyrrhini", "Tarsiiformes", "Strepsirrhini"))
   )
+
+family_db_coverage <- species_df %>%
+  distinct(source, family, species) %>%
+  count(source, family, name = "n_species") %>%
+  right_join(taxonomy_df, by = "family") %>%
+  mutate(
+    n_species = replace_na(n_species, 0),
+    clade = factor(clade, levels = c("Cercopithecoidea", "Hominoidea", "Platyrrhini", "Tarsiiformes", "Strepsirrhini"))
+  )
 ```
 
 ```{r}
