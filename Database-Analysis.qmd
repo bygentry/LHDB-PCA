@@ -71,7 +71,7 @@ Each database records a number of life history statistics, any of which are repo
 #| label: building dfs of key vars
 #| code-fold: true
 
-sources = as.factor(c("Myrhvold et al. 2015", "de Magalhães & Costa 2009", "Ernest 2003", "Jones et al. 2009", "Kappeler & Pereira 2003"))
+sources = as.factor(c("Amniotes", "AnAge", "Ernest", "PanTHERIA", "Kappeler & Pereira"))
 
 ## selecting vars for cross-database comparison
 amniote_s <- amniote %>% 
@@ -264,17 +264,17 @@ key_long <- key_vals %>%
   )
 
 trait_labels <- c(
-  max_longevity = "Lifespan (Years)",
-  IBI = "Interbirth Interval (Days)",
-  AFR = "Age at First Reproduction (Days)",
-  gest_len = "Gestation Length (Days)",
-  weaning_age = "Weaning Age (Days)",
-  body_mass_u = "Adult Mass - Unspecified (g)",
-  body_mass_m = "Adult Mass - Male (g)",
-  body_mass_f = "Adult Mass - Female (g)",
-  age_at_maturity_u = "Sexual Maturity - Unspecified (Days)",
-  age_at_maturity_m = "Sexual Maturity - Male (Days)",
-  age_at_maturity_f = "Sexual Maturity - Female (Days)"
+  max_longevity = "Lifespan",
+  IBI = "Interbirth Interval",
+  AFR = "AFR",
+  gest_len = "Gestation Length",
+  weaning_age = "Weaning Age",
+  body_mass_u = "Adult Mass - U",
+  body_mass_m = "Adult Mass - M",
+  body_mass_f = "Adult Mass - F",
+  age_at_maturity_u = "ASM - U",
+  age_at_maturity_m = "ASM - M",
+  age_at_maturity_f = "ASM - F"
 )
 
 scope_df <- key_long %>%
@@ -299,32 +299,6 @@ scope_summary <- scope_df %>%
     within_scope_completeness = 1 - mean(prop_missing_within_scope, na.rm = TRUE),
     .groups = "drop"
   )
-```
-
-```{r}
-#| label: legacy missingness dataframe
-#| echo: false
-#| eval: false  
-
-# from old version of code, keeping just in case it becomes useful again
-
-## this calculates the proportion of missing values for each life history trait
-## and stores them in a "missigness" df that stores the trait, the source, 
-## and the % missingness in 3 steps
-## (1) pivots columns except for species and source, 
-##     assigns variable names to trait and values to value 
-## (2) groups traits sourcewise
-## (3) calculates the proportion of NAs to valid entries for each trait
-##     in each source and stores them alongside the source and trait name
-missingness <- key_vals %>%
-  pivot_longer(cols = -c(species, source), 
-               names_to = "trait", 
-               values_to = "value") %>%
-  group_by(source, trait) %>% 
-  summarize(prop_missing = mean(is.na(value)), .groups = "drop")
-
-missingness <- missingness %>%
-  mutate(trait = dplyr::recode(trait, !!!trait_labels, .default = trait))
 ```
 
 ```{r}
@@ -411,7 +385,7 @@ One of the primary issues with primate life history data is how few species are 
 | PanTHERIA (Jones et al. 2009) | 376 | .70 |
 | Kappeler & Pereira (2003) | 310 | .58 |
 
-: **Table 2.** Proportions of primate species represented by each database. \*Calculated as N/535, the number of species recognized by the IUCN / SSC Primate Specialist Group (2023)
+: **Table 2.** Proportions of primate species represented by each database. \*Calculated as N/535\> the number of species recognized by the IUCN / SSC Primate Specialist Group (2025)
 
 Of the species we have data for, many are lacking at least one important life history statistic. Heat map analysis of the proportion of missing values to data points for each key life history trait reveal several patterns in the short-comings of the data we have available:
 
@@ -440,9 +414,9 @@ ggplot(scope_df, aes(x = source, y = trait)) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   labs(
-    title = "Proportions of Missing Values for Key Traits",
+    title = "Proportions of Missing Values for Key LH Traits",
     x = "Dataset",
-    y = "Trait"
+    y = "Life History Trait"
   )
 
 ```
@@ -690,6 +664,12 @@ taxonomy_df <- tibble(
     family = as.character(family)
   )
 
+species_df <- species_df %>%
+  left_join(family_lookup, by = "genus") %>% 
+  mutate(
+    family = as.character(family)
+  )
+
 taxonomy_df <- taxonomy_df %>%
   mutate(
     clade = case_when(
@@ -720,6 +700,8 @@ taxonomy_df <- taxonomy_df %>%
       TRUE ~ NA_character_
     )
   )
+family_taxonomy <- taxonomy_df %>%
+  distinct(family, clade, p_order, i_order, s_order)
 ```
 
 ```{r}
@@ -736,12 +718,16 @@ genus_db_coverage <- species_df %>%
   )
 
 family_db_coverage <- species_df %>%
+  filter(!is.na(family)) %>%
   distinct(source, family, species) %>%
   count(source, family, name = "n_species") %>%
-  right_join(taxonomy_df, by = "family") %>%
+  right_join(family_taxonomy, by = "family") %>%
   mutate(
     n_species = replace_na(n_species, 0),
-    clade = factor(clade, levels = c("Cercopithecoidea", "Hominoidea", "Platyrrhini", "Tarsiiformes", "Strepsirrhini"))
+    clade = factor(
+      clade,
+      levels = c("Cercopithecoidea", "Hominoidea", "Platyrrhini", "Tarsiiformes", "Strepsirrhini")
+    )
   )
 ```
 
@@ -784,6 +770,30 @@ ggplot(genus_db_coverage,
 ```
 
 > Use [this page](https://bygentry.github.io/LHDB-PCA/Species-Representation.html) to see the same visualization at higher resolution
+
+```{r}
+#| echo: false
+
+ggplot(family_db_coverage, aes(x = source, y = family, fill = n_species)) +
+  geom_tile(color = "snow") +
+  scale_fill_gradientn(
+    colors = rev(colorspace::heat_hcl(100)),
+    name = "Number of species",
+    na.value = "ivory3"
+  ) +
+  facet_grid(clade ~ ., scales = "free_y", space = "free_y") +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(angle = 30, hjust = 1),
+    strip.text.y = element_text(angle = 0),
+    panel.grid = element_blank()
+  ) +
+  labs(
+    x = NULL,
+    y = "Family",
+    title = "Family-level representation across databases"
+  )
+```
 
 notes:
 
@@ -1119,6 +1129,7 @@ Task: for each species, check both:
 -   for each database, AFR - ASM (means if applicable) for each species
 
 ```{r}
+#| eval: false
 #| echo: false
 #| label: quality-check-afr-vs-asm 
 
@@ -1178,6 +1189,7 @@ note:
 now checking if pooling asm sex classes harms data integrity:
 
 ```{r}
+#| eval: false
 #| label: quality-check-asm-pooled-vs-afr
 #| echo: false
 

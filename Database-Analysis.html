@@ -237,7 +237,7 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>sources <span class="ot">=</span> <span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="st">"Myrhvold et al. 2015"</span>, <span class="st">"de Magalhães &amp; Costa 2009"</span>, <span class="st">"Ernest 2003"</span>, <span class="st">"Jones et al. 2009"</span>, <span class="st">"Kappeler &amp; Pereira 2003"</span>))</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>sources <span class="ot">=</span> <span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="st">"Amniotes"</span>, <span class="st">"AnAge"</span>, <span class="st">"Ernest"</span>, <span class="st">"PanTHERIA"</span>, <span class="st">"Kappeler &amp; Pereira"</span>))</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="do">## selecting vars for cross-database comparison</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>amniote_s <span class="ot">&lt;-</span> amniote <span class="sc">%&gt;%</span> </span>
@@ -425,17 +425,17 @@ window.Quarto = {
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>trait_labels <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">max_longevity =</span> <span class="st">"Lifespan (Years)"</span>,</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">IBI =</span> <span class="st">"Interbirth Interval (Days)"</span>,</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">AFR =</span> <span class="st">"Age at First Reproduction (Days)"</span>,</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">gest_len =</span> <span class="st">"Gestation Length (Days)"</span>,</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">weaning_age =</span> <span class="st">"Weaning Age (Days)"</span>,</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">body_mass_u =</span> <span class="st">"Adult Mass - Unspecified (g)"</span>,</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">body_mass_m =</span> <span class="st">"Adult Mass - Male (g)"</span>,</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">body_mass_f =</span> <span class="st">"Adult Mass - Female (g)"</span>,</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">age_at_maturity_u =</span> <span class="st">"Sexual Maturity - Unspecified (Days)"</span>,</span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">age_at_maturity_m =</span> <span class="st">"Sexual Maturity - Male (Days)"</span>,</span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">age_at_maturity_f =</span> <span class="st">"Sexual Maturity - Female (Days)"</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">max_longevity =</span> <span class="st">"Lifespan"</span>,</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">IBI =</span> <span class="st">"Interbirth Interval"</span>,</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">AFR =</span> <span class="st">"AFR"</span>,</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">gest_len =</span> <span class="st">"Gestation Length"</span>,</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">weaning_age =</span> <span class="st">"Weaning Age"</span>,</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">body_mass_u =</span> <span class="st">"Adult Mass - U"</span>,</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">body_mass_m =</span> <span class="st">"Adult Mass - M"</span>,</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">body_mass_f =</span> <span class="st">"Adult Mass - F"</span>,</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">age_at_maturity_u =</span> <span class="st">"ASM - U"</span>,</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">age_at_maturity_m =</span> <span class="st">"ASM - M"</span>,</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">age_at_maturity_f =</span> <span class="st">"ASM - F"</span></span>
 <span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>scope_df <span class="ot">&lt;-</span> key_long <span class="sc">%&gt;%</span></span>
@@ -587,23 +587,23 @@ window.Quarto = {
 <p>Of our key life history traits, most databases only record data for around 60% of them (mostly just <strong>not</strong> the sex-stratified versions of body mass and age at maturity). When testing the mean completeness of the databases using all of the key traits versus only the ones they record, their completeness scores obviously improved. This may appear to call into question our selection of traits, but really the trait scope is under represented because the missing traits are the same measurement for different sex classes.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="gaptasjmxe" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#gaptasjmxe table {
+<div id="kicnhjppeu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#kicnhjppeu table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#gaptasjmxe thead, #gaptasjmxe tbody, #gaptasjmxe tfoot, #gaptasjmxe tr, #gaptasjmxe td, #gaptasjmxe th {
+#kicnhjppeu thead, #kicnhjppeu tbody, #kicnhjppeu tfoot, #kicnhjppeu tr, #kicnhjppeu td, #kicnhjppeu th {
   border-style: none;
 }
 
-#gaptasjmxe p {
+#kicnhjppeu p {
   margin: 0;
   padding: 0;
 }
 
-#gaptasjmxe .gt_table {
+#kicnhjppeu .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -629,12 +629,12 @@ window.Quarto = {
   border-left-color: #D3D3D3;
 }
 
-#gaptasjmxe .gt_caption {
+#kicnhjppeu .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#gaptasjmxe .gt_title {
+#kicnhjppeu .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -646,7 +646,7 @@ window.Quarto = {
   border-bottom-width: 0;
 }
 
-#gaptasjmxe .gt_subtitle {
+#kicnhjppeu .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -658,7 +658,7 @@ window.Quarto = {
   border-top-width: 0;
 }
 
-#gaptasjmxe .gt_heading {
+#kicnhjppeu .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -670,13 +670,13 @@ window.Quarto = {
   border-right-color: #D3D3D3;
 }
 
-#gaptasjmxe .gt_bottom_border {
+#kicnhjppeu .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#gaptasjmxe .gt_col_headings {
+#kicnhjppeu .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -691,7 +691,7 @@ window.Quarto = {
   border-right-color: #D3D3D3;
 }
 
-#gaptasjmxe .gt_col_heading {
+#kicnhjppeu .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -711,7 +711,7 @@ window.Quarto = {
   overflow-x: hidden;
 }
 
-#gaptasjmxe .gt_column_spanner_outer {
+#kicnhjppeu .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -723,15 +723,15 @@ window.Quarto = {
   padding-right: 4px;
 }
 
-#gaptasjmxe .gt_column_spanner_outer:first-child {
+#kicnhjppeu .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#gaptasjmxe .gt_column_spanner_outer:last-child {
+#kicnhjppeu .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#gaptasjmxe .gt_column_spanner {
+#kicnhjppeu .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -743,11 +743,11 @@ window.Quarto = {
   width: 100%;
 }
 
-#gaptasjmxe .gt_spanner_row {
+#kicnhjppeu .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#gaptasjmxe .gt_group_heading {
+#kicnhjppeu .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -773,7 +773,7 @@ window.Quarto = {
   text-align: left;
 }
 
-#gaptasjmxe .gt_empty_group_heading {
+#kicnhjppeu .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -788,15 +788,15 @@ window.Quarto = {
   vertical-align: middle;
 }
 
-#gaptasjmxe .gt_from_md > :first-child {
+#kicnhjppeu .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#gaptasjmxe .gt_from_md > :last-child {
+#kicnhjppeu .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#gaptasjmxe .gt_row {
+#kicnhjppeu .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -815,7 +815,7 @@ window.Quarto = {
   overflow-x: hidden;
 }
 
-#gaptasjmxe .gt_stub {
+#kicnhjppeu .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -828,7 +828,7 @@ window.Quarto = {
   padding-right: 5px;
 }
 
-#gaptasjmxe .gt_stub_row_group {
+#kicnhjppeu .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -842,15 +842,15 @@ window.Quarto = {
   vertical-align: top;
 }
 
-#gaptasjmxe .gt_row_group_first td {
+#kicnhjppeu .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#gaptasjmxe .gt_row_group_first th {
+#kicnhjppeu .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#gaptasjmxe .gt_summary_row {
+#kicnhjppeu .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -860,16 +860,16 @@ window.Quarto = {
   padding-right: 5px;
 }
 
-#gaptasjmxe .gt_first_summary_row {
+#kicnhjppeu .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#gaptasjmxe .gt_first_summary_row.thick {
+#kicnhjppeu .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#gaptasjmxe .gt_last_summary_row {
+#kicnhjppeu .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -879,7 +879,7 @@ window.Quarto = {
   border-bottom-color: #D3D3D3;
 }
 
-#gaptasjmxe .gt_grand_summary_row {
+#kicnhjppeu .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -889,7 +889,7 @@ window.Quarto = {
   padding-right: 5px;
 }
 
-#gaptasjmxe .gt_first_grand_summary_row {
+#kicnhjppeu .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -899,7 +899,7 @@ window.Quarto = {
   border-top-color: #D3D3D3;
 }
 
-#gaptasjmxe .gt_last_grand_summary_row_top {
+#kicnhjppeu .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -909,11 +909,11 @@ window.Quarto = {
   border-bottom-color: #D3D3D3;
 }
 
-#gaptasjmxe .gt_striped {
+#kicnhjppeu .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#gaptasjmxe .gt_table_body {
+#kicnhjppeu .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -922,7 +922,7 @@ window.Quarto = {
   border-bottom-color: #D3D3D3;
 }
 
-#gaptasjmxe .gt_footnotes {
+#kicnhjppeu .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -936,7 +936,7 @@ window.Quarto = {
   border-right-color: #D3D3D3;
 }
 
-#gaptasjmxe .gt_footnote {
+#kicnhjppeu .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -945,7 +945,7 @@ window.Quarto = {
   padding-right: 5px;
 }
 
-#gaptasjmxe .gt_sourcenotes {
+#kicnhjppeu .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -959,7 +959,7 @@ window.Quarto = {
   border-right-color: #D3D3D3;
 }
 
-#gaptasjmxe .gt_sourcenote {
+#kicnhjppeu .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -967,72 +967,72 @@ window.Quarto = {
   padding-right: 5px;
 }
 
-#gaptasjmxe .gt_left {
+#kicnhjppeu .gt_left {
   text-align: left;
 }
 
-#gaptasjmxe .gt_center {
+#kicnhjppeu .gt_center {
   text-align: center;
 }
 
-#gaptasjmxe .gt_right {
+#kicnhjppeu .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#gaptasjmxe .gt_font_normal {
+#kicnhjppeu .gt_font_normal {
   font-weight: normal;
 }
 
-#gaptasjmxe .gt_font_bold {
+#kicnhjppeu .gt_font_bold {
   font-weight: bold;
 }
 
-#gaptasjmxe .gt_font_italic {
+#kicnhjppeu .gt_font_italic {
   font-style: italic;
 }
 
-#gaptasjmxe .gt_super {
+#kicnhjppeu .gt_super {
   font-size: 65%;
 }
 
-#gaptasjmxe .gt_footnote_marks {
+#kicnhjppeu .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#gaptasjmxe .gt_asterisk {
+#kicnhjppeu .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#gaptasjmxe .gt_indent_1 {
+#kicnhjppeu .gt_indent_1 {
   text-indent: 5px;
 }
 
-#gaptasjmxe .gt_indent_2 {
+#kicnhjppeu .gt_indent_2 {
   text-indent: 10px;
 }
 
-#gaptasjmxe .gt_indent_3 {
+#kicnhjppeu .gt_indent_3 {
   text-indent: 15px;
 }
 
-#gaptasjmxe .gt_indent_4 {
+#kicnhjppeu .gt_indent_4 {
   text-indent: 20px;
 }
 
-#gaptasjmxe .gt_indent_5 {
+#kicnhjppeu .gt_indent_5 {
   text-indent: 25px;
 }
 
-#gaptasjmxe .katex-display {
+#kicnhjppeu .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#gaptasjmxe div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#kicnhjppeu div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1049,34 +1049,34 @@ window.Quarto = {
 </thead>
 <tbody class="gt_table_body">
 <tr class="odd">
-<td class="gt_row gt_center" headers="source">de Magalhães &amp; Costa 2009</td>
+<td class="gt_row gt_center" headers="source">Amniotes</td>
+<td class="gt_row gt_right" headers="scope_coverage">82%</td>
+<td class="gt_row gt_right" headers="panel_completeness">0.541</td>
+<td class="gt_row gt_right" headers="within_scope_completeness">0.661</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_center" headers="source">AnAge</td>
 <td class="gt_row gt_right" headers="scope_coverage">64%</td>
 <td class="gt_row gt_right" headers="panel_completeness">0.399</td>
 <td class="gt_row gt_right" headers="within_scope_completeness">0.626</td>
 </tr>
-<tr class="even">
-<td class="gt_row gt_center" headers="source">Ernest 2003</td>
+<tr class="odd">
+<td class="gt_row gt_center" headers="source">Ernest</td>
 <td class="gt_row gt_right" headers="scope_coverage">55%</td>
 <td class="gt_row gt_right" headers="panel_completeness">0.378</td>
 <td class="gt_row gt_right" headers="within_scope_completeness">0.693</td>
 </tr>
-<tr class="odd">
-<td class="gt_row gt_center" headers="source">Jones et al. 2009</td>
-<td class="gt_row gt_right" headers="scope_coverage">64%</td>
-<td class="gt_row gt_right" headers="panel_completeness">0.236</td>
-<td class="gt_row gt_right" headers="within_scope_completeness">0.372</td>
-</tr>
 <tr class="even">
-<td class="gt_row gt_center" headers="source">Kappeler &amp; Pereira 2003</td>
+<td class="gt_row gt_center" headers="source">Kappeler &amp; Pereira</td>
 <td class="gt_row gt_right" headers="scope_coverage">55%</td>
 <td class="gt_row gt_right" headers="panel_completeness">0.170</td>
 <td class="gt_row gt_right" headers="within_scope_completeness">0.312</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_center" headers="source">Myrhvold et al. 2015</td>
-<td class="gt_row gt_right" headers="scope_coverage">82%</td>
-<td class="gt_row gt_right" headers="panel_completeness">0.541</td>
-<td class="gt_row gt_right" headers="within_scope_completeness">0.661</td>
+<td class="gt_row gt_center" headers="source">PanTHERIA</td>
+<td class="gt_row gt_right" headers="scope_coverage">64%</td>
+<td class="gt_row gt_right" headers="panel_completeness">0.236</td>
+<td class="gt_row gt_right" headers="within_scope_completeness">0.372</td>
 </tr>
 </tbody>
 </table>
@@ -1087,23 +1087,23 @@ window.Quarto = {
 <p>I ran a one-tailed permutation test to compare the mean completeness of the sex-stratified and non-sex-stratified variables to determine if sex-stratified traits systematically have lower completeness scores than non-stratified traits. This test informs us whether the stratified variables truly have worse completeness or if they are just under reported.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="wapusxtvcd" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#wapusxtvcd table {
+<div id="ydgabwknrs" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ydgabwknrs table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#wapusxtvcd thead, #wapusxtvcd tbody, #wapusxtvcd tfoot, #wapusxtvcd tr, #wapusxtvcd td, #wapusxtvcd th {
+#ydgabwknrs thead, #ydgabwknrs tbody, #ydgabwknrs tfoot, #ydgabwknrs tr, #ydgabwknrs td, #ydgabwknrs th {
   border-style: none;
 }
 
-#wapusxtvcd p {
+#ydgabwknrs p {
   margin: 0;
   padding: 0;
 }
 
-#wapusxtvcd .gt_table {
+#ydgabwknrs .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1129,12 +1129,12 @@ window.Quarto = {
   border-left-color: #D3D3D3;
 }
 
-#wapusxtvcd .gt_caption {
+#ydgabwknrs .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#wapusxtvcd .gt_title {
+#ydgabwknrs .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1146,7 +1146,7 @@ window.Quarto = {
   border-bottom-width: 0;
 }
 
-#wapusxtvcd .gt_subtitle {
+#ydgabwknrs .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1158,7 +1158,7 @@ window.Quarto = {
   border-top-width: 0;
 }
 
-#wapusxtvcd .gt_heading {
+#ydgabwknrs .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1170,13 +1170,13 @@ window.Quarto = {
   border-right-color: #D3D3D3;
 }
 
-#wapusxtvcd .gt_bottom_border {
+#ydgabwknrs .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#wapusxtvcd .gt_col_headings {
+#ydgabwknrs .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1191,7 +1191,7 @@ window.Quarto = {
   border-right-color: #D3D3D3;
 }
 
-#wapusxtvcd .gt_col_heading {
+#ydgabwknrs .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1211,7 +1211,7 @@ window.Quarto = {
   overflow-x: hidden;
 }
 
-#wapusxtvcd .gt_column_spanner_outer {
+#ydgabwknrs .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1223,15 +1223,15 @@ window.Quarto = {
   padding-right: 4px;
 }
 
-#wapusxtvcd .gt_column_spanner_outer:first-child {
+#ydgabwknrs .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#wapusxtvcd .gt_column_spanner_outer:last-child {
+#ydgabwknrs .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#wapusxtvcd .gt_column_spanner {
+#ydgabwknrs .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1243,11 +1243,11 @@ window.Quarto = {
   width: 100%;
 }
 
-#wapusxtvcd .gt_spanner_row {
+#ydgabwknrs .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#wapusxtvcd .gt_group_heading {
+#ydgabwknrs .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1273,7 +1273,7 @@ window.Quarto = {
   text-align: left;
 }
 
-#wapusxtvcd .gt_empty_group_heading {
+#ydgabwknrs .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1288,15 +1288,15 @@ window.Quarto = {
   vertical-align: middle;
 }
 
-#wapusxtvcd .gt_from_md > :first-child {
+#ydgabwknrs .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#wapusxtvcd .gt_from_md > :last-child {
+#ydgabwknrs .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#wapusxtvcd .gt_row {
+#ydgabwknrs .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1315,7 +1315,7 @@ window.Quarto = {
   overflow-x: hidden;
 }
 
-#wapusxtvcd .gt_stub {
+#ydgabwknrs .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1328,7 +1328,7 @@ window.Quarto = {
   padding-right: 5px;
 }
 
-#wapusxtvcd .gt_stub_row_group {
+#ydgabwknrs .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1342,15 +1342,15 @@ window.Quarto = {
   vertical-align: top;
 }
 
-#wapusxtvcd .gt_row_group_first td {
+#ydgabwknrs .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#wapusxtvcd .gt_row_group_first th {
+#ydgabwknrs .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#wapusxtvcd .gt_summary_row {
+#ydgabwknrs .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1360,16 +1360,16 @@ window.Quarto = {
   padding-right: 5px;
 }
 
-#wapusxtvcd .gt_first_summary_row {
+#ydgabwknrs .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#wapusxtvcd .gt_first_summary_row.thick {
+#ydgabwknrs .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#wapusxtvcd .gt_last_summary_row {
+#ydgabwknrs .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1379,7 +1379,7 @@ window.Quarto = {
   border-bottom-color: #D3D3D3;
 }
 
-#wapusxtvcd .gt_grand_summary_row {
+#ydgabwknrs .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1389,7 +1389,7 @@ window.Quarto = {
   padding-right: 5px;
 }
 
-#wapusxtvcd .gt_first_grand_summary_row {
+#ydgabwknrs .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1399,7 +1399,7 @@ window.Quarto = {
   border-top-color: #D3D3D3;
 }
 
-#wapusxtvcd .gt_last_grand_summary_row_top {
+#ydgabwknrs .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1409,11 +1409,11 @@ window.Quarto = {
   border-bottom-color: #D3D3D3;
 }
 
-#wapusxtvcd .gt_striped {
+#ydgabwknrs .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#wapusxtvcd .gt_table_body {
+#ydgabwknrs .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1422,7 +1422,7 @@ window.Quarto = {
   border-bottom-color: #D3D3D3;
 }
 
-#wapusxtvcd .gt_footnotes {
+#ydgabwknrs .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1436,7 +1436,7 @@ window.Quarto = {
   border-right-color: #D3D3D3;
 }
 
-#wapusxtvcd .gt_footnote {
+#ydgabwknrs .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1445,7 +1445,7 @@ window.Quarto = {
   padding-right: 5px;
 }
 
-#wapusxtvcd .gt_sourcenotes {
+#ydgabwknrs .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1459,7 +1459,7 @@ window.Quarto = {
   border-right-color: #D3D3D3;
 }
 
-#wapusxtvcd .gt_sourcenote {
+#ydgabwknrs .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1467,72 +1467,72 @@ window.Quarto = {
   padding-right: 5px;
 }
 
-#wapusxtvcd .gt_left {
+#ydgabwknrs .gt_left {
   text-align: left;
 }
 
-#wapusxtvcd .gt_center {
+#ydgabwknrs .gt_center {
   text-align: center;
 }
 
-#wapusxtvcd .gt_right {
+#ydgabwknrs .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#wapusxtvcd .gt_font_normal {
+#ydgabwknrs .gt_font_normal {
   font-weight: normal;
 }
 
-#wapusxtvcd .gt_font_bold {
+#ydgabwknrs .gt_font_bold {
   font-weight: bold;
 }
 
-#wapusxtvcd .gt_font_italic {
+#ydgabwknrs .gt_font_italic {
   font-style: italic;
 }
 
-#wapusxtvcd .gt_super {
+#ydgabwknrs .gt_super {
   font-size: 65%;
 }
 
-#wapusxtvcd .gt_footnote_marks {
+#ydgabwknrs .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#wapusxtvcd .gt_asterisk {
+#ydgabwknrs .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#wapusxtvcd .gt_indent_1 {
+#ydgabwknrs .gt_indent_1 {
   text-indent: 5px;
 }
 
-#wapusxtvcd .gt_indent_2 {
+#ydgabwknrs .gt_indent_2 {
   text-indent: 10px;
 }
 
-#wapusxtvcd .gt_indent_3 {
+#ydgabwknrs .gt_indent_3 {
   text-indent: 15px;
 }
 
-#wapusxtvcd .gt_indent_4 {
+#ydgabwknrs .gt_indent_4 {
   text-indent: 20px;
 }
 
-#wapusxtvcd .gt_indent_5 {
+#ydgabwknrs .gt_indent_5 {
   text-indent: 25px;
 }
 
-#wapusxtvcd .katex-display {
+#ydgabwknrs .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#wapusxtvcd div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#ydgabwknrs div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1566,49 +1566,49 @@ Mean completeness (within scope)
 </thead>
 <tbody class="gt_table_body">
 <tr class="odd">
-<td class="gt_row gt_center" headers="source">de Magalhães &amp; Costa 2009</td>
-<td class="gt_row gt_right" headers="mean_non">0.731</td>
-<td class="gt_row gt_right" headers="mean_sexed">0.487</td>
-<td class="gt_row gt_right" headers="obs_diff">0.245</td>
-<td class="gt_row gt_right" headers="p_value">0.110</td>
-<td class="gt_row gt_right" headers="n_sexed">3</td>
-<td class="gt_row gt_right" headers="n_non">4</td>
+<td class="gt_row gt_center" headers="source">Amniotes</td>
+<td class="gt_row gt_right" headers="mean_non">NA</td>
+<td class="gt_row gt_right" headers="mean_sexed">NA</td>
+<td class="gt_row gt_right" headers="obs_diff">NA</td>
+<td class="gt_row gt_right" headers="p_value">NA</td>
+<td class="gt_row gt_right" headers="n_sexed">0</td>
+<td class="gt_row gt_right" headers="n_non">9</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_center" headers="source">Ernest 2003</td>
-<td class="gt_row gt_right" headers="mean_non">0.635</td>
-<td class="gt_row gt_right" headers="mean_sexed">0.987</td>
-<td class="gt_row gt_right" headers="obs_diff">-0.353</td>
-<td class="gt_row gt_right" headers="p_value">1.000</td>
-<td class="gt_row gt_right" headers="n_sexed">1</td>
-<td class="gt_row gt_right" headers="n_non">5</td>
+<td class="gt_row gt_center" headers="source">AnAge</td>
+<td class="gt_row gt_right" headers="mean_non">NA</td>
+<td class="gt_row gt_right" headers="mean_sexed">NA</td>
+<td class="gt_row gt_right" headers="obs_diff">NA</td>
+<td class="gt_row gt_right" headers="p_value">NA</td>
+<td class="gt_row gt_right" headers="n_sexed">0</td>
+<td class="gt_row gt_right" headers="n_non">7</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_center" headers="source">Jones et al. 2009</td>
-<td class="gt_row gt_right" headers="mean_non">0.321</td>
-<td class="gt_row gt_right" headers="mean_sexed">0.499</td>
-<td class="gt_row gt_right" headers="obs_diff">-0.178</td>
-<td class="gt_row gt_right" headers="p_value">0.854</td>
-<td class="gt_row gt_right" headers="n_sexed">2</td>
-<td class="gt_row gt_right" headers="n_non">5</td>
+<td class="gt_row gt_center" headers="source">Ernest</td>
+<td class="gt_row gt_right" headers="mean_non">NA</td>
+<td class="gt_row gt_right" headers="mean_sexed">NA</td>
+<td class="gt_row gt_right" headers="obs_diff">NA</td>
+<td class="gt_row gt_right" headers="p_value">NA</td>
+<td class="gt_row gt_right" headers="n_sexed">0</td>
+<td class="gt_row gt_right" headers="n_non">6</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_center" headers="source">Kappeler &amp; Pereira 2003</td>
-<td class="gt_row gt_right" headers="mean_non">0.265</td>
-<td class="gt_row gt_right" headers="mean_sexed">0.406</td>
-<td class="gt_row gt_right" headers="obs_diff">-0.141</td>
-<td class="gt_row gt_right" headers="p_value">0.728</td>
-<td class="gt_row gt_right" headers="n_sexed">2</td>
-<td class="gt_row gt_right" headers="n_non">4</td>
+<td class="gt_row gt_center" headers="source">Kappeler &amp; Pereira</td>
+<td class="gt_row gt_right" headers="mean_non">NA</td>
+<td class="gt_row gt_right" headers="mean_sexed">NA</td>
+<td class="gt_row gt_right" headers="obs_diff">NA</td>
+<td class="gt_row gt_right" headers="p_value">NA</td>
+<td class="gt_row gt_right" headers="n_sexed">0</td>
+<td class="gt_row gt_right" headers="n_non">6</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_center" headers="source">Myrhvold et al. 2015</td>
-<td class="gt_row gt_right" headers="mean_non">0.762</td>
-<td class="gt_row gt_right" headers="mean_sexed">0.580</td>
-<td class="gt_row gt_right" headers="obs_diff">0.182</td>
-<td class="gt_row gt_right" headers="p_value">0.135</td>
-<td class="gt_row gt_right" headers="n_sexed">5</td>
-<td class="gt_row gt_right" headers="n_non">4</td>
+<td class="gt_row gt_center" headers="source">PanTHERIA</td>
+<td class="gt_row gt_right" headers="mean_non">NA</td>
+<td class="gt_row gt_right" headers="mean_sexed">NA</td>
+<td class="gt_row gt_right" headers="obs_diff">NA</td>
+<td class="gt_row gt_right" headers="p_value">NA</td>
+<td class="gt_row gt_right" headers="n_sexed">0</td>
+<td class="gt_row gt_right" headers="n_non">7</td>
 </tr>
 </tbody>
 </table>
@@ -1671,6 +1671,15 @@ Mean completeness (within scope)
 <blockquote class="blockquote">
 <p>Use <a href="https://bygentry.github.io/LHDB-PCA/Species-Representation.html">this page</a> to see the same visualization at higher resolution</p>
 </blockquote>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Database-Analysis_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 <p>notes:</p>
 <ul>
 <li></li>
@@ -1768,11 +1777,11 @@ alternative hypothesis: true location shift is not equal to 0</code></pre>
 <div class="kable-table">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 14%">
+<col style="width: 10%">
 <col style="width: 5%">
 <col style="width: 13%">
-<col style="width: 13%">
-<col style="width: 13%">
+<col style="width: 14%">
+<col style="width: 14%">
 <col style="width: 9%">
 <col style="width: 6%">
 <col style="width: 14%">
@@ -1793,7 +1802,18 @@ alternative hypothesis: true location shift is not equal to 0</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">de Magalhães &amp; Costa 2009</td>
+<td style="text-align: left;">Amniotes</td>
+<td style="text-align: right;">365</td>
+<td style="text-align: right;">39.17808</td>
+<td style="text-align: right;">76.98630</td>
+<td style="text-align: right;">37.80822</td>
+<td style="text-align: right;">143</td>
+<td style="text-align: right;">0.3917808</td>
+<td style="text-align: right;">19.91614</td>
+<td style="text-align: right;">0.2732248</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AnAge</td>
 <td style="text-align: right;">174</td>
 <td style="text-align: right;">51.14943</td>
 <td style="text-align: right;">79.88506</td>
@@ -1803,8 +1823,8 @@ alternative hypothesis: true location shift is not equal to 0</code></pre>
 <td style="text-align: right;">23.01855</td>
 <td style="text-align: right;">0.3625034</td>
 </tr>
-<tr class="even">
-<td style="text-align: left;">Ernest 2003</td>
+<tr class="odd">
+<td style="text-align: left;">Ernest</td>
 <td style="text-align: right;">156</td>
 <td style="text-align: right;">0.00000</td>
 <td style="text-align: right;">0.00000</td>
@@ -1814,19 +1834,8 @@ alternative hypothesis: true location shift is not equal to 0</code></pre>
 <td style="text-align: right;">NA</td>
 <td style="text-align: right;">NA</td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;">Jones et al.&nbsp;2009</td>
-<td style="text-align: right;">376</td>
-<td style="text-align: right;">0.00000</td>
-<td style="text-align: right;">0.00000</td>
-<td style="text-align: right;">0.00000</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0.0000000</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">NA</td>
-</tr>
 <tr class="even">
-<td style="text-align: left;">Kappeler &amp; Pereira 2003</td>
+<td style="text-align: left;">Kappeler &amp; Pereira</td>
 <td style="text-align: right;">308</td>
 <td style="text-align: right;">0.00000</td>
 <td style="text-align: right;">0.00000</td>
@@ -1837,15 +1846,15 @@ alternative hypothesis: true location shift is not equal to 0</code></pre>
 <td style="text-align: right;">NA</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Myrhvold et al.&nbsp;2015</td>
-<td style="text-align: right;">365</td>
-<td style="text-align: right;">39.17808</td>
-<td style="text-align: right;">76.98630</td>
-<td style="text-align: right;">37.80822</td>
-<td style="text-align: right;">143</td>
-<td style="text-align: right;">0.3917808</td>
-<td style="text-align: right;">19.91614</td>
-<td style="text-align: right;">0.2732248</td>
+<td style="text-align: left;">PanTHERIA</td>
+<td style="text-align: right;">376</td>
+<td style="text-align: right;">0.00000</td>
+<td style="text-align: right;">0.00000</td>
+<td style="text-align: right;">0.00000</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
 </tr>
 </tbody>
 </table>
@@ -1866,41 +1875,6 @@ alternative hypothesis: true location shift is not equal to 0</code></pre>
 <li><p>the mean of AFR - mean of ASM (using all dbs)</p></li>
 <li><p>for each database, AFR - ASM (means if applicable) for each species</p></li>
 </ul>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Database-Analysis_files/figure-html/quality-check-afr-vs-asm-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output-display">
-<div class="kable-table">
-<table class="caption-top table table-sm table-striped small">
-<thead>
-<tr class="header">
-<th style="text-align: left;">sign</th>
-<th style="text-align: right;">p</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Negative (AFR &lt; ASM)</td>
-<td style="text-align: right;">0.21</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Positive (AFR &gt; ASM)</td>
-<td style="text-align: right;">0.05</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">NA (insufficient data)</td>
-<td style="text-align: right;">0.74</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
 <p>note:</p>
 <ul>
 <li>when all databases are combined,
@@ -1917,67 +1891,6 @@ alternative hypothesis: true location shift is not equal to 0</code></pre>
 </ul></li>
 </ul>
 <p>now checking if pooling asm sex classes harms data integrity:</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Database-Analysis_files/figure-html/quality-check-asm-pooled-vs-afr-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output-display">
-<div class="kable-table">
-<table class="caption-top table table-sm table-striped small">
-<thead>
-<tr class="header">
-<th style="text-align: left;">method</th>
-<th style="text-align: left;">sign</th>
-<th style="text-align: right;">n</th>
-<th style="text-align: right;">p</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Pooled ASM</td>
-<td style="text-align: left;">Negative (AFR &lt; ASM)</td>
-<td style="text-align: right;">99</td>
-<td style="text-align: right;">0.22</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Pooled ASM</td>
-<td style="text-align: left;">Positive (AFR &gt; ASM)</td>
-<td style="text-align: right;">18</td>
-<td style="text-align: right;">0.04</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Pooled ASM</td>
-<td style="text-align: left;">NA (insufficient data)</td>
-<td style="text-align: right;">339</td>
-<td style="text-align: right;">0.74</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Sex-split ASM</td>
-<td style="text-align: left;">Negative (AFR &lt; ASM)</td>
-<td style="text-align: right;">95</td>
-<td style="text-align: right;">0.21</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Sex-split ASM</td>
-<td style="text-align: left;">Positive (AFR &gt; ASM)</td>
-<td style="text-align: right;">22</td>
-<td style="text-align: right;">0.05</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Sex-split ASM</td>
-<td style="text-align: left;">NA (insufficient data)</td>
-<td style="text-align: right;">339</td>
-<td style="text-align: right;">0.74</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
 <p>notes:</p>
 <ul>
 <li><p>for four species, the sign flipped from positive (expected) to negative (first reproduction younger than sexual maturity).</p></li>
