@@ -1318,17 +1318,159 @@ Borries et al (2013) found that when testing the effect of body mass on gestatio
 
 ## other?
 
+```{r}
+pan_lh_traits <- pan %>% 
+  transmute(
+    activityCycle = pan$`1-1_ActivityCycle`,
+    ageEyeOpen = pan$`2-1_AgeatEyeOpening_d`,
+    AFR = pan$`3-1_AgeatFirstBirth_d`,
+    lifespan = pan$`17-1_MaxLongevity_m`,
+    bodyMass = pan$`5-1_AdultBodyMass_g`,
+    bmrMass = pan$`5-2_BasalMetRateMass_g`,
+    neonateBodyMass = pan$`5-3_NeonateBodyMass_g`,
+    weaningBodyMass = pan$`5-4_WeaningBodyMass_g`,
+    diet = pan$`6-1_DietBreadth`,
+    disperalAge = pan$`7-1_DispersalAge_d`,
+    adultLimbLen = pan$`8-1_AdultForearmLen_mm`,
+    gestLen = pan$`9-1_GestationLen_d`,
+    groupSize = pan$`10-1_PopulationGrpSize`,
+    groupComp = pan$`10-2_SocialGrpSize`,
+    habitatBreadth = pan$`12-1_HabitatBreadth`,
+    terrestriality = pan$`12-2_Terrestriality`,
+    adultHBL = pan$`13-1_AdultHeadBodyLen_mm`,
+    neonateHBL = pan$`13-2_NeonateHeadBodyLen_mm`,
+    weaningHBL = pan$`13-3_WeaningHeadBodyLen_mm`,
+    IBI = pan$`14-1_InterbirthInterval_d`,
+    litterSize = pan$`15-1_LitterSize`,
+    littersPerYear = pan$`16-1_LittersPerYear`,
+    bmr = pan$`18-1_BasalMetRate_mLO2hr`,
+    popDensity = pan$`21-1_PopulationDensity_n/km2`,
+    homeRangeArea = pan$`22-1_HomeRange_km2`,
+    homeRangeAreaIndiv = pan$`22-2_HomeRange_Indiv_km2`,
+    ASM = pan$`23-1_SexualMaturityAge_d`,
+    teatNum = pan$`24-1_TeatNumber`,
+    weaningAge = pan$`25-1_WeaningAge_d`
+  )
+
+kp_lh_traits <- kp %>% 
+  transmute(
+    BM = coalesce(BM.F, BM.U),
+    BW = BW,
+    CC = CC,
+    AFR = AFR,
+    GL = GL,
+    IBI = IBI,
+    LS = LS,
+    NNW = NNW,
+    LW = LW,
+    LGR = LGR,
+    WA = WA,
+    WW = WW,
+    DJ = DJ
+  )
+
+all_vars <- list(
+  "Amniotes" = amniote %>%
+    select(
+      -any_of(c(
+        "class",
+        "order",
+        "family",
+        "genus",
+        "species",
+        "common_name",
+        "subspecies",
+        "egg_mass_g",
+        "incubation_d",
+        "fledging_age_d",
+        "egg_width_mm",
+        "egg_length_mm",
+        "fledging_mass_g"
+      ))
+    ),
+
+  "AnAge" = AnAge %>%
+    select(
+      -any_of(c(
+        "HAGRID",
+        "Kingdom",
+        "Phylum",
+        "Class",
+        "Order",
+        "Family",
+        "Genus",
+        "Species",
+        "Common name",
+        "Source",
+        "References",
+        "Specimen origin"
+      ))
+    ),
+
+  "Ernest" = ernest %>%
+    select(
+      -any_of(c(
+        "order",
+        "family",
+        "Genus",
+        "species",
+        "refs"
+      ))
+    ),
+
+  "PanTHERIA" = pan_lh_traits,
+
+  "Kappeler & Pereira" = kp_lh_traits
+)
+
+
+prop_missing_all <- imap_dfr(
+  all_vars,
+  ~ .x %>%
+    summarise(
+      across(
+        everything(),
+        ~ mean(is.na(.x))
+      )
+    ) %>%
+    pivot_longer(
+      cols = everything(),
+      names_to = "trait",
+      values_to = "prop_missing"
+    ) %>%
+    mutate(source = .y) %>%
+    select(source, trait, prop_missing)
+)
+
+mean_prop_missing_all <- prop_missing_all %>%
+  group_by(source) %>%
+  summarise(
+    mean_prop_missing_all = mean(prop_missing, na.rm = TRUE),
+    n_traits = n(),
+    .groups = "drop"
+  ) %>%
+  arrange(mean_prop_missing_all)
+
+mean_prop_missing_all %>%
+  mutate(mean_prop_missing_all = round(mean_prop_missing_all, 3)) %>%
+  gt::gt() %>%
+  gt::cols_label(
+    source = "Database",
+    mean_prop_missing_all = "Mean proportion missing (all life-history statistics)",
+    n_traits = "Number of statistics"
+  )
+```
+
 -   update IUCN citation to latest edition
 -   
 -   poster:
     -   bullet abstract describe what doing
+
     -   lock dimensions in powerpoint
+
     -   look into cost help
+
     -   text claire (maybe jimmy?) about AABA abnb
-
-```{r}
-
-```
 
 # Sources
 
