@@ -1,1 +1,12 @@
-﻿
+﻿metadata scoring,,,,,,,,,anage,amniotes,ernest,kp,pantheria
+availability,metadata exists (1),,,,,,,,1,1,1,1,1
+accessibility,direct access (2),,,,,,,,-,2,2,-,-
+,indirect access (1),,,,,,,,-,-,-,-,1
+,difficult access (0),,,,,,,,0,-,-,0,-
+content,all variables are described (2),,,,,,,,-,2,2,2,2
+,some variables are described (1),,,,,,,,1,-,-,-,-
+,no variables are described (0),,,,,,,,-,-,-,-,-
+,variable descriptions contain units (1),,,,,,,,0,1,1,1,1
+,"metadata describes measurement types (i.e. median, categorical, etc.) (1)",,,,,,,,0,1,1,1,1
+,citations included for datapoint source (in data or metadata) (1),,,,,,,,1,1,1,0,1
+total,8,,,,,,,,3,8,8,5,7

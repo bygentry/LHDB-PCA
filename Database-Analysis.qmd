@@ -913,10 +913,10 @@ dat_onebar <- dat_onebar %>%
 tax_colors <- c(
   "Strepsirrhini"      = "red2", 
   "Tarsiiformes"       = "dodgerblue",
-  "Platyrrhini"        = "darkviolet",
+  "Platyrrhini"        = "yellow",
   "Cercopithecoidea"   = "mediumpurple2",
-  "Hylobatidae"        = "plum1",
-  "Hominidae"          = "orchid"
+  "Hylobatidae"        = "orange",
+  "Hominidae"          = "green2"
 )
 
 ggplot(dat_onebar, aes(x = source, y = prop, fill = terminal_group)) +
@@ -1117,6 +1117,8 @@ notes:
 -   pooling sex classes for ASM greatly improves their completeness scores
 
 -   considering the low degree of dimorphism and the high cost to completeness of stratifying asm, i think it should NOT be a stratified variable or at least come with a caveat that combining the values is not unreasonable
+
+Absolute sexual dimorphism is significantly greater for mass than ASM. This pattern holds both when comparing the overall distributions of dimorphism values across species (Wilcoxon rank sum test: W = 1655, p \< .00001) and when comparing body mass and ASM dimorphism within the same species (Wilcoxon signed rank test: V = 891, p \< .0001). Although ASM showed some right-skew from a few relatively extreme values, sex differences in ASM were generally much smaller than those for body mass. These results suggest that separating ASM by sex may add relatively little biological information while contributing to the high rate of missing values.
 
 ## Quality Check: Age at First Reproduction vs Age of Sexual Maturity
 
@@ -1459,6 +1461,49 @@ mean_prop_missing_all %>%
     mean_prop_missing_all = "Mean proportion missing (all life-history statistics)",
     n_traits = "Number of statistics"
   )
+```
+
+```{r}
+#| label: trait-missingness-summary
+#| echo: false
+
+# trait-level missingness by source
+trait_source_missing <- key_long %>%
+  group_by(source, trait_raw) %>%
+  summarise(
+    n_total = n(),
+    n_nonmissing = sum(!is.na(value)),
+    n_missing = sum(is.na(value)),
+    prop_missing = mean(is.na(value)),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    in_scope = (n_nonmissing / n_total) >= 0.01,
+    trait = recode(trait_raw, !!!trait_labels)
+  )
+
+# summary across databases, excluding traits that are out of scope for a given source
+trait_missing_summary <- trait_source_missing %>%
+  filter(in_scope) %>%
+  group_by(trait_raw, trait) %>%
+  summarise(
+    n_sources_in_scope = n(),
+    mean_prop_missing = mean(prop_missing, na.rm = TRUE),   # unweighted mean across databases
+    sd_prop_missing = sd(prop_missing, na.rm = TRUE),
+    min_prop_missing = min(prop_missing, na.rm = TRUE),
+    max_prop_missing = max(prop_missing, na.rm = TRUE),
+    pooled_prop_missing = sum(n_missing) / sum(n_total),    # weighted by number of observations
+    total_nonmissing = sum(n_nonmissing),
+    total_missing = sum(n_missing),
+    total_observations = sum(n_total),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(mean_prop_missing))
+
+
+trait_missing_summary %>%
+  arrange(desc(pooled_prop_missing))
+trait_missing_summary
 ```
 
 -   update IUCN citation to latest edition
