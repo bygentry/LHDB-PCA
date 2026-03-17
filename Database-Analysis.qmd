@@ -14,6 +14,8 @@ execute:
   freeze: auto
   warning: false
 editor: visual
+editor_options: 
+  chunk_output_type: console
 ---
 
 # Introduction
@@ -419,6 +421,42 @@ ggplot(scope_df, aes(x = source, y = trait)) +
     y = "Life History Trait"
   )
 
+```
+
+```{r}
+ggplot(scope_df, aes(x = source, y = trait)) +
+  geom_tile(aes(fill = prop_missing_within_scope), color = "snow") +
+  geom_tile(
+    data = dplyr::filter(scope_df, !in_scope),
+    fill = "ivory3",
+    color = "snow"
+  ) +
+  scale_fill_gradientn(
+    colors = rev(colorspace::heat_hcl(100)),
+    limits = c(0, 1),
+    breaks = seq(0, 1, by = 0.25),
+    labels = scales::label_percent(accuracy = 1),
+    name = "% Missing\n(within scope)",
+    na.value = "ivory3"
+  ) +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    plot.caption = element_text(hjust = 0.5, size = 9, margin = margin(t = 10))
+  ) +
+  labs(
+    title = "Proportions of Missing Values for Key LH Traits",
+    x = "Dataset",
+    y = "Life History Trait",
+    caption = paste(
+      "Abbreviations:",
+      "ASM = Age of Sexual Maturity;",
+      "AFR = Age of First Reproduction;",
+      "U = Unknown Sex;",
+      "M = Male;",
+      "F = Female"
+    )
+  )
 ```
 
 notes:
@@ -911,12 +949,12 @@ dat_onebar <- dat_onebar %>%
   mutate(terminal_group = factor(terminal_group, levels = lvl))
 
 tax_colors <- c(
-  "Strepsirrhini"      = "red2", 
+  "Strepsirrhini"      = "#dd6057", 
   "Tarsiiformes"       = "dodgerblue",
-  "Platyrrhini"        = "yellow",
-  "Cercopithecoidea"   = "mediumpurple2",
-  "Hylobatidae"        = "orange",
-  "Hominidae"          = "green2"
+  "Platyrrhini"        = "#e4de6b",
+  "Cercopithecoidea"   = "#8b79ee",
+  "Hylobatidae"        = "#e78a39",
+  "Hominidae"          = "#d54867"
 )
 
 ggplot(dat_onebar, aes(x = source, y = prop, fill = terminal_group)) +
