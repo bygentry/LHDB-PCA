@@ -32,14 +32,43 @@ I didn't catch many of the talks about weaning age at AABA. I have identified a 
 
 -   Soto H., Oelze V,. Lonsdorf E., Murray C., McFarlin S., Fecal stable isotope analysis estimates nutritional weaning age in the Gombe chimpanzees (*Pan* *troglodytes schweinfurthii*)
 
-# Example
+# Inter-database Referencing and Data Duplication
+
+One of the preliminary concerns regarding life history databases is their habit of internal referencing. Across databases we find references to each other and data points copied between species for apparently no biologically-informed reason.
+
+The first step to investigating the depth of this problem is to identify where each data set stores its references and seek justification for the inclusion of other secondary sources rather than finding the original source of a given datum.
+
+Next, my goal is to determine which data bases reference each other, which of those relationships are bi-directional, and quantify the rates of internal referencing. Additionally, I will explore the metadata in greater detail, especially of the Myrvhold data set, and seek explanations for *why* other secondary sources are referenced and why some primates have data points copied from other species.
 
 ```{r}
-#| label: setup/imports
+#| label: setup/import
 #| echo: false
-df <- rpois(10000, 3.5)
-hist(df)
+source("https://raw.githubusercontent.com/bygentry/LHDB-PCA/refs/heads/main/Data-Origins_files/setup.R")
 ```
+
+# Value Reporting and Data Origins
+
+Different databases record different aspects of data in unique ways. **X** databases report some measure of central tendency taken from multiple sources for various life history traits, **DO THEY USE THE SAME METHODS OF DATA STANDARDIZATION/SELECTION**
+
+| Compilation        | CT? | Type(s) used  | /   | Col6 |
+|--------------------|-----|---------------|-----|------|
+| Amniotes           |     |               |     |      |
+| AnAge              |     |               |     |      |
+| Ernest             |     |               |     |      |
+| Kappeler & Pereira |     |               |     |      |
+| PanTHERIA          | Y   | Unique median |     |      |
+
+## PanTHERIA
+
+The PanTHERIA compilation
+
+# Remaining Questions
+
+-   Kappeler & Pereira material?
+
+-   since averaging data doesn't get us closer to the true value, how can we better implement existing data? does existing data have a place in future LH databases?
+
+-   how can we know if a value is close to the true value? study longevity, more data, etc. but must we cast out existing data?
 
 # Sources
 

@@ -39,7 +39,7 @@ The databases assessed here are the PanTHERIA (Jones et al. 2009), AnAge (de Mag
 #| label: data import script
 #| echo: false
 
-source("https://raw.githubusercontent.com/bygentry/LHDB-PCA/refs/heads/main/setup.R")
+source("https://raw.githubusercontent.com/bygentry/LHDB-PCA/refs/heads/main/Database-Analysis_files/setup.R")
 ```
 
 #### Filtering Primate Data
@@ -111,6 +111,7 @@ AnAge_s <- AnAge %>%
     source = sources[2]
   )
 
+#note 3/27/26: removed conversion of litters/year to IBI... following code NOT updated to match
 ernest_s <- ernest %>% 
   transmute(
     species = paste(Genus, species),
@@ -119,7 +120,7 @@ ernest_s <- ernest %>%
     body_mass_m = NA,
     AFR = `AFR(mo)`,
     gest_len = `gestation(mo)`,
-    IBI = `litters/year`,
+    IBI = NA,
     max_longevity = `max. life(mo)`,
     age_at_maturity_u = NA,
     age_at_maturity_f = NA,
@@ -191,12 +192,14 @@ The following unit changes are necessary:
 
 -   Age at First Reproduction (AFR), Gestation Length (gest_len), and Weaning Age (weaning_age) should be converted from months to days
 
--   IBI should be derived from litters/year
+-   IBI was formerly derived from litters/year. The current version of analysis does not make this conversion as IBI and litters/year are not exactly reciprocal in meaning or measurement despite being mathematically related.
 
-    -   IBI is effectively days/birth (or days/litter) and can be derived from litters/year as such:
+    -   IBI is similar to days/birth (or days/litter) and can be derived from litters/year as such:
 
         $$ 1 \, \div \frac{x \text{ litters}}{1 \text{ year}} = \frac{x \text{ years}}{1 \text{ litter}} \,\times \, \frac{365.25 \text{ days}}{1 \text{ year}} = \frac{x \text{ days}}{1\text{ litter}}
         $$
+
+    -   note 3/27/26: check where ernest gets these values from...
 
 -   Maximum Longevity (max_longevity) should be converted from months to years
 
@@ -228,7 +231,7 @@ ernest_s <- ernest_s %>%
     # converts months to days
     gest_len = gest_len * days_per_month,
     # converts months to days
-    IBI = days_per_year/IBI,
+    #IBI = days_per_year/IBI,
     # converts litters/year to IBI (days)
     max_longevity = max_longevity/months_per_year,
     # converts months to years

@@ -49,7 +49,12 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
-  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">Example</a></li>
+  <li><a href="#inter-database-referencing-and-data-duplication" id="toc-inter-database-referencing-and-data-duplication" class="nav-link" data-scroll-target="#inter-database-referencing-and-data-duplication">Inter-database Referencing and Data Duplication</a></li>
+  <li><a href="#value-reporting-and-data-origins" id="toc-value-reporting-and-data-origins" class="nav-link" data-scroll-target="#value-reporting-and-data-origins">Value Reporting and Data Origins</a>
+  <ul class="collapse">
+  <li><a href="#pantheria" id="toc-pantheria" class="nav-link" data-scroll-target="#pantheria">PanTHERIA</a></li>
+  </ul></li>
+  <li><a href="#remaining-questions" id="toc-remaining-questions" class="nav-link" data-scroll-target="#remaining-questions">Remaining Questions</a></li>
   <li><a href="#sources" id="toc-sources" class="nav-link" data-scroll-target="#sources">Sources</a></li>
   </ul>
 </nav>
@@ -94,17 +99,75 @@ ul.task-list li input[type="checkbox"] {
 <li><p>Soto H., Oelze V,. Lonsdorf E., Murray C., McFarlin S., Fecal stable isotope analysis estimates nutritional weaning age in the Gombe chimpanzees (<em>Pan</em> <em>troglodytes schweinfurthii</em>)</p></li>
 </ul>
 </section>
-<section id="example" class="level1">
-<h1>Example</h1>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Data-Origins_files/figure-html/setup/imports-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
+<section id="inter-database-referencing-and-data-duplication" class="level1">
+<h1>Inter-database Referencing and Data Duplication</h1>
+<p>One of the preliminary concerns regarding life history databases is their habit of internal referencing. Across databases we find references to each other and data points copied between species for apparently no biologically-informed reason.</p>
+<p>The first step to investigating the depth of this problem is to identify where each data set stores its references and seek justification for the inclusion of other secondary sources rather than finding the original source of a given datum.</p>
+<p>Next, my goal is to determine which data bases reference each other, which of those relationships are bi-directional, and quantify the rates of internal referencing. Additionally, I will explore the metadata in greater detail, especially of the Myrvhold data set, and seek explanations for <em>why</em> other secondary sources are referenced and why some primates have data points copied from other species.</p>
+</section>
+<section id="value-reporting-and-data-origins" class="level1">
+<h1>Value Reporting and Data Origins</h1>
+<p>Different databases record different aspects of data in unique ways. <strong>X</strong> databases report some measure of central tendency taken from multiple sources for various life history traits, <strong>DO THEY USE THE SAME METHODS OF DATA STANDARDIZATION/SELECTION</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Compilation</th>
+<th>CT?</th>
+<th>Type(s) used</th>
+<th>/</th>
+<th>Col6</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Amniotes</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>AnAge</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Ernest</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Kappeler &amp; Pereira</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>PanTHERIA</td>
+<td>Y</td>
+<td>Unique median</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<section id="pantheria" class="level2">
+<h2 class="anchored" data-anchor-id="pantheria">PanTHERIA</h2>
+<p>The PanTHERIA compilation</p>
+</section>
+</section>
+<section id="remaining-questions" class="level1">
+<h1>Remaining Questions</h1>
+<ul>
+<li><p>Kappeler &amp; Pereira material?</p></li>
+<li><p>since averaging data doesn’t get us closer to the true value, how can we better implement existing data? does existing data have a place in future LH databases?</p></li>
+<li><p>how can we know if a value is close to the true value? study longevity, more data, etc. but must we cast out existing data?</p></li>
+</ul>
 </section>
 <section id="sources" class="level1">
 <h1>Sources</h1>
