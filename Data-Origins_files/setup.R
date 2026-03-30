@@ -13,6 +13,11 @@ amniote <- readr::read_csv(
   col_names = TRUE,
   show_col_types = FALSE
 )
+amniote_refs <- readr::read_csv(
+  file = "https://raw.githubusercontent.com/bygentry/LHDB-PCA/refs/heads/main/Data/AmnioteDB2015/Amniote_Database_References_Aug_2015.csv",
+  col_names = TRUE,
+  show_col_types = FALSE
+)
 
 # ANAGE
 AnAge <- readr::read_tsv(
@@ -51,6 +56,8 @@ missing_val_to_na <- function(df){
 # creates subset dfs for primate rows and removes non mammal variables
 amniote <- amniote %>% dplyr::filter(order == "Primates")
 amniote <- missing_val_to_na(amniote)
+amniote_refs <- amniote_refs %>% dplr::filter(order == "Primates")
+amniote_refs <- missing_val_to_na(amniote_refs)
 
 AnAge <- AnAge %>% dplyr::filter(Order == "Primates")
 
