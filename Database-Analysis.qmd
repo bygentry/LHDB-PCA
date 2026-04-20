@@ -39,6 +39,7 @@ The databases assessed here are the PanTHERIA (Jones et al. 2009), AnAge (de Mag
 #| label: data import script
 #| echo: false
 
+
 source("https://raw.githubusercontent.com/bygentry/LHDB-PCA/refs/heads/main/Database-Analysis_files/setup.R")
 ```
 
@@ -283,12 +284,19 @@ trait_labels <- c(
   age_at_maturity_f = "ASM - F"
 )
 
-scope_df <- key_long %>%
+key_species <- key_long %>% 
+  group_by(source, species, trait_raw) %>% 
+  summarise(
+    has_value = any(!is.na(value)),
+    .groups = "drop"
+  )
+
+scope_df <- key_species %>%
   group_by(source, trait_raw) %>%
   summarise(
     n_total = n(),
-    n_nonmissing = sum(!is.na(value)),
-    prop_missing_panel = mean(is.na(value)),
+    n_nonmissing = sum(has_value),
+    prop_missing_panel = mean(!has_value),
     .groups = "drop"
   ) %>%
   mutate(

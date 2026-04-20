@@ -1,4 +1,5 @@
-options(repos = "https://cran.us.r-project.org")
+# Setup script for Database-Analysis.qmd
+options(repos = "https://cloud.r-project.org")
 
 # loads necessary packages
 pacman::p_load(

@@ -1,8 +1,10 @@
-options(repos = "https://cran.us.r-project.org")
+# setup script for Data-Origins.qmd
+
+options(repos = "https://cloud.r-project.org")
 
 # loads necessary packages
 pacman::p_load(
-  curl, ggpubr, gratia, gridExtra, gt, lme4, lubridate, mice, psych, rlang, scales, tidyverse, VIM, XML, yaml
+  dplyr, ggpubr, gratia, gridExtra, gt, lme4, lubridate, mice, psych, rlang, scales, tidyverse, VIM, XML, yaml
 )
 
 # loads data files 

@@ -62,6 +62,12 @@ Different databases record different aspects of data in unique ways. **X** datab
 
 The PanTHERIA compilation
 
+# Data Performance
+
+Title for lack of better phrasing. Here we compare how life history data from each database perform allometrically, calculating the residuals of each test and taking the lowest residual as a signal of a given subset of data being closest to the true value.
+
+-   residual compared to what? what are expected vlaues based on?
+
 # Remaining Questions
 
 -   Kappeler & Pereira material?
