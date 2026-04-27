@@ -1,5 +1,4 @@
 ---
-index---
 title: "An Investigation of Primate Life History Data Quality"
 author: "Gentry Miller"
 format: 
