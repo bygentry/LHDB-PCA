@@ -183,34 +183,33 @@ The following unit changes are necessary:
 
 **Amniotes (Myrhvold et al. 2015):**
 
--   Inter-birth Interval (IBI) should be converted from years to days
+- Inter-birth Interval (IBI) should be converted from years to days
 
 **AnAge** **(de Magalhães & Costa 2009):**
 
--   No changes necessary
+- No changes necessary
 
 **Ernest (2003):**
 
--   Age at First Reproduction (AFR), Gestation Length (gest_len), and Weaning Age (weaning_age) should be converted from months to days
+- Age at First Reproduction (AFR), Gestation Length (gest_len), and Weaning Age (weaning_age) should be converted from months to days
 
--   IBI was formerly derived from litters/year. The current version of analysis does not make this conversion as IBI and litters/year are not exactly reciprocal in meaning or measurement despite being mathematically related.
+- IBI was formerly derived from litters/year. The current version of analysis does not make this conversion as IBI and litters/year are not exactly reciprocal in meaning or measurement despite being mathematically related.
 
-    -   IBI is similar to days/birth (or days/litter) and can be derived from litters/year as such:
+  - IBI is similar to days/birth (or days/litter) and can be derived from litters/year as such:
 
-        $$ 1 \, \div \frac{x \text{ litters}}{1 \text{ year}} = \frac{x \text{ years}}{1 \text{ litter}} \,\times \, \frac{365.25 \text{ days}}{1 \text{ year}} = \frac{x \text{ days}}{1\text{ litter}}
-        $$
+    $$ 1 \, \div \frac{x \text{ litters}}{1 \text{ year}} = \frac{x \text{ years}}{1 \text{ litter}} \,\times \, \frac{365.25 \text{ days}}{1 \text{ year}} = \frac{x \text{ days}}{1\text{ litter}}$$
 
-    -   note 3/27/26: check where ernest gets these values from...
+  - note 3/27/26: check where ernest gets these values from...
 
--   Maximum Longevity (max_longevity) should be converted from months to years
+- Maximum Longevity (max_longevity) should be converted from months to years
 
 **PanTHERIA (Jones et al. 2009):**
 
--   Maximum Longevity should be converted from months to years
+- Maximum Longevity should be converted from months to years
 
 **Kappeler & Pereira (2003):**
 
--   IBI should be converted from months to days
+- IBI should be converted from months to days
 
 ```{r}
 #| label: unit conversions
@@ -270,7 +269,7 @@ key_long <- key_vals %>%
     values_to = "value"
   )
 
-trait_labels <- c(
+atrait_labels <- c(
   max_longevity = "Lifespan",
   IBI = "Interbirth Interval",
   AFR = "AFR",
@@ -473,11 +472,11 @@ ggplot(scope_df, aes(x = source, y = trait)) +
 
 notes:
 
--   recall: Ernest's IBI is derived from litters/year
--   sex-stratified vars are most unreported
--   age at maturity vars for females are more complete than male when both sexes are reported
--   weaning age, IBI, and gestation length are the most complete across all data sets (lifespan is a close 4th but K&P don't report any values for it - same with AnAge and AFR )
--   **all databases have at least one unreported variable of our key variable selection**
+- recall: Ernest's IBI is derived from litters/year
+- sex-stratified vars are most unreported
+- age at maturity vars for females are more complete than male when both sexes are reported
+- weaning age, IBI, and gestation length are the most complete across all data sets (lifespan is a close 4th but K&P don't report any values for it - same with AnAge and AFR )
+- **all databases have at least one unreported variable of our key variable selection**
 
 Of our key life history traits, most databases only record data for around 60% of them (mostly just **not** the sex-stratified versions of body mass and age at maturity). When testing the mean completeness of the databases using all of the key traits versus only the ones they record, their completeness scores obviously improved. This may appear to call into question our selection of traits, but really the trait scope is under represented because the missing traits are the same measurement for different sex classes.
 
@@ -573,19 +572,19 @@ When trait scope is taken into account, the apparent incompleteness of sex-strat
 
 Thoughts:
 
--   is age at maturity even dimorphic enough to justify splitting sex classes?
+- is age at maturity even dimorphic enough to justify splitting sex classes?
 
--   is it better to combine the sex classes for the sake of more data or to rely on the scant sex-specific data points?
+- is it better to combine the sex classes for the sake of more data or to rely on the scant sex-specific data points?
 
--   is AFR a sufficient proxy? or depending on the study AFR may be the preferred measure?
+- is AFR a sufficient proxy? or depending on the study AFR may be the preferred measure?
 
-    -   first reproduction typically occurs later than technical sexual maturity & is sensitive to many external factors, should it be treated as a distinct life-history measure or can it serve as a proxy for age at maturity?
+  - first reproduction typically occurs later than technical sexual maturity & is sensitive to many external factors, should it be treated as a distinct life-history measure or can it serve as a proxy for age at maturity?
 
--   AnAge cites all other databases in our analysis so how is its completeness and number of species represented lower? more rigorous standard for data?
+- AnAge cites all other databases in our analysis so how is its completeness and number of species represented lower? more rigorous standard for data?
 
-    -   intention of authors?
+  - intention of authors?
 
-    -   AnAge living database, so why still fewer entries?
+  - AnAge living database, so why still fewer entries?
 
 ## Species Representation
 
@@ -847,7 +846,7 @@ ggplot(family_db_coverage, aes(x = source, y = family, fill = n_species)) +
 
 notes:
 
--   
+- 
 
 ### Database Coverage Biases
 
@@ -989,7 +988,7 @@ ggplot(dat_onebar, aes(x = source, y = prop, fill = terminal_group)) +
 
 notes:
 
--   despite drastic differences in number of species reported, the relative frequencies of taxonomic groupings is fairly constant
+- despite drastic differences in number of species reported, the relative frequencies of taxonomic groupings is fairly constant
 
 ## Verifying Trait Dimorphism
 
@@ -1048,13 +1047,13 @@ ggplot(dimo_long, aes(x = trait, y = abs(dimorphism))) +
 
 notes:
 
--   body mass exhibits greater dimorphism across species
+- body mass exhibits greater dimorphism across species
 
--   asm shows consistently lower sex differences, but is skewed right by some relatively extreme values.
+- asm shows consistently lower sex differences, but is skewed right by some relatively extreme values.
 
-    -   spot check values
+  - spot check values
 
--   splitting ASM contributes little extra info... how much does it harm trait completeness
+- splitting ASM contributes little extra info... how much does it harm trait completeness
 
 ```{r}
 #| label: dimorphism-wilcox-tests
@@ -1078,11 +1077,11 @@ wilcox.test(
 
 unpaired:
 
--   distribution of absolute dimorphism for BM very different than ASM, across all species degree of dimorphism for bm is significantly greater than asm
+- distribution of absolute dimorphism for BM very different than ASM, across all species degree of dimorphism for bm is significantly greater than asm
 
 paired:
 
--   within species, body mass dimporphism is consitently larger (controlling for taxonomy) and the trend holds
+- within species, body mass dimporphism is consitently larger (controlling for taxonomy) and the trend holds
 
 ```{r}
 #| label: asm-stratification-tradeoff
@@ -1164,9 +1163,9 @@ asm_tradeoff
 
 notes:
 
--   pooling sex classes for ASM greatly improves their completeness scores
+- pooling sex classes for ASM greatly improves their completeness scores
 
--   considering the low degree of dimorphism and the high cost to completeness of stratifying asm, i think it should NOT be a stratified variable or at least come with a caveat that combining the values is not unreasonable
+- considering the low degree of dimorphism and the high cost to completeness of stratifying asm, i think it should NOT be a stratified variable or at least come with a caveat that combining the values is not unreasonable
 
 Absolute sexual dimorphism is significantly greater for mass than ASM. This pattern holds both when comparing the overall distributions of dimorphism values across species (Wilcoxon rank sum test: W = 1655, p \< .00001) and when comparing body mass and ASM dimorphism within the same species (Wilcoxon signed rank test: V = 891, p \< .0001). Although ASM showed some right-skew from a few relatively extreme values, sex differences in ASM were generally much smaller than those for body mass. These results suggest that separating ASM by sex may add relatively little biological information while contributing to the high rate of missing values.
 
@@ -1176,9 +1175,9 @@ Absolute sexual dimorphism is significantly greater for mass than ASM. This patt
 
 Task: for each species, check both:
 
--   the mean of AFR - mean of ASM (using all dbs)
+- the mean of AFR - mean of ASM (using all dbs)
 
--   for each database, AFR - ASM (means if applicable) for each species
+- for each database, AFR - ASM (means if applicable) for each species
 
 ```{r}
 #| eval: false
@@ -1232,12 +1231,12 @@ tmp1
 
 note:
 
--   when all databases are combined,
-    -   for 74.3% of species, only one or fewer of ASM and AFR reported (insufficient data)
-    -   for 5% of species, afr \> asm
-        -   this is expected as individuals tend to become pregnant later than is technically possible
-    -   for 21% of species, afr \< asm
-        -   this should not be this common or really even possible
+- when all databases are combined,
+  - for 74.3% of species, only one or fewer of ASM and AFR reported (insufficient data)
+  - for 5% of species, afr \> asm
+    - this is expected as individuals tend to become pregnant later than is technically possible
+  - for 21% of species, afr \< asm
+    - this should not be this common or really even possible
 
 now checking if pooling asm sex classes harms data integrity:
 
@@ -1336,13 +1335,13 @@ tmp1
 
 notes:
 
--   for four species, the sign flipped from positive (expected) to negative (first reproduction younger than sexual maturity).
+- for four species, the sign flipped from positive (expected) to negative (first reproduction younger than sexual maturity).
 
--   pooling sex classes for asm greatly improves completeness but results in a few contradictions when comparing AFR and ASM.
+- pooling sex classes for asm greatly improves completeness but results in a few contradictions when comparing AFR and ASM.
 
-    -   it is important to note, though, that again NO databases report both ASM and AFR - they are essentially standins for each other.
+  - it is important to note, though, that again NO databases report both ASM and AFR - they are essentially standins for each other.
 
-    -   to me this does not invalidate pooling sex classes for minorly dimorphic traits.
+  - to me this does not invalidate pooling sex classes for minorly dimorphic traits.
 
 ## Distances from the Mean for Truly Common Variables
 
@@ -1352,22 +1351,22 @@ Task: for the 3 truly common traits, find the mean and then map the distances of
 
 Borries et al (2013) found that when testing the effect of body mass on gestation length, primate life history databases struggled to model the known effect of body mass when nutrition (provisioned/unprovisioned) was not considered. When controlling for nutrition type, the explanatory power of body mass matched predictions. This highlights the importance of detailed metadata regarding data provenience both in recording data and considering what data to include in analyses.
 
--   gest len & ibi: live offspring or includes prenatal death?
-    -   gest:
-        -   myrhvold: doesnt specify
-        -   pantheria: doesnt specify
-        -   ernest: live offspring
-        -   anage: no description available?
-        -   KP: doesnt specify
-    -   ibi:
-        -   myrhvold: live offspring
-        -   pantheria: live offspring, all population types
-        -   ernest: does not record IBI
-        -   anage: no description available
-        -   KP: doesnt specify
--   population provisioned?
-    -   pantheria notes population type for certain variables
-    -   anage notes population type for certain variables (incl longevity)
+- gest len & ibi: live offspring or includes prenatal death?
+  - gest:
+    - myrhvold: doesnt specify
+    - pantheria: doesnt specify
+    - ernest: live offspring
+    - anage: no description available?
+    - KP: doesnt specify
+  - ibi:
+    - myrhvold: live offspring
+    - pantheria: live offspring, all population types
+    - ernest: does not record IBI
+    - anage: no description available
+    - KP: doesnt specify
+- population provisioned?
+  - pantheria notes population type for certain variables
+  - anage notes population type for certain variables (incl longevity)
 
 ## other?
 
@@ -1557,16 +1556,16 @@ trait_missing_summary %>%
 trait_missing_summary
 ```
 
--   update IUCN citation to latest edition
--   
--   poster:
-    -   bullet abstract describe what doing
+- update IUCN citation to latest edition
+- 
+- poster:
+  - bullet abstract describe what doing
 
-    -   lock dimensions in powerpoint
+  - lock dimensions in powerpoint
 
-    -   look into cost help
+  - look into cost help
 
-    -   text claire (maybe jimmy?) about AABA abnb
+  - text claire (maybe jimmy?) about AABA abnb
 
 # Sources
 

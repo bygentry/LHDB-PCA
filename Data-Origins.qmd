@@ -26,11 +26,11 @@ The main takeaway of my poster presentation was to be cautious in selecting a da
 
 I didn't catch many of the talks about weaning age at AABA. I have identified a few which I believe are important to Carola's point and will contact the authors:
 
--   Zou R., Mi W., Jiang R., Breastfeeding and weaning in the Northeastern China over the past 10000 years by dentin micro-punches serial samples isotopic analysis
+- Zou R., Mi W., Jiang R., Breastfeeding and weaning in the Northeastern China over the past 10000 years by dentin micro-punches serial samples isotopic analysis
 
--   Dentice T., Reitsema L., Vassallo S., Kyle B., Exploring heterogeneity of Weaning Practices at Himera
+- Dentice T., Reitsema L., Vassallo S., Kyle B., Exploring heterogeneity of Weaning Practices at Himera
 
--   Soto H., Oelze V,. Lonsdorf E., Murray C., McFarlin S., Fecal stable isotope analysis estimates nutritional weaning age in the Gombe chimpanzees (*Pan* *troglodytes schweinfurthii*)
+- Soto H., Oelze V,. Lonsdorf E., Murray C., McFarlin S., Fecal stable isotope analysis estimates nutritional weaning age in the Gombe chimpanzees (*Pan* *troglodytes schweinfurthii*)
 
 # Inter-database Referencing and Data Duplication
 
@@ -66,15 +66,15 @@ The PanTHERIA compilation
 
 Title for lack of better phrasing. Here we compare how life history data from each database perform allometrically, calculating the residuals of each test and taking the lowest residual as a signal of a given subset of data being closest to the true value.
 
--   residual compared to what? what are expected vlaues based on?
+- residual compared to what? what are expected vlaues based on?
 
 # Remaining Questions
 
--   Kappeler & Pereira material?
+- Kappeler & Pereira material?
 
--   since averaging data doesn't get us closer to the true value, how can we better implement existing data? does existing data have a place in future LH databases?
+- since averaging data doesn't get us closer to the true value, how can we better implement existing data? does existing data have a place in future LH databases?
 
--   how can we know if a value is close to the true value? study longevity, more data, etc. but must we cast out existing data?
+- how can we know if a value is close to the true value? study longevity, more data, etc. but must we cast out existing data?
 
 # Sources
 
