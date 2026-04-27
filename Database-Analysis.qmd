@@ -268,7 +268,7 @@ key_long <- key_vals %>%
     values_to = "value"
   )
 
-atrait_labels <- c(
+trait_labels <- c(
   max_longevity = "Lifespan",
   IBI = "Interbirth Interval",
   AFR = "AFR",
