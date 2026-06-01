@@ -50,6 +50,8 @@ source("https://raw.githubusercontent.com/bygentry/LHDB-PCA/refs/heads/main/Data
 
 Different databases record different aspects of data in unique ways. **X** databases report some measure of central tendency taken from multiple sources for various life history traits, **DO THEY USE THE SAME METHODS OF DATA STANDARDIZATION/SELECTION**
 
+AnAge's [bibliography](https://genomics.senescence.info/species/biblio.php)
+
 | Compilation        | CT? | Type(s) used  | /   | Col6 |
 |--------------------|-----|---------------|-----|------|
 | Amniotes           |     |               |     |      |
@@ -61,6 +63,18 @@ Different databases record different aspects of data in unique ways. **X** datab
 ## PanTHERIA
 
 The PanTHERIA compilation
+
+## AnAge
+
+- AnAge presents maximum longevity as "the most important trait" in their database; accordingly they make "great effort" to obtain and verify the **original source** of each longevity record.
+
+  - why so many references to other secondary sources then? other traits held to lower standard?
+
+  - anecdotes not used in estimations and population type included
+
+- all species have an estimate of sample size "to allow researchers performing comparative longevity studies to minimize the bias of sample size on longevity records"
+
+- for longevity records obtained from species in captivity, estimates of sample size were obtained from ISIS
 
 # Data Performance
 

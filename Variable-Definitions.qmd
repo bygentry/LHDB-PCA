@@ -20,19 +20,21 @@ editor: visual
 # Life History Database Variable Definitions
 
 ```{r}
+#| label: data import script
+#| echo: false
+
+source("https://raw.githubusercontent.com/bygentry/LHDB-PCA/refs/heads/main/Database-Analysis_files/setup.R")
+```
+
+## Key Life History Variables
+
+```{r}
 #| label: variable definiton tables
 #| echo: false
 #| code-fold: true
 #| message: false
 #| warning: false
 #| results: asis
-
-options(repos = "https://cran.us.r-project.org")
-
-# loads necessary packages
-pacman::p_load(
-  gt, dplyr, readr, tidyverse, xfun, knitr, rmarkdown, htmltools
-)
 
 # loads file
 var_defs <- readr::read_csv(
@@ -82,3 +84,5 @@ iwalk(var_defs, function(db_df, db_name){
     print()
 })
 ```
+
+## All Life History Variables
