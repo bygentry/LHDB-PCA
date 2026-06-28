@@ -4,7 +4,7 @@ options(repos = "https://cloud.r-project.org")
 
 # loads necessary packages
 pacman::p_load(
-  dplyr, ggpubr, gratia, gridExtra, gt, lme4, lubridate, mice, psych, rlang, scales, tidyverse, VIM, XML, yaml
+  ggpubr, gratia, gridExtra, gt, lme4, lubridate, mice, psych, rlang, scales, tidyverse, VIM, XML, yaml
 )
 
 # loads data files 
@@ -58,7 +58,7 @@ missing_val_to_na <- function(df){
 # creates subset dfs for primate rows and removes non mammal variables
 amniote <- amniote %>% dplyr::filter(order == "Primates")
 amniote <- missing_val_to_na(amniote)
-amniote_refs <- amniote_refs %>% dplr::filter(order == "Primates")
+amniote_refs <- amniote_refs %>% dplyr::filter(order == "Primates")
 amniote_refs <- missing_val_to_na(amniote_refs)
 
 AnAge <- AnAge %>% dplyr::filter(Order == "Primates")
