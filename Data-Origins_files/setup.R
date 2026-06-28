@@ -199,5 +199,6 @@ pan_s <- pan_s %>%
 kp_s <- kp_s %>% 
   mutate(
     IBI = IBI * days_per_month
+    AFR = AFR * days_per_year
     # converts months to days
   )
