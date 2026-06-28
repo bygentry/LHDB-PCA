@@ -165,3 +165,39 @@ kp_s <- kp %>%
     weaning_age = WA,
     source = sources[5]
   )
+
+days_per_year <- 365.25
+months_per_year <- 12
+days_per_month <- days_per_year/months_per_year
+
+amniote_s <- amniote_s %>% 
+  mutate(
+    IBI = IBI * days_per_year
+    # converts years to days
+  )
+
+ernest_s <- ernest_s %>% 
+  mutate(
+    AFR = AFR * days_per_month,
+    # converts months to days
+    gest_len = gest_len * days_per_month,
+    # converts months to days
+    #IBI = days_per_year/IBI,
+    # converts litters/year to IBI (days)
+    max_longevity = max_longevity/months_per_year,
+    # converts months to years
+    weaning_age = weaning_age * days_per_month
+    # converts months to days
+  )
+
+pan_s <- pan_s %>% 
+  mutate(
+    max_longevity = max_longevity/months_per_year
+    # converts months to years
+  )
+
+kp_s <- kp_s %>% 
+  mutate(
+    IBI = IBI * days_per_month
+    # converts months to days
+  )
